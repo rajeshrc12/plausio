@@ -3,93 +3,116 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
+import { Button } from "@workspace/ui/components/button"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@workspace/ui/components/popover"
 
+import { ChevronRight, LogOut, Moon, Settings, User } from "lucide-react"
 import { useNavigate } from "react-router"
-import { LogOutIcon } from "lucide-react"
-import { Button } from "@workspace/ui/components/button"
 
 const Profile = () => {
   const { data, isLoading } = {
     data: {
       name: "Rajesh Charhajari",
-      image: "123",
+      image: "",
       email: "rajesh@gmail.com",
     },
     isLoading: false,
   }
+
   const navigate = useNavigate()
+
+  const initials =
+    data?.name
+      ?.split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase() ?? "U"
+
   const logout = () => {
     navigate("/", { replace: true })
   }
-  if (isLoading || !data?.image) return <p>Loading...</p>
+
+  if (isLoading) {
+    return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
+  }
+
   return (
-    <div className="flex items-center">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="ghost"
-            className="h-auto gap-3 px-2 py-2 hover:bg-muted"
-          >
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={data?.image} alt={data?.name} />
-              <AvatarFallback>
-                {data?.name
-                  ?.split(" ")
-                  .map((n: string) => n[0])
-                  .join("")
-                  .toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full p-0 hover:bg-muted"
+        >
+          <Avatar className="h-9 w-9">
+            <AvatarImage src={data?.image} />
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+        </Button>
+      </PopoverTrigger>
 
-            <div className="flex flex-col items-start">
-              <span className="text-sm font-medium">
-                {data?.name?.split(" ")[0]}
-              </span>
-            </div>
-          </Button>
-        </PopoverTrigger>
+      <PopoverContent align="end" className="w-80 p-0">
+        {/* Header */}
+        <div className="flex items-start gap-3 border-b p-4">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src={data?.image} />
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
 
-        <PopoverContent className="w-72 p-0" align="end">
-          <div className="p-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={data?.image} alt={data?.name} />
-                <AvatarFallback>
-                  {data?.name
-                    ?.split(" ")
-                    .map((n: string) => n[0])
-                    .join("")
-                    .toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-semibold">{data?.name}</p>
+            <p className="truncate text-sm text-muted-foreground">
+              {data?.email}
+            </p>
 
-              <div className="min-w-0">
-                <p className="truncate font-semibold">{data?.name}</p>
-                <p className="truncate text-sm text-muted-foreground">
-                  {data?.email}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-2">
-            <Button
-              onClick={logout}
-              variant="ghost"
-              className="w-full justify-start text-destructive hover:text-destructive"
-            >
-              <LogOutIcon className="mr-2 h-4 w-4" />
-              Logout
+            <Button variant="link" className="mt-1 h-auto p-0 text-sm">
+              View your channel
             </Button>
           </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+        </div>
+
+        {/* Menu */}
+        <div className="p-2">
+          <Button variant="ghost" className="h-11 w-full justify-start">
+            <User className="mr-3 h-5 w-5" />
+            Your profile
+          </Button>
+
+          <Button variant="ghost" className="h-11 w-full justify-between">
+            <div className="flex items-center">
+              <Settings className="mr-3 h-5 w-5" />
+              Settings
+            </div>
+
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+
+          <Button variant="ghost" className="h-11 w-full justify-between">
+            <div className="flex items-center">
+              <Moon className="mr-3 h-5 w-5" />
+              Appearance
+            </div>
+
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="border-t p-2">
+          <Button
+            variant="ghost"
+            onClick={logout}
+            className="h-11 w-full justify-start text-destructive hover:text-destructive"
+          >
+            <LogOut className="mr-3 h-5 w-5" />
+            Sign out
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
 
