@@ -1,12 +1,5 @@
 import { Button } from "@workspace/ui/components/button"
-import {
-  Clock3,
-  History,
-  Home,
-  ListVideo,
-  PlaySquare,
-  ThumbsUp,
-} from "lucide-react"
+import { Clock3, History, Home } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
 const Sidebar = () => {
@@ -15,18 +8,13 @@ const Sidebar = () => {
   const links = [
     {
       section: "Main",
-      items: [
-        { name: "Home", href: "/", icon: Home },
-        { name: "Shorts", href: "/shorts", icon: PlaySquare },
-        { name: "Subscriptions", href: "/subscriptions", icon: ListVideo },
-      ],
+      items: [{ name: "Home", href: "/", icon: Home }],
     },
     {
       section: "You",
       items: [
         { name: "History", href: "/history", icon: History },
-        { name: "Watch later", href: "/watch-later", icon: Clock3 },
-        { name: "Liked videos", href: "/liked", icon: ThumbsUp },
+        { name: "Playlist", href: "/playlist", icon: Clock3 },
       ],
     },
   ]

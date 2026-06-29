@@ -1,4 +1,5 @@
 import Profile from "@/components/profile"
+import { Input } from "@workspace/ui/components/input"
 import { Menu, Search, Mic, Bell } from "lucide-react"
 
 const Navbar = () => {
@@ -16,7 +17,7 @@ const Navbar = () => {
       {/* Center */}
       <div className="hidden max-w-2xl flex-1 items-center justify-center px-8 md:flex">
         <div className="flex w-full max-w-xl">
-          <input
+          <Input
             type="text"
             placeholder="Search"
             className="h-10 w-full rounded-l-full border border-gray-300 px-4 outline-none focus:border-blue-500"
