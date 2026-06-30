@@ -1,43 +1,51 @@
 import Profile from "@/components/profile"
+import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
-import { Menu, Search, Mic, Bell } from "lucide-react"
+import { Bell, Menu, Mic, Search } from "lucide-react"
 
 const Navbar = () => {
   return (
-    <header className="sticky top-0 z-50 flex h-14 items-center justify-between bg-white px-4">
+    <header className="sticky top-0 z-50 flex h-14 items-center justify-between bg-background px-4">
       {/* Left */}
       <div className="flex items-center gap-4">
-        <button className="rounded-full p-2 hover:bg-gray-100">
-          <Menu size={22} />
-        </button>
+        <Button variant="ghost" size="icon" className="rounded-full">
+          <Menu className="size-5" />
+        </Button>
 
-        <h1 className="text-xl font-bold">Plausio</h1>
+        <h1 className="text-xl font-bold text-foreground">Plausio</h1>
       </div>
 
       {/* Center */}
-      <div className="hidden max-w-2xl flex-1 items-center justify-center px-8 md:flex">
+      <div className="hidden flex-1 items-center justify-center px-8 md:flex">
         <div className="flex w-full max-w-xl">
           <Input
             type="text"
             placeholder="Search"
-            className="h-10 w-full rounded-l-full border border-gray-300 px-4 outline-none focus:border-blue-500"
+            className="h-10 rounded-r-none border-r-0 shadow-none focus-visible:ring-1"
           />
 
-          <button className="flex h-10 w-16 items-center justify-center rounded-r-full border border-l-0 border-gray-300 bg-gray-100 hover:bg-gray-200">
-            <Search size={20} />
-          </button>
+          <Button
+            variant="outline"
+            className="h-10 w-16 rounded-l-none border-l bg-muted px-0 hover:bg-accent"
+          >
+            <Search className="size-5" />
+          </Button>
         </div>
 
-        <button className="ml-4 rounded-full bg-gray-100 p-2 hover:bg-gray-200">
-          <Mic size={20} />
-        </button>
+        <Button
+          variant="secondary"
+          size="icon"
+          className="ml-4 h-10 w-10 rounded-full"
+        >
+          <Mic className="size-5" />
+        </Button>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-2">
-        <button className="rounded-full p-2 hover:bg-gray-100">
-          <Bell size={22} />
-        </button>
+        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+          <Bell className="size-5" />
+        </Button>
 
         <Profile />
       </div>

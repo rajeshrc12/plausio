@@ -20,10 +20,10 @@ const Sidebar = () => {
   ]
 
   return (
-    <aside className="sticky top-14 h-[calc(100vh-56px)] w-60 overflow-y-auto bg-white px-3 py-2">
+    <aside className="sticky top-14 h-[calc(100vh-56px)] w-60 overflow-y-auto bg-background px-3 py-2">
       {links.map((group) => (
         <div key={group.section} className="mb-4">
-          <h3 className="mb-2 px-3 text-sm font-semibold text-gray-500">
+          <h3 className="mb-2 px-3 text-sm font-semibold text-muted-foreground">
             {group.section}
           </h3>
 
@@ -38,11 +38,11 @@ const Sidebar = () => {
                     variant="ghost"
                     className={`h-11 w-full justify-start gap-5 rounded-xl px-3 ${
                       active
-                        ? "bg-gray-100 font-semibold hover:bg-gray-100"
-                        : "hover:bg-gray-100"
+                        ? "bg-muted font-semibold text-foreground hover:bg-muted"
+                        : "text-foreground hover:bg-accent hover:text-accent-foreground"
                     }`}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="size-5 shrink-0" />
                     <span>{link.name}</span>
                   </Button>
                 </Link>
