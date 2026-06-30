@@ -2,7 +2,7 @@ import Profile from "@/components/profile"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Bell, Menu, Mic, Search } from "lucide-react"
-
+import { Link } from "react-router"
 const NavbarHome = () => {
   return (
     <header className="sticky top-0 z-50 flex h-14 items-center justify-between bg-background px-4">
@@ -11,8 +11,9 @@ const NavbarHome = () => {
         <Button variant="ghost" size="icon" className="rounded-full">
           <Menu className="size-5" />
         </Button>
-
-        <h1 className="text-xl font-bold text-foreground">Plausio</h1>
+        <Link to={"/"}>
+          <h1 className="text-xl font-bold text-foreground">Plausio</h1>
+        </Link>
       </div>
 
       {/* Center */}

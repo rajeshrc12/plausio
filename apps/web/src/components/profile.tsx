@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
 } from "@workspace/ui/components/popover"
 
-import { ChevronRight, LogOut, Moon, Settings, User } from "lucide-react"
+import { LogOut, Settings } from "lucide-react"
 import { useNavigate } from "react-router"
 
 const Profile = () => {
@@ -76,28 +76,14 @@ const Profile = () => {
         </div>
 
         {/* Menu */}
-        <div className="p-2">
-          <Button variant="ghost" className="h-11 w-full justify-start">
-            <User className="mr-3 h-5 w-5" />
-            Your profile
-          </Button>
-
-          <Button variant="ghost" className="h-11 w-full justify-between">
-            <div className="flex items-center">
-              <Settings className="mr-3 h-5 w-5" />
-              Settings
-            </div>
-
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-
-          <Button variant="ghost" className="h-11 w-full justify-between">
-            <div className="flex items-center">
-              <Moon className="mr-3 h-5 w-5" />
-              Appearance
-            </div>
-
-            <ChevronRight className="h-4 w-4" />
+        <div className="px-2">
+          <Button
+            onClick={() => navigate("/studio")}
+            variant="ghost"
+            className="h-11 w-full justify-start"
+          >
+            <Settings className="mr-3 h-5 w-5" />
+            Studio
           </Button>
         </div>
 

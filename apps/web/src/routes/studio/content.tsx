@@ -10,17 +10,7 @@ import {
   Globe,
 } from "lucide-react"
 
-const tabs = [
-  "Inspiration",
-  "Videos",
-  "Shorts",
-  "Live",
-  "Posts",
-  "Playlists",
-  "Podcasts",
-  "Promotions",
-  "Collaborations",
-]
+const tabs = ["Videos", "Posts", "Playlists"]
 
 const videos = [
   {
@@ -74,7 +64,7 @@ export default function ChannelContent() {
             <button
               key={tab}
               className={`border-b-2 pb-4 font-medium transition ${
-                i === 1
+                i === 0
                   ? "border-black text-black"
                   : "border-transparent text-muted-foreground hover:text-black"
               }`}

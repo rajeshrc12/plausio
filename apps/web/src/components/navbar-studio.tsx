@@ -2,6 +2,7 @@ import Profile from "@/components/profile"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Bell, Menu, Mic, Search } from "lucide-react"
+import { Link } from "react-router"
 
 const NavbarStudio = () => {
   return (
@@ -12,7 +13,9 @@ const NavbarStudio = () => {
           <Menu className="size-5" />
         </Button>
 
-        <h1 className="text-xl font-bold text-foreground">Plausio</h1>
+        <Link to={"/"}>
+          <h1 className="text-xl font-bold text-foreground">Plausio</h1>
+        </Link>
       </div>
 
       {/* Center */}
@@ -20,7 +23,7 @@ const NavbarStudio = () => {
         <div className="flex w-full max-w-xl">
           <Input
             type="text"
-            placeholder="Search"
+            placeholder="Search across your channel"
             className="h-10 rounded-l-full rounded-r-none border-r-0 shadow-none focus-visible:ring-1"
           />
 

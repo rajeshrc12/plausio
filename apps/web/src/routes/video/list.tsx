@@ -10,7 +10,7 @@ export type Video = {
   uploaded: string
 }
 
-const videos: Video[] = Array.from({ length: 30 }, (_, i) => ({
+const videos: Video[] = Array.from({ length: 6 }, (_, i) => ({
   id: i + 1,
   title: `Learn React in ${i + 1} Minutes | Complete Tutorial`,
   thumbnail: `https://picsum.photos/400/225?random=${i + 1}`,
@@ -22,7 +22,7 @@ const videos: Video[] = Array.from({ length: 30 }, (_, i) => ({
 
 const VideoList = () => {
   return (
-    <div className="grid grid-cols-1 gap-6 p-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
       {videos.map((video) => (
         <VideoCard key={video.id} video={video} />
       ))}

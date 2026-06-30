@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router"
+
 type Video = {
   id: number
   title: string
@@ -13,8 +15,12 @@ type VideoCardProps = {
 }
 
 const VideoCard = ({ video }: VideoCardProps) => {
+  const navigate = useNavigate()
   return (
-    <div className="cursor-pointer">
+    <div
+      className="cursor-pointer rounded-xl p-2 hover:bg-gray-50"
+      onClick={() => navigate(`/${video.id}`)}
+    >
       <img
         src={video.thumbnail}
         alt={video.title}
