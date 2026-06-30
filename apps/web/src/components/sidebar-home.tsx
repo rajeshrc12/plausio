@@ -2,7 +2,7 @@ import { Button } from "@workspace/ui/components/button"
 import { Clock3, History, Home } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
-const Sidebar = () => {
+const SidebarHome = () => {
   const location = useLocation()
 
   const links = [
@@ -55,4 +55,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default SidebarHome

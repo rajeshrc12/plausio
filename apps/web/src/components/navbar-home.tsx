@@ -3,7 +3,7 @@ import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Bell, Menu, Mic, Search } from "lucide-react"
 
-const Navbar = () => {
+const NavbarHome = () => {
   return (
     <header className="sticky top-0 z-50 flex h-14 items-center justify-between bg-background px-4">
       {/* Left */}
@@ -21,12 +21,12 @@ const Navbar = () => {
           <Input
             type="text"
             placeholder="Search"
-            className="h-10 rounded-r-none border-r-0 shadow-none focus-visible:ring-1"
+            className="h-10 rounded-l-full rounded-r-none border-r-0 shadow-none focus-visible:ring-1"
           />
 
           <Button
             variant="outline"
-            className="h-10 w-16 rounded-l-none border-l bg-muted px-0 hover:bg-accent"
+            className="h-10 w-16 rounded-l-none rounded-r-full border-l bg-muted px-0 hover:bg-accent"
           >
             <Search className="size-5" />
           </Button>
@@ -53,4 +53,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default NavbarHome
