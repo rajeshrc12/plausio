@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { ImagePlus } from "lucide-react"
 
@@ -36,7 +36,7 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp"],
+      "image/*": [".png", ".jpg", ".jpeg"],
     },
     multiple: false,
   })
@@ -45,6 +45,9 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
     return thumbnail ? URL.createObjectURL(thumbnail) : null
   }, [thumbnail])
 
+  useEffect(() => {
+    return cleanup
+  }, [])
   return (
     <div className="relative flex h-full min-h-0 flex-col">
       {/* Body */}
@@ -127,7 +130,7 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
 
               <div>
                 <p className="text-xs text-muted-foreground">Visibility</p>
-                <p className="text-sm">Private</p>
+                <p className="text-sm">Public</p>
               </div>
             </div>
           </div>
@@ -135,7 +138,7 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-end border-t px-8 py-4">
+      <div className="flex items-center justify-end gap-2 border-t px-8 py-4">
         <Button onClick={cleanup} variant={"outline"}>
           Cancel
         </Button>
