@@ -36,7 +36,7 @@ const VideoId = () => {
         <div>
           {/* Video */}
 
-          <div className="overflow-hidden rounded-xl bg-black">
+          <div className="overflow-hidden rounded-xl bg-primary">
             <video
               controls
               className="aspect-video w-full"

@@ -65,8 +65,8 @@ export default function ChannelContent() {
               key={tab}
               className={`border-b-2 pb-4 font-medium transition ${
                 i === 0
-                  ? "border-black text-black"
-                  : "border-transparent text-muted-foreground hover:text-black"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-primary"
               }`}
             >
               {tab}
@@ -115,7 +115,7 @@ export default function ChannelContent() {
                         className="h-full w-full object-cover"
                       />
 
-                      <span className="absolute right-1 bottom-1 rounded bg-black/80 px-1 text-xs text-white">
+                      <span className="absolute right-1 bottom-1 rounded bg-primary/80 px-1 text-xs text-white">
                         {video.duration}
                       </span>
                     </div>
