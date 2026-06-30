@@ -1,4 +1,5 @@
-import { BarChart3, UploadIcon } from "lucide-react"
+import { BarChart3 } from "lucide-react"
+import UploadVideo from "@/routes/studio/upload-video"
 
 const Dashboard = () => {
   return (
@@ -14,9 +15,7 @@ const Dashboard = () => {
               Welcome back! Here's what's happening with your channel.
             </p>
           </div>
-          <button className="rounded-full border p-2">
-            <UploadIcon className="size-6" />
-          </button>
+          <UploadVideo />
         </div>
 
         {/* Top Cards */}
