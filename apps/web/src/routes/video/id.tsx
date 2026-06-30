@@ -6,6 +6,7 @@ import {
 import { Button } from "@workspace/ui/components/button"
 import { Download, MoreHorizontal, Share2, ThumbsUp } from "lucide-react"
 import VideoCardHorizontal from "@/routes/video/card-horizontal"
+import VideoPlayer from "@/components/video-player"
 
 export type Video = {
   id: number
@@ -37,16 +38,7 @@ const VideoId = () => {
           {/* Video */}
 
           <div className="overflow-hidden rounded-xl bg-primary">
-            <video
-              controls
-              className="aspect-video w-full"
-              poster="https://picsum.photos/1280/720"
-            >
-              <source
-                src="https://www.w3schools.com/html/mov_bbb.mp4"
-                type="video/mp4"
-              />
-            </video>
+            <VideoPlayer />
           </div>
 
           {/* Title */}
