@@ -5,25 +5,21 @@ interface UploadUrl {
   url: string
 }
 
-interface UploadMultipartProps {
+interface VideoUploadMultipartProps {
   file: File
-  uploadId: string
-  key: string
   partSize: number
   urls: UploadUrl[]
   contentType: string
   onProgress?: (progress: number) => void
 }
 
-export async function uploadMultipart({
+export async function videoUploadMultipart({
   file,
-  uploadId,
-  key,
   partSize,
   urls,
   contentType,
   onProgress,
-}: UploadMultipartProps) {
+}: VideoUploadMultipartProps) {
   const uploaded = new Array(urls.length).fill(0)
 
   const completedParts: {
@@ -76,8 +72,34 @@ export async function uploadMultipart({
   completedParts.sort((a, b) => a.PartNumber - b.PartNumber)
 
   return {
-    uploadId,
-    key,
     parts: completedParts,
   }
+}
+
+interface ThumbnailUploadMultipartProps {
+  file: File | undefined
+  thumbnailUrl: UploadUrl[]
+  contentType: string | undefined
+}
+
+export async function thumbnailUpload({
+  thumbnailUrl,
+  file,
+  contentType,
+}: ThumbnailUploadMultipartProps) {
+  const { partNumber, url } = thumbnailUrl[0]
+
+  const response = await axios.put(url, file, {
+    headers: {
+      "Content-Type": contentType,
+    },
+  })
+  const etag = response.headers.etag
+
+  return [
+    {
+      PartNumber: partNumber,
+      ETag: etag,
+    },
+  ]
 }

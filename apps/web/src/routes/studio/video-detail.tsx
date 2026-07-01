@@ -7,8 +7,9 @@ import { Input } from "@workspace/ui/components/input"
 import { Textarea } from "@workspace/ui/components/textarea"
 import videoApi from "@/api/video"
 import { useMutation } from "@tanstack/react-query"
-import { uploadMultipart } from "@/services/upload-multipart"
+import { thumbnailUpload, videoUploadMultipart } from "@/services/upload-file"
 import { useNavigate } from "react-router"
+import { getVideoDuration } from "@/utils/video"
 
 type VideoDetailsProps = {
   file: File
@@ -30,7 +31,7 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
     )
   }, [file])
 
-  const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [thumbnail, setThumbnail] = useState<File>()
   const [title, setTitle] = useState(file.name.replace(/\.[^/.]+$/, ""))
   const [description, setDescription] = useState("")
 
@@ -65,38 +66,63 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
   const handleUpload = async () => {
     setProgress(1)
     if (!file) return
+    const videoDuration = await getVideoDuration(file)
+    const { name: videoName, type: videoType, size: videoSize } = file
+    const { name: thumbnailName, type: thumbnailType } = thumbnail as File
 
     try {
       // Step 1: Initialize upload
       const { data } = await initMutation.mutateAsync({
-        fileName: file.name,
-        fileSize: file.size,
-        contentType: file.type,
-
+        fileName: videoName,
+        fileSize: videoSize,
+        contentType: videoType,
+        videoDuration,
         title,
         description,
+        thumbnailName,
+        thumbnailType,
       })
+      const {
+        videoPartSize,
+        videoUrls,
+        thumbnailUrl,
+        video: { id: videoId },
+        videoKey,
+        videoUploadId,
+        thumbnailUploadId,
+        thumbnailKey,
+      } = data
       console.log("file initiated", data)
+
       // Step 2: Upload all parts
-      const result = await uploadMultipart({
+      const videoResult = await videoUploadMultipart({
         file,
-        uploadId: data.uploadId,
-        key: data.key,
-        partSize: data.partSize,
-        urls: data.urls,
-        contentType: file.type,
+        partSize: videoPartSize,
+        urls: videoUrls,
+        contentType: videoType,
         onProgress: setProgress,
       })
+      const thumbnailResult = await thumbnailUpload({
+        thumbnailUrl: thumbnailUrl,
+        file: thumbnail,
+        contentType: thumbnailType,
+      })
+      console.log({ videoResult, thumbnailResult })
 
       // Step 3: Complete upload
       const { data: completeData } = await completeMutation.mutateAsync({
-        ...result,
-        videoId: data?.video?.id,
+        videoParts: videoResult.parts,
+        thumbnailParts: thumbnailResult,
+        videoId,
+        videoKey,
+        videoUploadId,
+        thumbnailUploadId,
+        thumbnailKey,
       })
+
       if (completeData) {
         navigate("/studio/content")
       }
-      console.log("Upload Completed!", completeData)
     } catch (err) {
       console.error(err)
       console.log("Upload failed")

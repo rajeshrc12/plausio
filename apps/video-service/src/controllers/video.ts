@@ -1,22 +1,28 @@
 import { Request, Response } from "express"
-import {
-  CompleteMultipartUploadCommand,
-  CreateMultipartUploadCommand,
-  UploadPartCommand,
-  CompletedPart,
-} from "@aws-sdk/client-s3"
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { s3 } from "@/config/s3"
 import { env } from "@/config/env"
 import { prisma, User } from "@workspace/db"
-import { getVideoKey } from "@/utils/video"
+import { getThumbnailKey, getVideoKey } from "@/utils/video"
+import {
+  completeMultipartUpload,
+  createMultipartUploadId,
+  createMultipartUploadUrls,
+} from "@/services/s3"
 
 export const initUpload = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const { fileName, fileSize, contentType, title, description } = req.body
+    const {
+      fileName,
+      fileSize,
+      contentType,
+      title,
+      description,
+      videoDuration,
+      thumbnailName,
+      thumbnailContentType,
+    } = req.body
     const user = req.user as User
 
     const video = await prisma.video.create({
@@ -27,51 +33,51 @@ export const initUpload = async (
         fileSize: fileSize.toString(),
         userId: user.id,
         status: "INITIATED",
+        duration: Number(videoDuration),
       },
     })
-    const key = getVideoKey({ videoId: video.id, fileName })
+    const videoKey = getVideoKey({ videoId: video.id, fileName })
+    const thumbnailKey = getThumbnailKey({
+      videoId: video.id,
+      fileName: thumbnailName,
+    })
 
-    const { UploadId } = await s3.send(
-      new CreateMultipartUploadCommand({
-        Bucket: env.AWS_S3_BUCKET,
-        Key: key,
-        ContentType: contentType,
-      })
-    )
+    const videoUploadId = await createMultipartUploadId({
+      key: videoKey,
+      contentType,
+    })
+    const thumbnailUploadId = await createMultipartUploadId({
+      key: thumbnailKey,
+      contentType: thumbnailContentType,
+    })
 
-    if (!UploadId) {
-      throw new Error("UploadId not returned from S3")
+    if (!videoUploadId) {
+      throw new Error("videoUploadId not returned from S3")
     }
-
+    if (!thumbnailUploadId) {
+      throw new Error("thumbnailUploadId not returned from S3")
+    }
     const totalParts = Math.ceil(fileSize / env.AWS_S3_PART_SIZE_IN_MB)
 
-    const urls = await Promise.all(
-      Array.from({ length: totalParts }, async (_, index) => {
-        const partNumber = index + 1
+    const videoUrls = await createMultipartUploadUrls({
+      totalParts,
+      key: videoKey,
+      uploadId: videoUploadId,
+    })
+    const thumbnailUrl = await createMultipartUploadUrls({
+      key: thumbnailKey,
+      uploadId: thumbnailUploadId,
+    })
 
-        const command = new UploadPartCommand({
-          Bucket: env.AWS_S3_BUCKET,
-          Key: key,
-          UploadId,
-          PartNumber: partNumber,
-        })
-
-        const url = await getSignedUrl(s3, command, {
-          expiresIn: 3600,
-        })
-
-        return {
-          partNumber,
-          url,
-        }
-      })
-    )
     res.status(200).json({
       video,
-      uploadId: UploadId,
-      key,
-      partSize: env.AWS_S3_PART_SIZE_IN_MB,
-      urls,
+      videoUploadId,
+      thumbnailUploadId,
+      videoKey,
+      thumbnailKey,
+      videoUrls,
+      thumbnailUrl,
+      videoPartSize: env.AWS_S3_PART_SIZE_IN_MB,
     })
   } catch (error) {
     console.error(error)
@@ -88,27 +94,25 @@ export const completeUpload = async (
 ): Promise<void> => {
   try {
     const {
-      uploadId,
-      key,
-      parts,
+      videoUploadId,
+      thumbnailUploadId,
+      videoKey,
+      thumbnailKey,
+      videoParts,
+      thumbnailParts,
       videoId,
-    }: {
-      uploadId: string
-      key: string
-      parts: CompletedPart[]
-      videoId: string
     } = req.body
 
-    const result = await s3.send(
-      new CompleteMultipartUploadCommand({
-        Bucket: env.AWS_S3_BUCKET,
-        Key: key,
-        UploadId: uploadId,
-        MultipartUpload: {
-          Parts: parts,
-        },
-      })
-    )
+    await completeMultipartUpload({
+      key: videoKey,
+      parts: videoParts,
+      uploadId: videoUploadId,
+    })
+    await completeMultipartUpload({
+      key: thumbnailKey,
+      parts: thumbnailParts,
+      uploadId: thumbnailUploadId,
+    })
     const video = await prisma.video.update({
       where: {
         id: videoId,
@@ -120,8 +124,6 @@ export const completeUpload = async (
     res.status(200).json({
       video,
       message: "Upload completed successfully",
-      location: result.Location,
-      key,
     })
   } catch (error) {
     console.error(error)

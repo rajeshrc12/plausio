@@ -2,6 +2,7 @@ import { useVideos } from "@/hooks/getVideos"
 import type { Video as VideoModel } from "@workspace/db"
 import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
+import { formatDistanceToNow } from "date-fns"
 import {
   ChevronDown,
   ChevronLeft,
@@ -50,13 +51,7 @@ export default function ChannelContent() {
 
               <th>Video</th>
 
-              <th className="font-normal text-muted-foreground">Notices</th>
-
-              <th className="font-normal text-muted-foreground">Visibility</th>
-
               <th className="font-normal text-muted-foreground">Date</th>
-
-              <th className="font-normal text-muted-foreground">Views</th>
 
               <th className="font-normal text-muted-foreground">Status</th>
             </tr>
@@ -95,13 +90,9 @@ export default function ChannelContent() {
                   </div>
                 </td>
 
-                <td className="text-muted-foreground">—</td>
-
-                <td></td>
-
-                <td></td>
-
-                <td></td>
+                <td className="text-muted-foreground">
+                  {formatDistanceToNow(video.createdAt, { addSuffix: true })}
+                </td>
 
                 <td>{video.status}</td>
               </tr>

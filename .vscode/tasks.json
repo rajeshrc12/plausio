@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "web",
+      "type": "shell",
+      "command": "pnpm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/web"
+      },
+      "presentation": {
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "user-service",
+      "type": "shell",
+      "command": "pnpm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/user-service"
+      },
+      "presentation": {
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "video-service",
+      "type": "shell",
+      "command": "pnpm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/video-service"
+      },
+      "presentation": {
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "database",
+      "type": "shell",
+      "command": "ls",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/database"
+      },
+      "presentation": {
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "Start All",
+      "dependsOn": ["web", "user-service", "video-service"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -26,17 +26,17 @@ model User {
 
 model Video {
   id           Int         @id @default(autoincrement())
-  thumbnailUrl String?
+  thumbnailKey String?
   fileName     String
   title        String
   description  String
   fileSize     String
-  s3Key        String?
+  videoKey     String?
   status       VideoStatus @default(INITIATED)
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
-
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  duration  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

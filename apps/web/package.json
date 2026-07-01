@@ -14,9 +14,10 @@
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
     "@vidstack/react": "^1.15.6",
-    "@workspace/ui": "workspace:*",
     "@workspace/db": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "axios": "^1.18.1",
+    "date-fns": "^4.4.0",
     "lucide-react": "^1.22.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
