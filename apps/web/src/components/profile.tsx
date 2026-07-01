@@ -1,3 +1,6 @@
+import userApi from "@/api/user"
+import { env } from "@/config/env"
+import { useUser } from "@/hooks/useUser"
 import {
   Avatar,
   AvatarFallback,
@@ -14,31 +17,35 @@ import { LogOut, Settings } from "lucide-react"
 import { useNavigate } from "react-router"
 
 const Profile = () => {
-  const { data, isLoading } = {
-    data: {
-      name: "Rajesh Charhajari",
-      image: "",
-      email: "rajesh@gmail.com",
-    },
-    isLoading: false,
-  }
-
+  const { data, isLoading } = useUser()
   const navigate = useNavigate()
 
   const initials =
     data?.name
       ?.split(" ")
-      .map((n) => n[0])
+      .map((n: string) => n[0])
       .join("")
       .toUpperCase() ?? "U"
 
-  const logout = () => {
-    navigate("/", { replace: true })
+  const logout = async () => {
+    await userApi.post(
+      "/auth/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+    window.location.href = `/`
+  }
+  const login = () => {
+    window.location.href = `${env.USER_API_URL}/auth/google`
   }
 
   if (isLoading) {
     return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
   }
+
+  if (!isLoading && !data) return <Button onClick={login}>Sign in</Button>
 
   return (
     <Popover>
