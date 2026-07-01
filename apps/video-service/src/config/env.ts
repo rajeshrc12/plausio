@@ -20,4 +20,6 @@ export const env = {
   AWS_S3_BUCKET: process.env.AWS_S3_BUCKET!,
   AWS_S3_PART_SIZE_IN_MB:
     Number(process.env.AWS_S3_PART_SIZE_IN_MB) * 1024 * 1024,
+  AWS_S3_BUCKET_VIDEO_PATH: process.env.AWS_S3_BUCKET_VIDEO_PATH!,
+  AWS_S3_BUCKET_THUMBNAIL_PATH: process.env.AWS_S3_BUCKET_THUMBNAIL_PATH!,
 }

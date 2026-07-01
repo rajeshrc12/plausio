@@ -8,6 +8,7 @@ import { Textarea } from "@workspace/ui/components/textarea"
 import videoApi from "@/api/video"
 import { useMutation } from "@tanstack/react-query"
 import { uploadMultipart } from "@/services/upload-multipart"
+import { useNavigate } from "react-router"
 
 type VideoDetailsProps = {
   file: File
@@ -15,6 +16,7 @@ type VideoDetailsProps = {
 }
 
 const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
+  const navigate = useNavigate()
   if (!file) return
   const video = useMemo(() => {
     const videoPreview = URL.createObjectURL(file)
@@ -71,8 +73,8 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
         fileSize: file.size,
         contentType: file.type,
 
-        title: "Demo",
-        description: "Demo video",
+        title,
+        description,
       })
       console.log("file initiated", data)
       // Step 2: Upload all parts
@@ -87,8 +89,13 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
       })
 
       // Step 3: Complete upload
-      const { data: completeData } = await completeMutation.mutateAsync(result)
-
+      const { data: completeData } = await completeMutation.mutateAsync({
+        ...result,
+        videoId: data?.video?.id,
+      })
+      if (completeData) {
+        navigate("/studio/content")
+      }
       console.log("Upload Completed!", completeData)
     } catch (err) {
       console.error(err)

@@ -9,6 +9,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { s3 } from "@/config/s3"
 import { env } from "@/config/env"
 import { prisma, User } from "@workspace/db"
+import { getVideoKey } from "@/utils/video"
 
 export const initUpload = async (
   req: Request,
@@ -18,7 +19,17 @@ export const initUpload = async (
     const { fileName, fileSize, contentType, title, description } = req.body
     const user = req.user as User
 
-    const key = `uploads/${Date.now()}-${fileName}`
+    const video = await prisma.video.create({
+      data: {
+        fileName,
+        title,
+        description,
+        fileSize: fileSize.toString(),
+        userId: user.id,
+        status: "INITIATED",
+      },
+    })
+    const key = getVideoKey({ videoId: video.id, fileName })
 
     const { UploadId } = await s3.send(
       new CreateMultipartUploadCommand({
@@ -55,17 +66,6 @@ export const initUpload = async (
         }
       })
     )
-    const video = await prisma.video.create({
-      data: {
-        fileName,
-        title,
-        description,
-        fileSize: fileSize.toString(),
-        s3Key: key,
-        userId: user.id,
-        status: "UPLOADING",
-      },
-    })
     res.status(200).json({
       video,
       uploadId: UploadId,
@@ -91,10 +91,12 @@ export const completeUpload = async (
       uploadId,
       key,
       parts,
+      videoId,
     }: {
       uploadId: string
       key: string
       parts: CompletedPart[]
+      videoId: string
     } = req.body
 
     const result = await s3.send(
@@ -109,7 +111,7 @@ export const completeUpload = async (
     )
     const video = await prisma.video.update({
       where: {
-        s3Key: key,
+        id: videoId,
       },
       data: {
         status: "UPLOADED",
@@ -121,6 +123,24 @@ export const completeUpload = async (
       location: result.Location,
       key,
     })
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to complete upload",
+    })
+  }
+}
+
+export const getVideos = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const user = req.user as User
+    const videos = await prisma.video.findMany({
+      where: {
+        userId: user.id,
+      },
+    })
+    res.status(200).json(videos)
   } catch (error) {
     console.error(error)
 

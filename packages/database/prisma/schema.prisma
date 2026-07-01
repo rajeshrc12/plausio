@@ -31,7 +31,7 @@ model Video {
   title        String
   description  String
   fileSize     String
-  s3Key        String      @unique
+  s3Key        String?
   status       VideoStatus @default(INITIATED)
 
   user   User @relation(fields: [userId], references: [id])

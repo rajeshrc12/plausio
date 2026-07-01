@@ -133,6 +133,9 @@ importers:
       '@vidstack/react':
         specifier: ^1.15.6
         version: 1.15.6(@types/react@19.2.15)(react@19.2.6)
+      '@workspace/db':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui

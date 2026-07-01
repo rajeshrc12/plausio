@@ -1,3 +1,5 @@
+import { useVideos } from "@/hooks/getVideos"
+import type { Video as VideoModel } from "@workspace/db"
 import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import {
@@ -6,50 +8,13 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  FileText,
-  Globe,
 } from "lucide-react"
 
 const tabs = ["Videos", "Posts", "Playlists"]
 
-const videos = [
-  {
-    id: 1,
-    title: "MERN Stack Project | WhatsApp Clone",
-    description: "Hey everyone, I've created a MERN stack...",
-    thumbnail: "https://placehold.co/160x90",
-    duration: "3:41",
-    visibility: "Public",
-    date: "May 4, 2024",
-    status: "Premiered",
-    views: 103,
-    comments: 1,
-    draft: false,
-  },
-  {
-    id: 2,
-    title: "Test video",
-    description: "Test video",
-    thumbnail: "https://placehold.co/160x90",
-    duration: "0:31",
-    visibility: "Public",
-    date: "Jun 29, 2026",
-    status: "Published",
-    views: 2,
-    comments: 2,
-    draft: false,
-  },
-  {
-    id: 3,
-    title: "TextInMotion VideoSample",
-    description: "Add description",
-    thumbnail: "https://placehold.co/160x90",
-    duration: "0:31",
-    draft: true,
-  },
-]
-
 export default function ChannelContent() {
+  const { data, isLoading } = useVideos()
+  if (isLoading) return "loading"
   return (
     <div className="min-h-screen bg-background">
       <div className="px-8 py-8">
@@ -93,12 +58,12 @@ export default function ChannelContent() {
 
               <th className="font-normal text-muted-foreground">Views</th>
 
-              <th className="font-normal text-muted-foreground">Comments</th>
+              <th className="font-normal text-muted-foreground">Status</th>
             </tr>
           </thead>
 
           <tbody>
-            {videos.map((video) => (
+            {data.map((video: VideoModel) => (
               <tr
                 key={video.id}
                 className="border-b transition hover:bg-muted/40"
@@ -111,12 +76,12 @@ export default function ChannelContent() {
                   <div className="flex gap-4">
                     <div className="relative h-18 w-32 overflow-hidden rounded-lg bg-muted">
                       <img
-                        src={video.thumbnail}
+                        src={video.thumbnailUrl || undefined}
                         className="h-full w-full object-cover"
                       />
 
                       <span className="absolute right-1 bottom-1 rounded bg-primary/80 px-1 text-xs text-white">
-                        {video.duration}
+                        {video.fileSize}
                       </span>
                     </div>
 
@@ -132,44 +97,13 @@ export default function ChannelContent() {
 
                 <td className="text-muted-foreground">—</td>
 
-                <td>
-                  {video.draft ? (
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-5 w-5" />
-                      Draft
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <Globe className="h-5 w-5" />
-                      Public
-                    </div>
-                  )}
-                </td>
+                <td></td>
 
-                <td>
-                  {video.draft ? (
-                    "-"
-                  ) : (
-                    <>
-                      <div>{video.date}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {video.status}
-                      </div>
-                    </>
-                  )}
-                </td>
+                <td></td>
 
-                <td>{video.views ?? "-"}</td>
+                <td></td>
 
-                <td>
-                  {video.draft ? (
-                    <Button variant="secondary" className="rounded-full">
-                      Edit draft
-                    </Button>
-                  ) : (
-                    video.comments
-                  )}
-                </td>
+                <td>{video.status}</td>
               </tr>
             ))}
           </tbody>
