@@ -1,44 +1,30 @@
-import { useNavigate } from "react-router"
+import { env } from "@/config/env"
 
-type Video = {
-  id: number
-  title: string
-  thumbnail: string
-  channel: string
-  channelImage: string
-  views: string
-  uploaded: string
-}
+import type { Video as VideoModel } from "@workspace/db"
+import { DateTime } from "luxon"
 
-type VideoCardProps = {
-  video: Video
-}
-
-const VideoCard = ({ video }: VideoCardProps) => {
-  const navigate = useNavigate()
+const VideoCard = ({ ...video }: VideoModel) => {
   return (
-    <div
-      className="cursor-pointer rounded-xl p-2 hover:bg-gray-50"
-      onClick={() => navigate(`/${video.id}`)}
-    >
+    <div className="cursor-pointer rounded-xl p-2 hover:bg-gray-50">
       <img
-        src={video.thumbnail}
+        src={`${env.THUMBNAIL_PUBLIC_URL}/${video.thumbnailKey}` || undefined}
         alt={video.title}
-        className="w-full rounded-xl"
+        className="aspect-video w-full rounded-xl"
       />
 
       <div className="mt-3 flex gap-3">
         <img
-          src={video.channelImage}
-          alt={video.channel}
+          src={`https://i.pravatar.cc/100?img=${video.id}`}
+          alt={""}
           className="h-10 w-10 rounded-full"
         />
 
         <div>
           <h3 className="line-clamp-2 font-semibold">{video.title}</h3>
-          <p className="text-sm text-gray-600">{video.channel}</p>
+          <p className="text-sm text-gray-600">Code Academy</p>
           <p className="text-sm text-gray-600">
-            {video.views} views • {video.uploaded}
+            {100} views •{" "}
+            {DateTime.fromISO(String(video.createdAt)).toRelative()}
           </p>
         </div>
       </div>

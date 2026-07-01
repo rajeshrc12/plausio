@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDropzone } from "react-dropzone"
-import { ImagePlus } from "lucide-react"
+import { ImagePlus, Loader2 } from "lucide-react"
 
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
@@ -68,8 +68,9 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
     if (!file) return
     const videoDuration = await getVideoDuration(file)
     const { name: videoName, type: videoType, size: videoSize } = file
-    const { name: thumbnailName, type: thumbnailType } = thumbnail as File
-
+    const { name: originalThumbnailName, type: thumbnailType } =
+      thumbnail as File
+    const thumbnailName = originalThumbnailName.trim().replace(/\s+/g, "_")
     try {
       // Step 1: Initialize upload
       const { data } = await initMutation.mutateAsync({
@@ -228,11 +229,19 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
 
       {/* Footer */}
       <div className="flex items-center justify-end gap-2 border-t px-8 py-4">
-        <Button onClick={cleanup} variant={"outline"}>
+        <Button disabled={progress !== 0} onClick={cleanup} variant="outline">
           Cancel
         </Button>
+
         <Button disabled={progress !== 0} onClick={handleUpload}>
-          {progress === 0 ? "Upload" : progress}
+          {progress === 0 ? (
+            "Upload"
+          ) : (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {progress}%
+            </>
+          )}
         </Button>
       </div>
     </div>

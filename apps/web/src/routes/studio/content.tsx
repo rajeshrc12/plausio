@@ -1,8 +1,10 @@
+import { env } from "@/config/env"
 import { useVideos } from "@/hooks/getVideos"
 import type { Video as VideoModel } from "@workspace/db"
 import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"
-import { formatDistanceToNow } from "date-fns"
+import { DateTime, Duration } from "luxon"
+
 import {
   ChevronDown,
   ChevronLeft,
@@ -15,6 +17,7 @@ const tabs = ["Videos", "Posts", "Playlists"]
 
 export default function ChannelContent() {
   const { data, isLoading } = useVideos()
+  console.log(data)
   if (isLoading) return "loading"
   return (
     <div className="min-h-screen bg-background">
@@ -71,12 +74,14 @@ export default function ChannelContent() {
                   <div className="flex gap-4">
                     <div className="relative h-18 w-32 overflow-hidden rounded-lg bg-muted">
                       <img
-                        src={video.thumbnailUrl || undefined}
+                        src={`${env.THUMBNAIL_PUBLIC_URL}/${video.thumbnailKey}`}
                         className="h-full w-full object-cover"
                       />
 
                       <span className="absolute right-1 bottom-1 rounded bg-primary/80 px-1 text-xs text-white">
-                        {video.fileSize}
+                        {Duration.fromObject({
+                          seconds: video.duration,
+                        }).toFormat("hh:mm:ss")}
                       </span>
                     </div>
 
@@ -91,7 +96,7 @@ export default function ChannelContent() {
                 </td>
 
                 <td className="text-muted-foreground">
-                  {formatDistanceToNow(video.createdAt, { addSuffix: true })}
+                  {DateTime.fromISO(String(video.createdAt)).toRelative()}
                 </td>
 
                 <td>{video.status}</td>

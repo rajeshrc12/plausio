@@ -119,6 +119,8 @@ export const completeUpload = async (
       },
       data: {
         status: "UPLOADED",
+        videoKey,
+        thumbnailKey,
       },
     })
     res.status(200).json({
