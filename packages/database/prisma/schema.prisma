@@ -7,9 +7,36 @@ datasource db {
   provider = "postgresql"
 }
 
+enum VideoStatus {
+  INITIATED
+  UPLOADING
+  UPLOADED
+  PROCESSING
+  READY
+  FAILED
+}
+
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String
   image String?
+  video Video[]
+}
+
+model Video {
+  id           Int         @id @default(autoincrement())
+  thumbnailUrl String?
+  fileName     String
+  title        String
+  description  String
+  fileSize     String
+  s3Key        String      @unique
+  status       VideoStatus @default(INITIATED)
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

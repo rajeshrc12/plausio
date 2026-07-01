@@ -5,6 +5,9 @@ import { ImagePlus } from "lucide-react"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Textarea } from "@workspace/ui/components/textarea"
+import videoApi from "@/api/video"
+import { useMutation } from "@tanstack/react-query"
+import { uploadMultipart } from "@/services/upload-multipart"
 
 type VideoDetailsProps = {
   file: File
@@ -26,6 +29,8 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
   }, [file])
 
   const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [title, setTitle] = useState(file.name.replace(/\.[^/.]+$/, ""))
+  const [description, setDescription] = useState("")
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -45,6 +50,54 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
     return thumbnail ? URL.createObjectURL(thumbnail) : null
   }, [thumbnail])
 
+  const [progress, setProgress] = useState(0)
+
+  const initMutation = useMutation({
+    mutationFn: (payload: any) => videoApi.post("/video/init", payload),
+  })
+
+  const completeMutation = useMutation({
+    mutationFn: (payload: any) => videoApi.post("/video/complete", payload),
+  })
+
+  const handleUpload = async () => {
+    setProgress(1)
+    if (!file) return
+
+    try {
+      // Step 1: Initialize upload
+      const { data } = await initMutation.mutateAsync({
+        fileName: file.name,
+        fileSize: file.size,
+        contentType: file.type,
+
+        title: "Demo",
+        description: "Demo video",
+      })
+      console.log("file initiated", data)
+      // Step 2: Upload all parts
+      const result = await uploadMultipart({
+        file,
+        uploadId: data.uploadId,
+        key: data.key,
+        partSize: data.partSize,
+        urls: data.urls,
+        contentType: file.type,
+        onProgress: setProgress,
+      })
+
+      // Step 3: Complete upload
+      const { data: completeData } = await completeMutation.mutateAsync(result)
+
+      console.log("Upload Completed!", completeData)
+    } catch (err) {
+      console.error(err)
+      console.log("Upload failed")
+    } finally {
+      setProgress(0)
+    }
+  }
+
   useEffect(() => {
     return cleanup
   }, [])
@@ -60,7 +113,8 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
             </label>
 
             <Input
-              defaultValue={file.name.replace(/\.[^/.]+$/, "")}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="mt-2 border-0 px-0 text-xl shadow-none focus-visible:ring-0"
             />
           </div>
@@ -69,6 +123,8 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
             <label className="text-sm text-muted-foreground">Description</label>
 
             <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               rows={8}
               placeholder="Tell viewers about your video"
               className="mt-2 resize-none border-0 px-0 shadow-none focus-visible:ring-0"
@@ -142,7 +198,9 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
         <Button onClick={cleanup} variant={"outline"}>
           Cancel
         </Button>
-        <Button>Upload</Button>
+        <Button disabled={progress !== 0} onClick={handleUpload}>
+          {progress === 0 ? "Upload" : progress}
+        </Button>
       </div>
     </div>
   )
