@@ -12,7 +12,7 @@ videoApi.interceptors.response.use(
   async (error) => {
     console.log(error)
     if (error.response?.status === 401) {
-      window.location.href = `/`
+      return null
     }
     return Promise.reject(error)
   }

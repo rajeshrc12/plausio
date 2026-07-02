@@ -1,24 +1,20 @@
-import "@vidstack/react/player/styles/default/theme.css"
-import "@vidstack/react/player/styles/default/layouts/video.css"
-import { MediaPlayer, MediaProvider } from "@vidstack/react"
-import {
-  defaultLayoutIcons,
-  DefaultVideoLayout,
-} from "@vidstack/react/player/layouts/default"
+import "@videojs/react/video/skin.css"
+import { createPlayer, videoFeatures } from "@videojs/react"
+import { VideoSkin, Video } from "@videojs/react/video"
 
-const VideoPlayer = () => {
-  return (
-    <MediaPlayer
-      title="Sprite Fight"
-      src="https://files.vidstack.io/sprite-fight/720p.mp4"
-    >
-      <MediaProvider />
-      <DefaultVideoLayout
-        thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-        icons={defaultLayoutIcons}
-      />
-    </MediaPlayer>
-  )
+const Player = createPlayer({ features: videoFeatures })
+
+interface MyPlayerProps {
+  src: string
 }
 
+const VideoPlayer = ({ src }: MyPlayerProps) => {
+  return (
+    <Player.Provider>
+      <VideoSkin>
+        <Video src={src} playsInline />
+      </VideoSkin>
+    </Player.Provider>
+  )
+}
 export default VideoPlayer

@@ -6,6 +6,7 @@ import {
   completeMultipartUpload,
   createMultipartUploadId,
   createMultipartUploadUrls,
+  createPresignedUrl,
 } from "@/services/s3"
 
 export const initUpload = async (
@@ -145,6 +146,28 @@ export const getVideos = async (req: Request, res: Response): Promise<void> => {
       },
     })
     res.status(200).json(videos)
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to complete upload",
+    })
+  }
+}
+
+export const getVideo = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const user = req.user as User
+    const { id } = req.params
+    const video = await prisma.video.findFirst({
+      where: {
+        userId: user.id,
+        id: Number(id),
+      },
+    })
+
+    const url = await createPresignedUrl(video.videoKey)
+    res.status(200).json({ ...video, url })
   } catch (error) {
     console.error(error)
 

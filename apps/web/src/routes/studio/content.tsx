@@ -1,5 +1,5 @@
 import { env } from "@/config/env"
-import { useVideos } from "@/hooks/getVideos"
+import { useVideos } from "@/hooks/useVideos"
 import type { Video as VideoModel } from "@workspace/db"
 import { Button } from "@workspace/ui/components/button"
 import { Checkbox } from "@workspace/ui/components/checkbox"

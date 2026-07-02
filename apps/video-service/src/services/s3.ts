@@ -6,6 +6,7 @@ import {
   CreateMultipartUploadCommand,
   CompletedPart,
   UploadPartCommand,
+  GetObjectCommand,
 } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 
@@ -93,4 +94,15 @@ export const completeMultipartUpload = async ({
   )
 
   return result
+}
+
+export const createPresignedUrl = async (key: string) => {
+  const command = new GetObjectCommand({
+    Bucket: env.AWS_S3_BUCKET,
+    Key: key,
+  })
+
+  return await getSignedUrl(s3, command, {
+    expiresIn: 60 * 60, // 1 hour
+  })
 }

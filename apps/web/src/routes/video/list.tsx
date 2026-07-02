@@ -1,4 +1,4 @@
-import { useVideos } from "@/hooks/getVideos"
+import { useVideos } from "@/hooks/useVideos"
 import VideoCard from "@/routes/video/card"
 import type { Video as VideoModel } from "@workspace/db"
 
