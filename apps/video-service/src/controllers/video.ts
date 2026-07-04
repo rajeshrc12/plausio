@@ -8,6 +8,7 @@ import {
   createMultipartUploadUrls,
   createPresignedUrl,
 } from "@/services/s3"
+import { createVideoJob } from "@/services/rabbitmq"
 
 export const initUpload = async (
   req: Request,
@@ -124,6 +125,7 @@ export const completeUpload = async (
         thumbnailKey,
       },
     })
+    createVideoJob({ id: videoId, type: "mp4" })
     res.status(200).json({
       video,
       message: "Upload completed successfully",
