@@ -29,6 +29,7 @@ model Video {
   thumbnailKey String?
   fileName     String
   title        String
+  type         String
   description  String
   fileSize     String
   videoKey     String?

@@ -16,3 +16,9 @@ export const getVideoDuration = (file: File): Promise<number> => {
     }
   })
 }
+
+export const getVideoContainer = (type: string) => {
+  if (type.includes("mp4")) return "mp4"
+  if (type.includes("matroska")) return "mkv"
+  return "unknown"
+}

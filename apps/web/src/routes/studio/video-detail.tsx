@@ -9,7 +9,7 @@ import videoApi from "@/api/video"
 import { useMutation } from "@tanstack/react-query"
 import { thumbnailUpload, videoUploadMultipart } from "@/services/upload-file"
 import { useNavigate } from "react-router"
-import { getVideoDuration } from "@/utils/video"
+import { getVideoContainer, getVideoDuration } from "@/utils/video"
 
 type VideoDetailsProps = {
   file: File
@@ -76,7 +76,7 @@ const VideoDetails = ({ file, cleanup }: VideoDetailsProps) => {
       const { data } = await initMutation.mutateAsync({
         fileName: videoName,
         fileSize: videoSize,
-        contentType: videoType,
+        contentType: getVideoContainer(videoType),
         videoDuration,
         title,
         description,

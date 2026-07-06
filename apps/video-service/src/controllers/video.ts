@@ -36,6 +36,7 @@ export const initUpload = async (
         userId: user.id,
         status: "INITIATED",
         duration: Number(videoDuration),
+        type: contentType,
       },
     })
     const videoKey = getVideoKey({ videoId: video.id, fileName })
