@@ -21,6 +21,64 @@ importers:
         specifier: ~6
         version: 6.0.3
 
+  apps/transcode-service:
+    dependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.1077.0
+        version: 3.1077.0
+      '@aws-sdk/s3-request-presigner':
+        specifier: ^3.1077.0
+        version: 3.1077.0
+      '@workspace/db':
+        specifier: workspace:*
+        version: link:../../packages/database
+      amqplib:
+        specifier: ^2.0.1
+        version: 2.0.1
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
+      cors:
+        specifier: ^2.8.6
+        version: 2.8.6
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+      google-auth-library:
+        specifier: ^10.7.0
+        version: 10.9.0
+      jsonwebtoken:
+        specifier: ^9.0.3
+        version: 9.0.3
+    devDependencies:
+      '@types/cookie-parser':
+        specifier: ^1.4.10
+        version: 1.4.10(@types/express@5.0.6)
+      '@types/cors':
+        specifier: ^2.8.19
+        version: 2.8.19
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
+      '@types/jsonwebtoken':
+        specifier: ^9.0.10
+        version: 9.0.10
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.20.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.15)(tsx@4.22.4)(typescript@6.0.3)
+      tsx:
+        specifier: ^4.22.4
+        version: 4.22.4
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
   apps/user-service:
     dependencies:
       '@workspace/db':
@@ -7153,7 +7211,7 @@ snapshots:
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 22.20.0
+      '@types/node': 24.12.4
 
   '@types/esrecurse@4.3.1': {}
 
