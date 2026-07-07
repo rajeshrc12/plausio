@@ -39,10 +39,9 @@ export const initUpload = async (
         type: contentType,
       },
     })
-    const videoKey = getVideoKey({ videoId: video.id, fileName })
+    const videoKey = getVideoKey({ id: video.id })
     const thumbnailKey = getThumbnailKey({
-      videoId: video.id,
-      fileName: thumbnailName,
+      id: video.id,
     })
 
     const videoUploadId = await createMultipartUploadId({

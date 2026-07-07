@@ -1,14 +1,13 @@
 import { env } from "@/config/env"
 
-interface VideoKey {
-  videoId: string
-  fileName: string
+interface File {
+  id: string
 }
 
-export const getVideoKey = ({ videoId, fileName }: VideoKey) => {
-  return `${env.AWS_S3_BUCKET_VIDEO_PATH}/${videoId}`
+export const getVideoKey = ({ id }: File) => {
+  return `${env.AWS_S3_BUCKET_VIDEO_PATH}/${id}/original`
 }
 
-export const getThumbnailKey = ({ videoId, fileName }: VideoKey) => {
-  return `${env.AWS_S3_BUCKET_THUMBNAIL_PATH}/${videoId}`
+export const getThumbnailKey = ({ id }: File) => {
+  return `${env.AWS_S3_BUCKET_THUMBNAIL_PATH}/${id}/original`
 }
