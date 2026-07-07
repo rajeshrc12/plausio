@@ -6,31 +6,32 @@ import { createReadStream, createWriteStream, promises as fs } from "node:fs"
 import { pipeline } from "node:stream/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { promisify } from "node:util"
-import { execFile } from "node:child_process"
 import { s3 } from "@/config/s3"
+import { mkdir, readdir, rm } from "node:fs/promises"
+import { spawn } from "node:child_process"
 
 interface VideoJob {
   id: string
   type: string
 }
 
-const execFileAsync = promisify(execFile)
-
-const TARGET_RESOLUTIONS = [1080, 720, 480]
-
 export const createVideoResolution = async ({ id, type }: VideoJob) => {
   const bucket = env.AWS_S3_BUCKET
-  const key = `${env.AWS_S3_BUCKET_VIDEO_PATH}/${id}/original`
+  const baseKey = `${env.AWS_S3_BUCKET_VIDEO_PATH}/${id}`
 
-  const inputFile = join(tmpdir(), `${id}.${type}`)
+  // /tmp/<id>
+  const workDir = join(tmpdir(), String(id))
+  const hlsDir = join(workDir, "hls")
+  const inputFile = join(workDir, `original.${type}`)
+
+  await mkdir(hlsDir, { recursive: true })
 
   try {
     // Download original video
     const { Body } = await s3.send(
       new GetObjectCommand({
         Bucket: bucket,
-        Key: key,
+        Key: `${baseKey}/original`,
       })
     )
 
@@ -40,71 +41,76 @@ export const createVideoResolution = async ({ id, type }: VideoJob) => {
 
     await pipeline(Body as NodeJS.ReadableStream, createWriteStream(inputFile))
 
-    // Get video resolution
-    const { stdout } = await execFileAsync("ffprobe", [
-      "-v",
-      "error",
-      "-select_streams",
-      "v:0",
-      "-show_entries",
-      "stream=width,height",
-      "-of",
-      "json",
-      inputFile,
-    ])
-
-    const metadata = JSON.parse(stdout)
-    const stream = metadata.streams[0]
-
-    const sourceHeight = stream.height
-
-    console.log(`Original Resolution: ${stream.width}x${sourceHeight}`)
-
-    // Only create lower resolutions
-    const targets = TARGET_RESOLUTIONS.filter(
-      (resolution) => resolution < sourceHeight
-    )
-
-    for (const resolution of targets) {
-      const outputFile = join(tmpdir(), `${id}-${resolution}.${type}`)
-
-      console.log(`Creating ${resolution}p...`)
-
-      await execFileAsync("ffmpeg", [
+    // Generate HLS
+    await new Promise<void>((resolve, reject) => {
+      const ffmpeg = spawn("ffmpeg", [
         "-y",
+
         "-i",
         inputFile,
-        "-vf",
-        `scale=-2:${resolution}`,
+
         "-c:v",
         "libx264",
-        "-preset",
-        "medium",
-        "-crf",
-        "23",
+
         "-c:a",
         "aac",
-        "-b:a",
-        "128k",
-        "-movflags",
-        "+faststart",
-        outputFile,
+
+        "-preset",
+        "veryfast",
+
+        "-crf",
+        "23",
+
+        "-hls_time",
+        "6",
+
+        "-hls_playlist_type",
+        "vod",
+
+        "-hls_segment_filename",
+        join(hlsDir, "segment_%03d.ts"),
+
+        join(hlsDir, "index.m3u8"),
       ])
 
-      await s3.send(
-        new PutObjectCommand({
-          Bucket: bucket,
-          Key: `${env.AWS_S3_BUCKET_VIDEO_PATH}/${id}/${resolution}`,
-          Body: createReadStream(outputFile),
-          ContentType: `video/${type}`,
-        })
-      )
+      ffmpeg.stderr.on("data", (data) => {
+        console.log(data.toString())
+      })
 
-      console.log(`Uploaded ${resolution}p`)
+      ffmpeg.on("error", reject)
 
-      await fs.unlink(outputFile)
-    }
+      ffmpeg.on("close", (code) => {
+        if (code === 0) {
+          resolve()
+        } else {
+          reject(new Error(`ffmpeg exited with code ${code}`))
+        }
+      })
+    })
+
+    // Upload HLS files
+    const files = await readdir(hlsDir)
+
+    await Promise.all(
+      files.map(async (file) => {
+        const contentType = file.endsWith(".m3u8")
+          ? "application/vnd.apple.mpegurl"
+          : "video/mp2t"
+
+        await s3.send(
+          new PutObjectCommand({
+            Bucket: bucket,
+            Key: `${baseKey}/hls/${file}`,
+            Body: createReadStream(join(hlsDir, file)),
+            ContentType: contentType,
+          })
+        )
+      })
+    )
   } finally {
-    await fs.unlink(inputFile).catch(() => {})
+    await rm(workDir, {
+      recursive: true,
+      force: true,
+    })
   }
 }
