@@ -1,18 +1,22 @@
 import "@videojs/react/video/skin.css"
 import { createPlayer, videoFeatures } from "@videojs/react"
 import { VideoSkin, Video } from "@videojs/react/video"
+import { env } from "@/config/env"
 
 const Player = createPlayer({ features: videoFeatures })
 
 interface MyPlayerProps {
-  src: string
+  id: string
 }
 
-const VideoPlayer = ({ src }: MyPlayerProps) => {
+const VideoPlayer = ({ id }: MyPlayerProps) => {
   return (
     <Player.Provider>
       <VideoSkin>
-        <Video src={src} playsInline />
+        <Video
+          src={`${env.VIDEO_CDN_URL}/videos/${id}/hls/index.m3u8`}
+          autoPlay
+        />
       </VideoSkin>
     </Player.Provider>
   )

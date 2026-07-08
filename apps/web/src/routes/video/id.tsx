@@ -7,7 +7,6 @@ import { Button } from "@workspace/ui/components/button"
 import { Download, MoreHorizontal, Share2, ThumbsUp } from "lucide-react"
 import VideoCardHorizontal from "@/routes/video/card-horizontal"
 import { useParams } from "react-router"
-import { useVideo } from "@/hooks/useVideo"
 import VideoPlayer from "@/components/video-player"
 export type Video = {
   id: number
@@ -31,10 +30,7 @@ const videos: Video[] = Array.from({ length: 10 }, (_, i) => ({
 
 const VideoId = () => {
   const { id } = useParams()
-
-  const { data } = useVideo(id ?? "")
-  console.log(data)
-
+  if (!id) return "Loading..."
   return (
     <div className="mx-auto overflow-y-scroll p-6">
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
@@ -44,7 +40,7 @@ const VideoId = () => {
           {/* Video */}
 
           <div className="overflow-hidden rounded-xl bg-primary">
-            {data?.url && <VideoPlayer src={data.url} />}
+            {id && <VideoPlayer id={id} />}
           </div>
 
           {/* Title */}
