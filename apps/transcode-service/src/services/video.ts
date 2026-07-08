@@ -49,9 +49,19 @@ export const createVideoResolution = async ({ id, type }: VideoJob) => {
         "-i",
         inputFile,
 
+        // First video stream
+        "-map",
+        "0:v:0",
+
+        // First audio stream (optional)
+        "-map",
+        "0:a:0?",
+
+        // Video encoding
         "-c:v",
         "libx264",
 
+        // Audio encoding
         "-c:a",
         "aac",
 
@@ -61,6 +71,7 @@ export const createVideoResolution = async ({ id, type }: VideoJob) => {
         "-crf",
         "23",
 
+        // HLS options
         "-hls_time",
         "6",
 
