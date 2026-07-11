@@ -35,7 +35,9 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa nisi, culpa vitae 
           <div className="flex flex-col">
             <div className="flex items-center gap-2 text-sm font-medium">
               <div> @{userName}</div>
-              <div className="text-xs font-thin text-gray-900">{createdAt}</div>
+              <div className="text-xs font-thin text-muted-foreground">
+                {createdAt}
+              </div>
             </div>
             <div className="text-sm">{content}</div>
           </div>

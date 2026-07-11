@@ -9,8 +9,9 @@ import {
 import { Button } from "@workspace/ui/components/button"
 import { Forward, ThumbsDown, ThumbsUp } from "lucide-react"
 import Description from "@/routes/app/components/description"
-import AddComment from "../components/add-comment"
-import Comments from "../components/comments"
+import AddComment from "@/routes/app/components/add-comment"
+import Comments from "@/routes/app/components/comments"
+import SideVideoRecommendation from "@/routes/app/components/side-video-recommendation"
 
 const Video = () => {
   const { id } = useParams()
@@ -79,9 +80,7 @@ const Video = () => {
         <Comments />
       </div>
       <div className="col-span-4 flex flex-col gap-2 p-2">
-        {new Array(30).fill(0).map((_, i) => (
-          <div key={i} className="h-40 border"></div>
-        ))}
+        <SideVideoRecommendation />
       </div>
     </div>
   )
