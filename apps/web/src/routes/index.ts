@@ -5,6 +5,8 @@ import Channel from "@/routes/app/channel"
 import Video from "@/routes/app/video"
 import Studio from "@/routes/studio"
 import Dashboard from "@/routes/studio/dashboard"
+import Content from "@/routes/studio/content"
+import Customization from "@/routes/studio/customization"
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "",
         Component: Dashboard,
+      },
+      {
+        path: "content",
+        Component: Content,
+      },
+      {
+        path: "customization",
+        Component: Customization,
       },
     ],
   },

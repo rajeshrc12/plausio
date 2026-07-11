@@ -19,19 +19,13 @@ const AppProfile = () => {
   return (
     <Popover>
       <PopoverTrigger>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full p-0 hover:bg-muted"
-        >
-          <Avatar className="h-9 w-9">
-            <AvatarImage src={""} />
-            <AvatarFallback>{"RC"}</AvatarFallback>
-          </Avatar>
-        </Button>
+        <Avatar className="h-9 w-9">
+          <AvatarImage src={""} />
+          <AvatarFallback>{"RC"}</AvatarFallback>
+        </Avatar>
       </PopoverTrigger>
 
-      <PopoverContent align="end" className="w-80 p-0">
+      <PopoverContent align="end" className="w-60 p-0">
         {/* Header */}
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">

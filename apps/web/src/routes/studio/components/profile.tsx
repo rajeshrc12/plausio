@@ -11,27 +11,20 @@ import {
 } from "@workspace/ui/components/popover"
 import LogoImg from "@/assets/logo/logo.png"
 
-import { LogOut } from "lucide-react"
+import { LogOut, TvIcon } from "lucide-react"
 import { Link } from "react-router"
-import ChannelIcon from "@/assets/icons/channel.svg?react"
 
 const StudioProfile = () => {
   return (
     <Popover>
       <PopoverTrigger>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full p-0 hover:bg-muted"
-        >
-          <Avatar className="h-9 w-9">
-            <AvatarImage src={""} />
-            <AvatarFallback>{"RC"}</AvatarFallback>
-          </Avatar>
-        </Button>
+        <Avatar className="h-9 w-9">
+          <AvatarImage src={""} />
+          <AvatarFallback>{"RC"}</AvatarFallback>
+        </Avatar>
       </PopoverTrigger>
 
-      <PopoverContent align="end" className="w-80 p-0">
+      <PopoverContent align="end" className="w-60 p-0">
         {/* Header */}
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">
@@ -49,7 +42,7 @@ const StudioProfile = () => {
         <div className="px-2">
           <Link to={"/channel"}>
             <Button variant="ghost" className="h-11 w-full justify-start">
-              <ChannelIcon className="mr-3 h-5 w-5" />
+              <TvIcon className="mr-3 h-5 w-5" />
               Your channel
             </Button>
           </Link>
@@ -57,7 +50,7 @@ const StudioProfile = () => {
         <div className="px-2">
           <Link to={"/"}>
             <Button variant="ghost" className="h-11 w-full justify-start">
-              <Avatar className="mr-3 h-5 w-5">
+              <Avatar className="mr-3 h-4 w-4">
                 <AvatarImage src={LogoImg} />
                 <AvatarFallback>Plausio</AvatarFallback>
               </Avatar>
