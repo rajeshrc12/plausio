@@ -1,6 +1,6 @@
 import { Input } from "@workspace/ui/components/input"
-import Profile from "@/routes/app/components/profile"
 import Logo from "@/components/logo"
+import AppProfile from "@/routes/app/components/profile"
 
 const AppNavbar = () => {
   return (
@@ -15,7 +15,7 @@ const AppNavbar = () => {
           className="w-80 rounded-full"
         />
       </div>
-      <Profile />
+      <AppProfile />
     </div>
   )
 }
