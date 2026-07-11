@@ -143,7 +143,9 @@
 svg {
   cursor: pointer;
 }
-
+button {
+  cursor: pointer;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;

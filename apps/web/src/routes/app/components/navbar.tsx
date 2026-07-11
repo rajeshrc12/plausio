@@ -4,7 +4,7 @@ import Logo from "@/components/logo"
 
 const AppNavbar = () => {
   return (
-    <div className="flex justify-between border-b py-4 pr-4 pl-6">
+    <div className="flex justify-between border-b py-3 pr-4 pl-6">
       <div className="flex items-center justify-center gap-5">
         <Logo />
       </div>
