@@ -31,6 +31,7 @@
     "globals": "^17",
     "typescript": "~6",
     "typescript-eslint": "^8",
-    "vite": "^8"
+    "vite": "^8",
+    "vite-plugin-svgr": "^5.2.0"
   }
 }
