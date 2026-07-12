@@ -1,3 +1,5 @@
+import { Duration } from "luxon"
+
 export const getVideoDuration = (file: File): Promise<number> => {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video")
@@ -27,4 +29,22 @@ export const getImageContainer = (type: string) => {
   if (type.includes("jpeg")) return "jpeg"
   if (type.includes("png")) return "png"
   return "unknown"
+}
+
+export const formatVideoDuration = (duration: number) => {
+  const d = Duration.fromObject({ seconds: duration }).shiftTo(
+    "hours",
+    "minutes",
+    "seconds"
+  )
+
+  const hours = Math.floor(d.hours)
+  const minutes = Math.floor(d.minutes)
+  const seconds = Math.floor(d.seconds)
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+  }
+
+  return `${minutes}:${String(seconds).padStart(2, "0")}`
 }

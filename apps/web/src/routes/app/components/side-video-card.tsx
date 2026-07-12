@@ -1,5 +1,6 @@
 import type { VideoWithChannel } from "@/types/video"
 import { getVideoCreationDate } from "@/utils/date"
+import { formatVideoDuration } from "@/utils/video"
 import { Play } from "lucide-react"
 import { Link } from "react-router"
 const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
@@ -14,7 +15,7 @@ const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
           />
 
           <span className="absolute right-1 bottom-1 rounded bg-primary/90 px-1.5 py-0.5 text-xs font-medium text-background">
-            {video.duration}
+            {formatVideoDuration(video.duration)}
           </span>
         </div>
 

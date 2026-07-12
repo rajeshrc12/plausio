@@ -1,3 +1,5 @@
+import { formatVideoDuration } from "@/utils/video"
+
 const TableVideoCard = ({
   src,
   duration,
@@ -15,7 +17,7 @@ const TableVideoCard = ({
         <img src={src} alt={title} className="h-20 object-cover" />
 
         <span className="absolute right-2 bottom-2 rounded bg-primary/90 px-1.5 py-0.5 text-xs font-medium text-background">
-          {duration}
+          {formatVideoDuration(duration)}
         </span>
       </div>
       <div className="flex flex-col">
