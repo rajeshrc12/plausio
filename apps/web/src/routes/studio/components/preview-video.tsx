@@ -65,7 +65,7 @@ const PreviewVideo = ({
       <div className="flex flex-1 flex-col gap-2">
         <div>Title</div>
         <Input
-          value={fileData.title}
+          value={fileData.title || file.name}
           onChange={(e) =>
             handleFileData({ ...fileData, title: e.target.value })
           }

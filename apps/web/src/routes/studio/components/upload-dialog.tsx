@@ -13,8 +13,16 @@ import {
 } from "@workspace/ui/components/dialog"
 import { Upload } from "lucide-react"
 import type { FileData } from "@/types/video"
+import videoApi from "@/api/video"
+import {
+  getImageContainer,
+  getVideoContainer,
+  getVideoDuration,
+} from "@/utils/video"
+import { useNavigate } from "react-router"
 
 const UploadDialog = () => {
+  const navigate = useNavigate()
   const [file, setFile] = useState<File>()
   const [thumbnail, setThumbnail] = useState<File>()
   const [fileData, setFileData] = useState<FileData>({
@@ -32,8 +40,19 @@ const UploadDialog = () => {
   const handleFileData = (file: FileData) => {
     setFileData(file)
   }
-  const handleSave = () => {
-    console.log({ fileData, file, thumbnail })
+  const handleSave = async () => {
+    if (!file || !thumbnail || !fileData) return
+    const { title, description, visibility } = fileData
+    const { name, size, type: ft } = file
+    const { name: tn, size: ts, type: tt } = thumbnail
+    const duration = await getVideoDuration(file)
+    const type = getVideoContainer(ft)
+
+    const video = await videoApi.post("/video/init", {
+      file: { name, size, type, duration, title, description, visibility },
+      thumbnail: { name: tn, size: ts, type: getImageContainer(tt) },
+    })
+    if (video.status === 200) navigate("/studio/content")
   }
   const cleanup = () => {
     setFile(undefined)

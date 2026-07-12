@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 
 import authRoutes from "@/routes/auth"
 import channelRoutes from "@/routes/channel"
+import videoRoutes from "@/routes/video"
 import { authenticateToken } from "@/utils/middleware"
 import { env } from "@/config/env"
 
@@ -21,5 +22,6 @@ app.use(cookieParser())
 
 app.use("/auth", authRoutes)
 app.use("/channel", authenticateToken, channelRoutes)
+app.use("/video", authenticateToken, videoRoutes)
 
 export default app

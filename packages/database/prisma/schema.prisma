@@ -59,6 +59,7 @@ model Video {
   id          Int    @id @default(autoincrement())
   title       String
   description String
+  type        String
 
   visibility VideoVisibility @default(PUBLIC)
   status     VideoStatus     @default(DRAFT)
@@ -82,11 +83,10 @@ model Video {
 }
 
 model Thumbnail {
-  id     Int    @id @default(autoincrement())
-  name   String
-  size   Int
-  width  Int    @default(0)
-  height Int    @default(0)
+  id   Int    @id @default(autoincrement())
+  name String
+  size Int
+  type String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
