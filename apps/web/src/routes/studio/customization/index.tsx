@@ -6,8 +6,14 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
+import { useChannel } from "@/hooks/useChannel"
 
 const Customization = () => {
+  const { data: channel, isLoading } = useChannel()
+
+  if (isLoading || !channel) {
+    return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
+  }
   return (
     <div className="pb-10">
       {/* Header */}
@@ -36,7 +42,7 @@ const Customization = () => {
         <section className="grid grid-cols-[240px_1fr] gap-6">
           <div className="h-40 overflow-hidden rounded-lg border bg-muted">
             <img
-              src="https://picsum.photos/seed/picsum/320/180"
+              src={channel.bannerImage}
               alt="Banner"
               className="h-full w-full object-cover"
             />
@@ -62,7 +68,7 @@ const Customization = () => {
         <section className="grid grid-cols-[240px_1fr] gap-6 pt-8">
           <div className="flex h-40 items-center justify-center rounded-lg border bg-muted">
             <Avatar className={"h-35 w-35"}>
-              <AvatarImage src={`https://i.pravatar.cc/150?img=1`} />
+              <AvatarImage src={channel.profileImage} />
               <AvatarFallback>name</AvatarFallback>
             </Avatar>
           </div>
@@ -99,7 +105,7 @@ const Customization = () => {
             other Google services. You can change your name twice in 14 days.
           </p>
 
-          <Input defaultValue="Rajesh charhajari" />
+          <Input defaultValue={channel.name} />
         </section>
 
         {/* Handle */}
@@ -113,10 +119,10 @@ const Customization = () => {
             case you'd like to switch back.
           </p>
 
-          <Input defaultValue="@rajeshcharhajari" />
+          <Input defaultValue={`@${channel.handle}`} />
 
           <p className="text-xs text-muted-foreground">
-            https://www.Plausio.com/@rajeshcharhajari
+            https://www.Plausio.com/@{channel.handle}
           </p>
         </section>
 
@@ -125,6 +131,7 @@ const Customization = () => {
           <h3 className="font-medium">Description</h3>
 
           <Textarea
+            defaultValue={channel.description}
             className="min-h-35 resize-none"
             placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places."
           />

@@ -1,3 +1,6 @@
+import channelApi from "@/api/channel"
+import { env } from "@/config/env"
+import { useChannel } from "@/hooks/useChannel"
 import {
   Avatar,
   AvatarFallback,
@@ -15,13 +18,40 @@ import { Link, useNavigate } from "react-router"
 
 const AppProfile = () => {
   const navigate = useNavigate()
+  const { data: channel, isLoading } = useChannel()
 
+  const initials =
+    channel?.name
+      ?.split(" ")
+      .map((n: string) => n[0])
+      .join("")
+      .toUpperCase() ?? "C"
+
+  const logout = async () => {
+    await channelApi.post(
+      "/auth/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+    window.location.href = `/`
+  }
+  const login = () => {
+    window.location.href = `${env.UPLOAD_API_URL}/auth/google`
+  }
+
+  if (isLoading) {
+    return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
+  }
+
+  if (!isLoading && !channel) return <Button onClick={login}>Sign in</Button>
   return (
     <Popover>
       <PopoverTrigger>
         <Avatar className="h-9 w-9">
-          <AvatarImage src={""} />
-          <AvatarFallback>{"RC"}</AvatarFallback>
+          <AvatarImage src={channel.profileImage} />
+          <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
 
@@ -30,13 +60,13 @@ const AppProfile = () => {
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">
             <AvatarImage src={`https://i.pravatar.cc/150?img=1`} />
-            <AvatarFallback>RC</AvatarFallback>
+            <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
 
           <div className="min-w-0 flex-1">
-            <p className="truncate font-semibold">Rajesh Charhajari</p>
+            <p className="truncate font-semibold">{channel.name}</p>
             <p className="truncate text-sm text-muted-foreground">
-              rajesh@gmail.com
+              {channel.email}
             </p>
             <Link to={"/channel"}>
               <Button variant={"link"} className="mt-1 h-auto p-0 text-sm">
@@ -59,6 +89,7 @@ const AppProfile = () => {
 
         <div className="border-t p-2">
           <Button
+            onClick={logout}
             variant="ghost"
             className="h-11 w-full justify-start text-destructive hover:text-destructive"
           >

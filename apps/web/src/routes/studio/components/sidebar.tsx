@@ -5,6 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
+import { useChannel } from "@/hooks/useChannel"
 const menu = [
   {
     path: "/studio",
@@ -23,17 +24,25 @@ const menu = [
   },
 ]
 const StudioSidebar = () => {
+  const { data: channel, isLoading } = useChannel()
+  const initials =
+    channel?.name
+      ?.split(" ")
+      .map((n: string) => n[0])
+      .join("")
+      .toUpperCase() ?? "C"
+  if (isLoading || !channel) {
+    return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
+  }
   return (
     <div className="sidebar-scrollbar relative flex h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2">
       <div className="sticky top-0 flex flex-col items-center bg-background p-2">
         <Avatar className={"h-28 w-28"}>
-          <AvatarImage src={`https://i.pravatar.cc/150?img=1`} />
-          <AvatarFallback>name</AvatarFallback>
+          <AvatarImage src={channel.profileImage} />
+          <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div className="pt-2 text-xs font-medium">Your channel</div>
-        <div className="pt-1 text-xs text-muted-foreground">
-          Rajesh Charhajari
-        </div>
+        <div className="pt-1 text-xs text-muted-foreground">{channel.name}</div>
       </div>
       {menu.map(({ path, name, Icon }) => (
         <Link

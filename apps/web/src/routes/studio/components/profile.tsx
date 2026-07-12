@@ -13,14 +13,36 @@ import LogoImg from "@/assets/logo/logo.png"
 
 import { LogOut, TvIcon } from "lucide-react"
 import { Link } from "react-router"
+import { useChannel } from "@/hooks/useChannel"
+import channelApi from "@/api/channel"
 
 const StudioProfile = () => {
+  const { data: channel, isLoading } = useChannel()
+  const initials =
+    channel?.name
+      ?.split(" ")
+      .map((n: string) => n[0])
+      .join("")
+      .toUpperCase() ?? "C"
+  const logout = async () => {
+    await channelApi.post(
+      "/auth/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+    window.location.href = `/`
+  }
+  if (isLoading || !channel) {
+    return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
+  }
   return (
     <Popover>
       <PopoverTrigger>
         <Avatar className="h-9 w-9">
-          <AvatarImage src={""} />
-          <AvatarFallback>{"RC"}</AvatarFallback>
+          <AvatarImage src={channel.profileImage} />
+          <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
 
@@ -28,14 +50,14 @@ const StudioProfile = () => {
         {/* Header */}
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">
-            <AvatarImage src={`https://i.pravatar.cc/150?img=1`} />
+            <AvatarImage src={channel.profileImage} />
             <AvatarFallback>RC</AvatarFallback>
           </Avatar>
 
           <div className="min-w-0 flex-1">
-            <p className="truncate font-semibold">Rajesh Charhajari</p>
+            <p className="truncate font-semibold">{channel.name}</p>
             <p className="truncate text-sm text-muted-foreground">
-              rajesh@gmail.com
+              {channel.email}
             </p>
           </div>
         </div>
@@ -61,6 +83,7 @@ const StudioProfile = () => {
 
         <div className="border-t p-2">
           <Button
+            onClick={logout}
             variant="ghost"
             className="h-11 w-full justify-start text-destructive hover:text-destructive"
           >

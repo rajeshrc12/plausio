@@ -1,3 +1,4 @@
+import { getChannelJoinedDate } from "@/utils/date"
 import {
   Dialog,
   DialogContent,
@@ -53,7 +54,9 @@ const ChannelDescription = ({
             </div>
             <div className="flex items-center gap-2">
               <Info />
-              <div>Joined {channel.createdAt}</div>
+              <div>
+                {getChannelJoinedDate({ date: new Date(channel.createdAt) })}
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <PersonStanding />
