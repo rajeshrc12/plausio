@@ -1,4 +1,3 @@
-import { Button } from "@workspace/ui/components/button"
 import {
   Dialog,
   DialogContent,
@@ -9,7 +8,7 @@ import {
 import { Globe, Info, PersonStanding, Play, Video, View } from "lucide-react"
 
 interface ChannelDescriptionProps {
-  title: string
+  name: string
   description: string
   handle: string
   country: string
@@ -36,7 +35,7 @@ const ChannelDescription = ({
       <DialogContent className={"max-w-145! p-0"}>
         <DialogHeader className="px-4 pt-4">
           <DialogTitle className={"text-2xl font-bold"}>
-            {channel.title}
+            {channel.name}
           </DialogTitle>
         </DialogHeader>
         <div className="sidebar-scrollbar flex max-h-[70vh] flex-col gap-4 overflow-y-auto px-4 pb-4">

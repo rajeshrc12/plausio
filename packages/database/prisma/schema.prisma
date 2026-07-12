@@ -8,6 +8,103 @@ datasource db {
 }
 
 model Channel {
-  id   Int    @id @default(autoincrement())
-  name String
+  id           Int    @id @default(autoincrement())
+  handle       String @unique
+  email        String @unique
+  name         String
+  profileImage String
+  bannerImage  String
+  description  String
+  country      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  videos Video[]
+
+  comments Comment[]
+
+  subscriptions Subscription[] @relation("Subscriber")
+
+  subscribers Subscription[] @relation("SubscribedTo")
+}
+
+model Subscription {
+  subscriberId Int
+  channelId    Int
+
+  subscriber Channel @relation("Subscriber", fields: [subscriberId], references: [id])
+
+  channel Channel @relation("SubscribedTo", fields: [channelId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([subscriberId, channelId])
+}
+
+enum VideoVisibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum VideoStatus {
+  DRAFT
+  PROCESSING
+  PUBLISHED
+  FAILED
+}
+
+model Video {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+
+  visibility VideoVisibility @default(PUBLIC)
+  status     VideoStatus     @default(DRAFT)
+
+  likes    Int @default(0)
+  dislikes Int @default(0)
+  views    Int @default(0)
+
+  duration Int
+  size     Int
+  name     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  channelId Int
+  channel   Channel @relation(fields: [channelId], references: [id])
+
+  comments  Comment[]
+  thumbnail Thumbnail?
+}
+
+model Thumbnail {
+  id     Int    @id @default(autoincrement())
+  name   String
+  size   Int
+  width  Int    @default(0)
+  height Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  videoId Int   @unique
+  video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id])
+
+  channelId Int
+  channel   Channel @relation(fields: [channelId], references: [id])
 }

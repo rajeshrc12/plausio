@@ -9,7 +9,7 @@ import { Bell } from "lucide-react"
 import VideoCard from "../components/video-card"
 import { Link } from "react-router"
 const channel = {
-  title: "Sony Music India",
+  name: "Sony Music India",
   description: `
 Welcome to Sony Music India's official YouTube channel, the ultimate destination for music enthusiasts and fans of the Indian music scene. Immerse yourself in a world of melodies, rhythms, and harmonies as we proudly present "Sony Music India - Home To India's Biggest Music Hits."
 Step into a realm where musical brilliance knows no bounds, and every beat resonates with the heartbeat of a nation. With a legacy that spans genres and generations, our channel is a testament to the power of music to unite, inspire, and captivate. From timeless classics to contemporary chart-toppers, we curate a diverse range of sounds that cater to every palate.
