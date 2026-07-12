@@ -10,7 +10,7 @@ interface Video {
   title: string
   duration: string
   views: string
-  channelName: string
+  channelName?: string
   createdAt: string
   thumbnail: string
 }
@@ -38,11 +38,13 @@ const VideoCard = ({ video }: VideoCardProps) => {
       {/* Video Details */}
       <div className="mt-3 flex gap-3">
         {/* Channel Avatar */}
+        {video.channelName && (
+          <Avatar className={"h-10 w-10"}>
+            <AvatarImage src={`https://i.pravatar.cc/150?img=${video.id}`} />
+            <AvatarFallback>name</AvatarFallback>
+          </Avatar>
+        )}
 
-        <Avatar className={"h-10 w-10"}>
-          <AvatarImage src={`https://i.pravatar.cc/150?img=${video.id}`} />
-          <AvatarFallback>name</AvatarFallback>
-        </Avatar>
         <div className="flex flex-1 flex-col gap-1">
           <h3 className="line-clamp-2 leading-5 font-semibold">
             {video.title}

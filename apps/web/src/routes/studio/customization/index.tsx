@@ -72,13 +72,13 @@ const Customization = () => {
               <h3 className="font-medium">Picture</h3>
               <p className="text-sm text-muted-foreground">
                 Your profile picture will appear where your channel is presented
-                on YouTube, like next to your videos and comments.
+                on Plausio, like next to your videos and comments.
               </p>
 
               <p className="mt-2 text-sm text-muted-foreground">
                 It's recommended to use a picture that's at least 98 × 98 pixels
                 and 4 MB or less. Use a PNG or GIF (no animations) file. Make
-                sure your picture follows the YouTube Community Guidelines.
+                sure your picture follows the Plausio Community Guidelines.
               </p>
             </div>
 
@@ -95,7 +95,7 @@ const Customization = () => {
 
           <p className="text-sm text-muted-foreground">
             Choose a channel name that represents you and your content. Changes
-            made to your name and picture are visible only on YouTube and not
+            made to your name and picture are visible only on Plausio and not
             other Google services. You can change your name twice in 14 days.
           </p>
 
@@ -116,7 +116,7 @@ const Customization = () => {
           <Input defaultValue="@rajeshcharhajari" />
 
           <p className="text-xs text-muted-foreground">
-            https://www.youtube.com/@rajeshcharhajari
+            https://www.Plausio.com/@rajeshcharhajari
           </p>
         </section>
 
