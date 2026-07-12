@@ -5,7 +5,7 @@ const TableVideoCard = ({
   description,
 }: {
   src: string
-  duration: string
+  duration: number
   title: string
   description: string
 }) => {

@@ -14,6 +14,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
     "@workspace/ui": "workspace:*",
+    "@workspace/db": "workspace:*",
     "axios": "^1.18.1",
     "lucide-react": "^1.23.0",
     "luxon": "^3.7.2",

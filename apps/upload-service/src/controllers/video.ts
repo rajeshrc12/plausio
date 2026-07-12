@@ -39,3 +39,62 @@ export const initUpload = async (
     })
   }
 }
+
+export const getVideos = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const channel = req.channel as Channel
+
+    const videos = await prisma.video.findMany({
+      where: {
+        channelId: channel.id,
+      },
+    })
+
+    res.status(200).json(videos)
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to fetch videos",
+    })
+  }
+}
+
+export const getVideo = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params
+    const videos = await prisma.video.findFirst({
+      where: {
+        id: Number(id),
+      },
+      include: { channel: true, comments: true },
+    })
+
+    res.status(200).json(videos)
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to fetch videos",
+    })
+  }
+}
+
+export const getRecommendedVideos = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const videos = await prisma.video.findMany({
+      include: { channel: true },
+    })
+
+    res.status(200).json(videos)
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to fetch videos",
+    })
+  }
+}

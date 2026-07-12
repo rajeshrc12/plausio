@@ -6,32 +6,15 @@ import {
 import ChannelDescription from "@/routes/app/components/channel-description"
 import { Button } from "@workspace/ui/components/button"
 import { Bell } from "lucide-react"
-import VideoCard from "../components/video-card"
+import VideoCard from "@/routes/app/components/video-card"
 import { Link } from "react-router"
 import { useChannel } from "@/hooks/useChannel"
+import { useVideos } from "@/hooks/useVideos"
+import type { VideoWithChannel } from "@/types/video"
 
-const videos = [
-  {
-    id: 1,
-    title: `
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur voluptates tempore quibusdam non nulla eaque, quasi fuga, est ipsam distinctio cumque officia itaque obcaecati doloremque maiores aspernatur autem atque. Nam.
-    How to use React?`,
-    duration: "2:20",
-    views: "300K",
-    createdAt: "5 hours ago",
-    thumbnail: "https://picsum.photos/seed/picsum/320/180",
-  },
-  {
-    id: 2,
-    title: "React Hooks Explained in 15 Minutes",
-    duration: "15:42",
-    views: "1.2M",
-    createdAt: "2 days ago",
-    thumbnail: "https://picsum.photos/seed/react/320/180",
-  },
-]
 const Channel = () => {
   const { data: channel, isLoading } = useChannel()
+  const { data: videos } = useVideos()
   if (isLoading || !channel || !channel.profileImage) return "Loading..."
   return (
     <div className="flex flex-col p-5">
@@ -68,7 +51,7 @@ const Channel = () => {
         <button className="border-b-2 border-primary py-2">Videos</button>
       </div>
       <div className="grid grid-cols-3 gap-5 p-5">
-        {videos.map((video) => (
+        {videos?.map((video: VideoWithChannel) => (
           <Link key={video.id} to={`/${video.id}`}>
             <VideoCard video={video} />
           </Link>

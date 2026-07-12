@@ -3,6 +3,7 @@ import { useMemo, useState } from "react"
 const MAX_LENGTH = 300
 
 const Description = ({ text }: { text: string }) => {
+  if (!text) return "No description"
   const [expanded, setExpanded] = useState(false)
 
   const shouldTruncate = text.length > MAX_LENGTH

@@ -4,28 +4,16 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
+import { getVideoCreationDate } from "@/utils/date"
+import type { VideoWithChannel } from "@/types/video"
 
-interface Video {
-  id: number
-  title: string
-  duration: string
-  views: string
-  channelName?: string
-  createdAt: string
-  thumbnail: string
-}
-
-interface VideoCardProps {
-  video: Video
-}
-
-const VideoCard = ({ video }: VideoCardProps) => {
+const VideoCard = ({ video }: { video: VideoWithChannel }) => {
   return (
     <div className="group cursor-pointer">
       {/* Thumbnail */}
       <div className="relative overflow-hidden rounded-xl">
         <img
-          src={video.thumbnail}
+          src={`https://picsum.photos/seed/${video.id}/320/180`}
           alt={video.title}
           className="aspect-video w-full object-cover"
         />
@@ -38,22 +26,22 @@ const VideoCard = ({ video }: VideoCardProps) => {
       {/* Video Details */}
       <div className="mt-3 flex gap-3">
         {/* Channel Avatar */}
-        {video.channelName && (
+        {video.channel && (
           <Avatar className={"h-10 w-10"}>
-            <AvatarImage src={`https://i.pravatar.cc/150?img=${video.id}`} />
-            <AvatarFallback>name</AvatarFallback>
+            <AvatarImage src={video.channel.profileImage} />
+            <AvatarFallback>{video.channel.name[0]}</AvatarFallback>
           </Avatar>
         )}
 
         <div className="flex flex-1 flex-col gap-1">
-          <h3 className="line-clamp-2 leading-5 font-semibold">
+          <h3 className="line-clamp-2 leading-5 font-semibold break-all">
             {video.title}
           </h3>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <div>{video.channelName}</div>
+            <div>{video?.channel?.name}</div>
             <Play size={10} />
             <div>{video.views}</div>
-            <div>{video.createdAt}</div>
+            <div>{getVideoCreationDate(video.createdAt)}</div>
           </div>
         </div>
       </div>

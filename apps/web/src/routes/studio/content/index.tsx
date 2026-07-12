@@ -7,33 +7,13 @@ import {
   TableRow,
 } from "@workspace/ui/components/table"
 import TableVideoCard from "@/routes/studio/components/table-video-card"
-const videos = [
-  {
-    id: 1,
-    title: "How to use React?",
-    duration: "2:20",
-    views: "300K",
-    channelName: "Rajesh Charhajari",
-    createdAt: "5 hours ago",
-    thumbnail: "https://picsum.photos/seed/picsum/320/180",
-    description: "This is it",
-    visibility: "public",
-    comments: 20,
-  },
-  {
-    id: 2,
-    title: "React Hooks Explained in 15 Minutes",
-    duration: "15:42",
-    views: "1.2M",
-    channelName: "Code Master",
-    createdAt: "2 days ago",
-    thumbnail: "https://picsum.photos/seed/react/320/180",
-    description: "This is it",
-    visibility: "private",
-    comments: 10,
-  },
-]
+import { useVideos } from "@/hooks/useVideos"
+import type { Video } from "@workspace/db"
+import { getVideoCreationDate } from "@/utils/date"
+
 const Content = () => {
+  const { data: videos, isLoading } = useVideos()
+  if (isLoading) return "Loading..."
   return (
     <div>
       <div className="flex justify-between px-6 pt-10">
@@ -57,20 +37,20 @@ const Content = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {videos.map((video) => (
-              <TableRow>
+            {videos?.map((video: Video) => (
+              <TableRow key={video.id}>
                 <TableCell>
                   <TableVideoCard
-                    src={video.thumbnail}
+                    src={`https://picsum.photos/seed/${video.id}/320/180`}
                     title={video.title}
                     description={video.description}
                     duration={video.duration}
                   />
                 </TableCell>
                 <TableCell>{video.visibility}</TableCell>
-                <TableCell>{video.createdAt}</TableCell>
+                <TableCell>{getVideoCreationDate(video.createdAt)}</TableCell>
                 <TableCell>{video.views}</TableCell>
-                <TableCell>{video.comments}</TableCell>
+                <TableCell>{0}</TableCell>
               </TableRow>
             ))}
           </TableBody>

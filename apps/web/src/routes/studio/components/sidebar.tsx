@@ -44,7 +44,7 @@ const StudioSidebar = () => {
         <div className="pt-2 text-xs font-medium">Your channel</div>
         <div className="pt-1 text-xs text-muted-foreground">{channel.name}</div>
       </div>
-      {menu.map(({ path, name, Icon }) => (
+      {menu?.map(({ path, name, Icon }) => (
         <Link
           key={name}
           to={path}
