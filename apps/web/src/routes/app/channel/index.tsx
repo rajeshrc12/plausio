@@ -12,8 +12,8 @@ import type { VideoWithChannel } from "@/types/video"
 import { useMyChannel } from "@/hooks/useMyChannel"
 
 const Channel = ({ name }: { name: string }) => {
-  const { data: channel, isLoading, isError } = useChannel(name)
   const { data: myChannel, isError: myChannelError } = useMyChannel()
+  const { data: channel, isLoading, isError } = useChannel(name)
   if (isLoading) return "Loading..."
   if (isError) {
     return "Channel not found"

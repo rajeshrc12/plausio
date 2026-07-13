@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 export const getChannel = async (req: Request, res: Response) => {
   try {
-    const { id } = req.channel as Channel
+    const channelData = req?.channel as Channel
     const { name } = req.params
     const handle = name?.slice(1)
     const channel = await prisma.channel.findFirst({
@@ -20,7 +20,7 @@ export const getChannel = async (req: Request, res: Response) => {
     })
     const subscribe = await prisma.subscription.findFirst({
       where: {
-        subscriberId: id,
+        subscriberId: channelData?.id || 0,
         channelId: channel.id,
       },
     })

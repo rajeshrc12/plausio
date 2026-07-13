@@ -36,8 +36,7 @@ export const getUserDataFromCookie = (
       const decoded = jwt.verify(token, env.JWT_SECRET)
       req.channel = decoded
     }
+  } finally {
     next()
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" })
   }
 }
