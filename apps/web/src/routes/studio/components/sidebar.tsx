@@ -5,7 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
-import { useChannel } from "@/hooks/useChannel"
+import { useMyChannel } from "@/hooks/useMyChannel"
 const menu = [
   {
     path: "/studio",
@@ -24,7 +24,7 @@ const menu = [
   },
 ]
 const StudioSidebar = () => {
-  const { data: channel, isLoading } = useChannel()
+  const { data: channel, isLoading } = useMyChannel()
   const initials =
     channel?.name
       ?.split(" ")

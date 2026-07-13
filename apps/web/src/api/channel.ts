@@ -12,9 +12,12 @@ channelApi.interceptors.response.use(
   async (error) => {
     console.log(error)
     if (error.response?.status === 401) {
-      return null
+      if (window.location.pathname.startsWith("/studio")) {
+        window.location.href = "/"
+      }
+
+      return Promise.resolve(null)
     }
-    return Promise.reject(error)
   }
 )
 

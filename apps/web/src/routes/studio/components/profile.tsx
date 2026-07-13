@@ -13,11 +13,11 @@ import LogoImg from "@/assets/logo/logo.png"
 
 import { LogOut, TvIcon } from "lucide-react"
 import { Link } from "react-router"
-import { useChannel } from "@/hooks/useChannel"
 import channelApi from "@/api/channel"
+import { useMyChannel } from "@/hooks/useMyChannel"
 
 const StudioProfile = () => {
-  const { data: channel, isLoading } = useChannel()
+  const { data: channel, isLoading } = useMyChannel()
   const initials =
     channel?.name
       ?.split(" ")
@@ -62,7 +62,7 @@ const StudioProfile = () => {
           </div>
         </div>
         <div className="px-2">
-          <Link to={"/channel"}>
+          <Link to={`/@${channel.handle}`}>
             <Button variant="ghost" className="h-11 w-full justify-start">
               <TvIcon className="mr-3 h-5 w-5" />
               Your channel

@@ -1,6 +1,6 @@
 import channelApi from "@/api/channel"
 import { env } from "@/config/env"
-import { useChannel } from "@/hooks/useChannel"
+import { useMyChannel } from "@/hooks/useMyChannel"
 import {
   Avatar,
   AvatarFallback,
@@ -18,8 +18,7 @@ import { Link, useNavigate } from "react-router"
 
 const AppProfile = () => {
   const navigate = useNavigate()
-  const { data: channel, isLoading } = useChannel()
-
+  const { data: channel, isLoading } = useMyChannel()
   const initials =
     channel?.name
       ?.split(" ")
@@ -68,7 +67,7 @@ const AppProfile = () => {
             <p className="truncate text-sm text-muted-foreground">
               {channel.email}
             </p>
-            <Link to={"/channel"}>
+            <Link to={`/@${channel.handle}`}>
               <Button variant={"link"} className="mt-1 h-auto p-0 text-sm">
                 View your channel
               </Button>

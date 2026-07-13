@@ -5,7 +5,7 @@ import { Play } from "lucide-react"
 import { Link } from "react-router"
 const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
   return (
-    <Link to={`/${String(video.id)}`}>
+    <Link to={`/watch?v=${video.id}`}>
       <div key={video.id} className="grid grid-cols-12 gap-3">
         <div className="relative col-span-6">
           <img

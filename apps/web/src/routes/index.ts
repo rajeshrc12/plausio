@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router"
 import App from "@/routes/app"
 import Home from "@/routes/app/home"
-import Channel from "@/routes/app/channel"
 import Video from "@/routes/app/video"
 import Studio from "@/routes/studio"
 import Dashboard from "@/routes/studio/dashboard"
@@ -18,11 +17,7 @@ const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "/channel",
-        Component: Channel,
-      },
-      {
-        path: "/:id",
+        path: "/:name",
         Component: Video,
       },
     ],

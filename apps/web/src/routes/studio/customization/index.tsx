@@ -6,10 +6,10 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
-import { useChannel } from "@/hooks/useChannel"
+import { useMyChannel } from "@/hooks/useMyChannel"
 
 const Customization = () => {
-  const { data: channel, isLoading } = useChannel()
+  const { data: channel, isLoading } = useMyChannel()
 
   if (isLoading || !channel) {
     return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />

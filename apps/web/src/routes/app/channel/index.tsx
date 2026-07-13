@@ -9,13 +9,15 @@ import { Bell } from "lucide-react"
 import VideoCard from "@/routes/app/components/video-card"
 import { Link } from "react-router"
 import { useChannel } from "@/hooks/useChannel"
-import { useVideos } from "@/hooks/useVideos"
 import type { VideoWithChannel } from "@/types/video"
 
-const Channel = () => {
-  const { data: channel, isLoading } = useChannel()
-  const { data: videos } = useVideos()
-  if (isLoading || !channel || !channel.profileImage) return "Loading..."
+const Channel = ({ name }: { name: string }) => {
+  const { data: channel, isLoading, isError } = useChannel(name)
+  if (isLoading) return "Loading..."
+  if (isError) {
+    return "Channel not found"
+  }
+
   return (
     <div className="flex flex-col p-5">
       <div className="h-36 overflow-hidden rounded-2xl">
@@ -36,7 +38,9 @@ const Channel = () => {
             <div className="text-muted-foreground">
               {channel.subscribers} subscribers
             </div>
-            <div className="text-muted-foreground">{channel.videos} videos</div>
+            <div className="text-muted-foreground">
+              {channel.videoCount} videos
+            </div>
           </div>
           <ChannelDescription channel={channel} />
           <div>
@@ -51,8 +55,8 @@ const Channel = () => {
         <button className="border-b-2 border-primary py-2">Videos</button>
       </div>
       <div className="grid grid-cols-3 gap-5 p-5">
-        {videos?.map((video: VideoWithChannel) => (
-          <Link key={video.id} to={`/${video.id}`}>
+        {channel?.videos?.map((video: VideoWithChannel) => (
+          <Link key={video.id} to={`/watch?v=${video.id}`}>
             <VideoCard video={video} />
           </Link>
         ))}

@@ -15,9 +15,10 @@ interface ChannelDescriptionProps {
   country: string
   createdAt: string
   subscribers: string
-  videos: string
   views: string
+  videoCount: number
 }
+
 const ChannelDescription = ({
   channel,
 }: {
@@ -25,14 +26,12 @@ const ChannelDescription = ({
 }) => {
   return (
     <Dialog>
-      <DialogTrigger
-        render={
-          <div className="flex cursor-pointer text-sm text-muted-foreground">
-            {channel.description.slice(0, 100)}
-            <div className="text-primary">...more</div>
-          </div>
-        }
-      />
+      <DialogTrigger>
+        <div className="flex cursor-pointer text-sm text-muted-foreground">
+          {channel.description.slice(0, 100)}
+          <div className="text-primary">...more</div>
+        </div>
+      </DialogTrigger>
       <DialogContent className={"max-w-145! p-0"}>
         <DialogHeader className="px-4 pt-4">
           <DialogTitle className={"text-2xl font-bold"}>
@@ -64,7 +63,7 @@ const ChannelDescription = ({
             </div>
             <div className="flex items-center gap-2">
               <Video />
-              <div>{channel.videos} videos</div>
+              <div>{channel.videoCount} videos</div>
             </div>
             <div className="flex items-center gap-2">
               <View />

@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use("/auth", authRoutes)
-app.use("/channel", authenticateToken, channelRoutes)
-app.use("/video", authenticateToken, videoRoutes)
+app.use("/channel", channelRoutes)
+app.use("/video", videoRoutes)
 
 export default app

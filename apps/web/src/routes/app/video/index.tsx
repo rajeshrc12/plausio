@@ -1,87 +1,14 @@
-import { useSidebar } from "@/hooks/useSidebar"
-import { useEffect } from "react"
-import { useParams } from "react-router"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@workspace/ui/components/avatar"
-import { Button } from "@workspace/ui/components/button"
-import { Forward, ThumbsDown, ThumbsUp } from "lucide-react"
-import Description from "@/routes/app/components/description"
-import AddComment from "@/routes/app/components/add-comment"
-import Comments from "@/routes/app/components/comments"
-import SideVideoRecommendation from "@/routes/app/components/side-video-recommendation"
-import { useVideo } from "@/hooks/useVideo"
+import { useParams, useSearchParams } from "react-router"
+import View from "@/routes/app/video/view"
+import Channel from "../channel"
 
 const Video = () => {
-  const { id } = useParams()
-  const { data: video } = useVideo(id ?? "")
-
-  const setAppSidebar = useSidebar((state) => state.setAppSidebar)
-  useEffect(() => {
-    setAppSidebar(false)
-    return () => {
-      setAppSidebar(true)
-    }
-  }, [])
-  return (
-    <div className="grid grid-cols-12 p-4">
-      <div className="col-span-8 flex flex-col gap-4 p-2">
-        <div className="aspect-video w-full overflow-hidden rounded-xl">
-          <video
-            className="h-full w-full object-cover"
-            controls
-            src="https://avtshare01.rz.tu-ilmenau.de/avt-vqdb-uhd-1/test_1/segments/bigbuck_bunny_8bit_15000kbps_1080p_60.0fps_h264.mp4"
-          />
-        </div>
-        <div className="text-xl font-bold">{video?.title}</div>
-        <div className="flex justify-between">
-          <div className="flex gap-3">
-            <Avatar className={"h-10 w-10"}>
-              <AvatarImage src={video?.channel?.profileImage} />
-              <AvatarFallback>{video?.channel?.name}</AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="font-bold">{video?.channel?.name}</div>
-              <div className="text-xs text-muted-foreground">
-                397k subscribers
-              </div>
-            </div>
-            <Button className={"rounded-full p-5"}>Subscribe</Button>
-          </div>
-          <div className="flex gap-3">
-            <div className="flex gap-2 rounded-full bg-accent px-4 py-2">
-              <button className={"flex items-center gap-2 font-medium"}>
-                <ThumbsUp size={20} />
-                <span>{video?.likes}</span>
-              </button>
-              <span className="border"></span>
-              <button className={"flex items-center gap-2 font-medium"}>
-                <ThumbsDown size={20} />
-                <span>{video?.dislikes}</span>
-              </button>
-            </div>
-            <div className="flex gap-2 rounded-full bg-accent px-4 py-2">
-              <button className={"flex items-center gap-2 font-medium"}>
-                <Forward />
-                <span>Share</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <Description text={video?.description} />
-        <div className="text-xl font-bold">
-          {video?.comments?.length} Comments
-        </div>
-        <AddComment />
-        <Comments comments={video?.comments} />
-      </div>
-      <div className="col-span-4 flex flex-col gap-2 p-2">
-        <SideVideoRecommendation />
-      </div>
-    </div>
-  )
+  const { name } = useParams()
+  const [searchParams] = useSearchParams()
+  const videoId = searchParams.get("v")
+  if (videoId) return <View id={videoId} />
+  if (name) return <Channel name={name} />
+  return "Not found"
 }
 
 export default Video

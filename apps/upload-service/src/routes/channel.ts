@@ -1,8 +1,10 @@
 import { Router } from "express"
-import { getChannel } from "@/controllers/channel"
+import { getChannel, getMyChannel } from "@/controllers/channel"
+import { authenticateToken } from "@/utils/middleware"
 
 const router = Router()
+router.get("/me", authenticateToken, getMyChannel)
 
-router.get("/", getChannel)
+router.get("/:name", getChannel)
 
 export default router
