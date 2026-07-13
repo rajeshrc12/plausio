@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@workspace/ui/components/dialog"
-import { Upload } from "lucide-react"
+import { CircleX, Upload } from "lucide-react"
 import type { FileData } from "@/types/video"
 import videoApi from "@/api/video"
 import {
@@ -20,6 +20,7 @@ import {
   getVideoDuration,
 } from "@/utils/video"
 import { useNavigate } from "react-router"
+import { toast } from "@workspace/ui/components/sonner"
 
 const UploadDialog = () => {
   const navigate = useNavigate()
@@ -41,7 +42,15 @@ const UploadDialog = () => {
     setFileData(file)
   }
   const handleSave = async () => {
-    if (!file || !thumbnail || !fileData) return
+    if (!file || !thumbnail || !fileData.title || !fileData.description) {
+      toast.message(
+        <div className="flex items-center gap-2">
+          <CircleX className="text-destructive" />
+          <div className="text-sm font-bold">Fill all details</div>
+        </div>
+      )
+      return
+    }
     const { title, description, visibility } = fileData
     const { name, size, type: ft } = file
     const { name: tn, size: ts, type: tt } = thumbnail

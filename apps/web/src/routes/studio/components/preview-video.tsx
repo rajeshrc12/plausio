@@ -65,11 +65,11 @@ const PreviewVideo = ({
       <div className="flex flex-1 flex-col gap-2">
         <div>Title</div>
         <Input
-          value={fileData.title || file.name}
+          value={fileData.title}
           onChange={(e) =>
             handleFileData({ ...fileData, title: e.target.value })
           }
-          placeholder="Type..."
+          placeholder="Video title"
         />
         <div>Description</div>
 
@@ -78,7 +78,8 @@ const PreviewVideo = ({
           onChange={(e) =>
             handleFileData({ ...fileData, description: e.target.value })
           }
-          rows={8}
+          className="field-sizing-fixed resize-none"
+          rows={4}
           placeholder="Tell viewers about your video"
         />
         <div>Visibility</div>
