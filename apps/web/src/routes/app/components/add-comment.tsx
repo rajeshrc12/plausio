@@ -1,3 +1,4 @@
+import videoApi from "@/api/video"
 import {
   Avatar,
   AvatarFallback,
@@ -6,8 +7,22 @@ import {
 import { Button } from "@workspace/ui/components/button"
 import { useState } from "react"
 
-const AddComment = () => {
+const AddComment = ({
+  videoId,
+  refetch,
+}: {
+  videoId: number
+  refetch: () => void
+}) => {
   const [btn, setBtn] = useState(false)
+  const [content, setContent] = useState("")
+  const handleComment = async () => {
+    const comment = await videoApi.post("/video/comment", { content, videoId })
+    setBtn(false)
+    setContent("")
+    refetch()
+    console.log(comment)
+  }
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
@@ -16,6 +31,8 @@ const AddComment = () => {
           <AvatarFallback>name</AvatarFallback>
         </Avatar>
         <input
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           onFocus={() => setBtn(true)}
           type="text"
           className="w-full border-b outline-none focus:border-b-2 focus:border-primary focus:p-1"
@@ -27,7 +44,7 @@ const AddComment = () => {
           <Button variant={"ghost"} onClick={() => setBtn(false)}>
             Cancel
           </Button>
-          <Button>Comment</Button>
+          <Button onClick={handleComment}>Comment</Button>
         </div>
       )}
     </div>

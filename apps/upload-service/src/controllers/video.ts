@@ -77,7 +77,11 @@ export const getVideo = async (req: Request, res: Response): Promise<void> => {
       },
       include: {
         channel: true,
-        comments: true,
+        comments: {
+          include: {
+            channel: true,
+          },
+        },
       },
     })
 
@@ -108,6 +112,28 @@ export const getRecommendedVideos = async (
     })
 
     res.status(200).json(videos)
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to fetch videos",
+    })
+  }
+}
+
+export const addComment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { content, videoId } = req.body
+    const channel = req.channel as Channel
+
+    const comment = await prisma.comment.create({
+      data: { content, videoId, channelId: channel.id },
+    })
+
+    res.status(200).json(comment)
   } catch (error) {
     console.error(error)
 

@@ -3,6 +3,7 @@ import {
   getVideos,
   getRecommendedVideos,
   getVideo,
+  addComment,
 } from "@/controllers/video"
 import { authenticateToken, getUserDataFromCookie } from "@/utils/middleware"
 import { Router } from "express"
@@ -16,5 +17,6 @@ router.use(authenticateToken)
 
 router.post("/init", initUpload)
 router.get("/", getVideos)
+router.post("/comment", addComment)
 
 export default router

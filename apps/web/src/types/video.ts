@@ -1,4 +1,4 @@
-import type { Video, Channel } from "@workspace/db"
+import type { Video, Channel, Comment } from "@workspace/db"
 
 export interface FileData {
   title: string
@@ -6,5 +6,9 @@ export interface FileData {
   visibility: string
 }
 export type VideoWithChannel = Video & {
+  channel: Channel
+}
+
+export type CommentWithChannel = Comment & {
   channel: Channel
 }
