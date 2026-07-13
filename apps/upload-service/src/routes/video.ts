@@ -4,13 +4,13 @@ import {
   getRecommendedVideos,
   getVideo,
 } from "@/controllers/video"
-import { authenticateToken } from "@/utils/middleware"
+import { authenticateToken, getUserDataFromCookie } from "@/utils/middleware"
 import { Router } from "express"
 
 const router = Router()
 
 router.get("/recommend", getRecommendedVideos)
-router.get("/:id", getVideo)
+router.get("/:id", getUserDataFromCookie, getVideo)
 
 router.use(authenticateToken)
 

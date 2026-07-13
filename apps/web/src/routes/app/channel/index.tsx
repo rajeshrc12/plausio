@@ -5,14 +5,15 @@ import {
 } from "@workspace/ui/components/avatar"
 import ChannelDescription from "@/routes/app/components/channel-description"
 import { Button } from "@workspace/ui/components/button"
-import { Bell } from "lucide-react"
 import VideoCard from "@/routes/app/components/video-card"
 import { Link } from "react-router"
 import { useChannel } from "@/hooks/useChannel"
 import type { VideoWithChannel } from "@/types/video"
+import { useMyChannel } from "@/hooks/useMyChannel"
 
 const Channel = ({ name }: { name: string }) => {
   const { data: channel, isLoading, isError } = useChannel(name)
+  const { data: myChannel, isError: myChannelError } = useMyChannel()
   if (isLoading) return "Loading..."
   if (isError) {
     return "Channel not found"
@@ -36,19 +37,23 @@ const Channel = ({ name }: { name: string }) => {
           <div className="flex gap-2 text-sm">
             <div className="font-medium">@{channel.handle}</div>
             <div className="text-muted-foreground">
-              {channel.subscribers} subscribers
+              {channel.subscribersCount} subscribers
             </div>
             <div className="text-muted-foreground">
               {channel.videoCount} videos
             </div>
           </div>
           <ChannelDescription channel={channel} />
-          <div>
-            <Button className={"flex gap-2 rounded-full p-4"}>
-              <Bell />
-              Subscribe
-            </Button>
-          </div>
+          {myChannel?.name !== channel?.handle && !myChannelError && (
+            <div>
+              <Button
+                variant={channel?.isSubscribed ? "secondary" : "default"}
+                className={"flex gap-2 rounded-full p-4"}
+              >
+                {channel?.isSubscribed ? "Unsubscribe" : "Subscribe"}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <div className="border-b">

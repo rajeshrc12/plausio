@@ -63,19 +63,28 @@ export const getVideos = async (req: Request, res: Response): Promise<void> => {
 export const getVideo = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params
-    const videos = await prisma.video.findFirst({
+    const channel = req.channel as Channel
+    const myChannelId = channel?.id
+
+    const video = await prisma.video.findFirst({
       where: {
         id: Number(id),
       },
       include: { channel: true, comments: true },
     })
-
-    res.status(200).json(videos)
+    const videoChannelId = video.channel.id
+    const subscribe = await prisma.subscription.findFirst({
+      where: {
+        subscriberId: myChannelId,
+        channelId: videoChannelId,
+      },
+    })
+    res.status(200).json({ ...video, isSubscribed: !!subscribe })
   } catch (error) {
     console.error(error)
 
     res.status(500).json({
-      message: "Failed to fetch videos",
+      message: "Failed to fetch video",
     })
   }
 }

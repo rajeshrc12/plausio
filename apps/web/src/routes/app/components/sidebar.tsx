@@ -6,6 +6,8 @@ import {
 } from "@workspace/ui/components/avatar"
 import { useSidebar } from "@/hooks/useSidebar"
 import { HomeIcon, TvIcon } from "lucide-react"
+import { useMyChannel } from "@/hooks/useMyChannel"
+import type { Channel } from "@workspace/db"
 
 const menu = [
   {
@@ -13,30 +15,11 @@ const menu = [
     name: "Home",
     Icon: HomeIcon,
   },
-  {
-    path: "/channel",
-    name: "Channel",
-    Icon: TvIcon,
-  },
-]
-const subscriptions = [
-  {
-    id: 1,
-    img: "",
-    name: "Rajesh Charhajari",
-    userName: "rajeshcharhajari",
-  },
-  {
-    id: 2,
-    img: "",
-    name: "CarryMinati",
-    userName: "carryminati",
-  },
 ]
 
 const AppSidebar = () => {
   const appSidebar = useSidebar((state) => state.appSidebar)
-
+  const { data: channel } = useMyChannel()
   if (appSidebar)
     return (
       <div className="sidebar-scrollbar flex h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2">
@@ -50,18 +33,28 @@ const AppSidebar = () => {
             <div>{name}</div>
           </Link>
         ))}
-        <div className="text-md p-2 font-medium">Subscriptions</div>
-        {subscriptions?.map(({ id, userName, name }) => (
+        {channel?.handle && (
           <Link
-            key={id}
-            to={userName}
+            to={`/@${channel?.handle}`}
+            className="mx-4 flex items-center gap-5 rounded-lg p-2 text-sm hover:bg-sidebar-accent"
+          >
+            <TvIcon />
+            <div>Channel</div>
+          </Link>
+        )}
+
+        <div className="text-md p-2 font-medium">Subscriptions</div>
+        {channel?.subscriptions?.map(({ channel }: { channel: Channel }) => (
+          <Link
+            key={channel.id}
+            to={`/@${channel.handle}`}
             className="mx-4 flex items-center gap-5 rounded-lg p-2 text-sm hover:bg-sidebar-accent"
           >
             <Avatar className={"h-6 w-6"}>
-              <AvatarImage src={`https://i.pravatar.cc/150?img=${id}`} />
-              <AvatarFallback>name</AvatarFallback>
+              <AvatarImage src={channel.profileImage} />
+              <AvatarFallback>{channel.name[0]}</AvatarFallback>
             </Avatar>
-            <div>{name}</div>
+            <div>{channel.name}</div>
           </Link>
         ))}
       </div>

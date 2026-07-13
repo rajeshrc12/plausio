@@ -7,6 +7,19 @@ datasource db {
   provider = "postgresql"
 }
 
+enum VideoVisibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum VideoStatus {
+  DRAFT
+  PROCESSING
+  PUBLISHED
+  FAILED
+}
+
 model Channel {
   id           Int    @id @default(autoincrement())
   handle       String @unique
@@ -40,19 +53,6 @@ model Subscription {
   createdAt DateTime @default(now())
 
   @@id([subscriberId, channelId])
-}
-
-enum VideoVisibility {
-  PUBLIC
-  UNLISTED
-  PRIVATE
-}
-
-enum VideoStatus {
-  DRAFT
-  PROCESSING
-  PUBLISHED
-  FAILED
 }
 
 model Video {

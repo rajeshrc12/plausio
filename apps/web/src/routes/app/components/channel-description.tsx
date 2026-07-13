@@ -14,7 +14,7 @@ interface ChannelDescriptionProps {
   handle: string
   country: string
   createdAt: string
-  subscribers: string
+  subscribersCount: number
   views: string
   videoCount: number
 }
@@ -59,7 +59,7 @@ const ChannelDescription = ({
             </div>
             <div className="flex items-center gap-2">
               <PersonStanding />
-              <div>{channel.subscribers} Subscribers</div>
+              <div>{channel.subscribersCount} Subscribers</div>
             </div>
             <div className="flex items-center gap-2">
               <Video />

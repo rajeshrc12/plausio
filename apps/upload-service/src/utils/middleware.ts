@@ -23,3 +23,21 @@ export const authenticateToken = (
     return res.status(401).json({ message: "Invalid or expired token" })
   }
 }
+
+export const getUserDataFromCookie = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.cookies?.accessToken
+
+  try {
+    if (token) {
+      const decoded = jwt.verify(token, env.JWT_SECRET)
+      req.channel = decoded
+    }
+    next()
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" })
+  }
+}

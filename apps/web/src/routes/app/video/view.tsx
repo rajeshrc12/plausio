@@ -1,21 +1,34 @@
 import { useSidebar } from "@/hooks/useSidebar"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@workspace/ui/components/avatar"
 import { Button } from "@workspace/ui/components/button"
-import { Forward, ThumbsDown, ThumbsUp } from "lucide-react"
+import { CircleX, Forward, ThumbsDown, ThumbsUp } from "lucide-react"
 import Description from "@/routes/app/components/description"
 import AddComment from "@/routes/app/components/add-comment"
 import Comments from "@/routes/app/components/comments"
 import SideVideoRecommendation from "@/routes/app/components/side-video-recommendation"
 import { useVideo } from "@/hooks/useVideo"
 import { Link } from "react-router"
+import { useMyChannel } from "@/hooks/useMyChannel"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover"
+import { env } from "@/config/env"
+import channelApi from "@/api/channel"
 
 const View = ({ id }: { id: string }) => {
-  const { data: video } = useVideo(id ?? "")
+  const { data: video, refetch } = useVideo(id ?? "")
+  const { data: channel, isError } = useMyChannel()
+  const [loading, setLoading] = useState(false)
 
   const setAppSidebar = useSidebar((state) => state.setAppSidebar)
   useEffect(() => {
@@ -24,6 +37,37 @@ const View = ({ id }: { id: string }) => {
       setAppSidebar(true)
     }
   }, [])
+  const login = () => {
+    window.location.href = `${env.UPLOAD_API_URL}/auth/google`
+  }
+
+  const handleSubscribe = async () => {
+    if (loading) return
+
+    setLoading(true)
+    try {
+      await channelApi.post("/channel/subscribe", {
+        channelId: video.channel.id,
+      })
+      await refetch()
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleUnsubscribe = async () => {
+    if (loading) return
+
+    setLoading(true)
+    try {
+      await channelApi.post("/channel/unsubscribe", {
+        channelId: video.channel.id,
+      })
+      await refetch()
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div className="grid grid-cols-12 p-4">
       <div className="col-span-8 flex flex-col gap-4 p-2">
@@ -36,8 +80,8 @@ const View = ({ id }: { id: string }) => {
         </div>
         <div className="text-xl font-bold">{video?.title}</div>
         <div className="flex justify-between">
-          <Link to={`/@${video?.channel?.handle}`}>
-            <div className="flex gap-3">
+          <div className="flex gap-3">
+            <Link to={`/@${video?.channel?.handle}`} className="flex gap-3">
               <Avatar className={"h-10 w-10"}>
                 <AvatarImage src={video?.channel?.profileImage} />
                 <AvatarFallback>{video?.channel?.name}</AvatarFallback>
@@ -48,9 +92,50 @@ const View = ({ id }: { id: string }) => {
                   397k subscribers
                 </div>
               </div>
-              <Button className={"rounded-full p-5"}>Subscribe</Button>
-            </div>
-          </Link>
+            </Link>
+            {isError ? (
+              <Popover>
+                <PopoverTrigger
+                  render={
+                    <Button className={"rounded-full p-5"}>Subscribe</Button>
+                  }
+                />
+                <PopoverContent>
+                  <PopoverHeader>
+                    <PopoverTitle className={"text-xl"}>
+                      Want to subscribe to this channel?
+                    </PopoverTitle>
+                    <PopoverDescription>
+                      Sign in to subscribe to this channel.
+                    </PopoverDescription>
+                    <div>
+                      <Button onClick={login}>Sign in</Button>
+                    </div>
+                  </PopoverHeader>
+                </PopoverContent>
+              </Popover>
+            ) : channel?.handle === video?.channel?.handle ? (
+              ""
+            ) : video?.isSubscribed ? (
+              <Button
+                disabled={loading}
+                variant={"secondary"}
+                onClick={handleUnsubscribe}
+                className={"rounded-full p-5"}
+              >
+                <CircleX />
+                Unsubscribe
+              </Button>
+            ) : (
+              <Button
+                disabled={loading}
+                onClick={handleSubscribe}
+                className={"rounded-full p-5"}
+              >
+                Subscribe
+              </Button>
+            )}
+          </div>
 
           <div className="flex gap-3">
             <div className="flex gap-2 rounded-full bg-accent px-4 py-2">
