@@ -66,12 +66,21 @@ export const getVideo = async (req: Request, res: Response): Promise<void> => {
     const channel = req.channel as Channel
     const myChannelId = channel?.id
 
-    const video = await prisma.video.findFirst({
+    const video = await prisma.video.update({
       where: {
         id: Number(id),
       },
-      include: { channel: true, comments: true },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+      include: {
+        channel: true,
+        comments: true,
+      },
     })
+
     const videoChannelId = video.channel.id
     const subscribe = await prisma.subscription.findFirst({
       where: {

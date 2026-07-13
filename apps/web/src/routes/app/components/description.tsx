@@ -1,8 +1,17 @@
+import { getVideoCreationDate } from "@/utils/date"
 import { useMemo, useState } from "react"
 
 const MAX_LENGTH = 300
 
-const Description = ({ text }: { text: string }) => {
+const Description = ({
+  text,
+  views,
+  createdAt,
+}: {
+  text: string
+  views: number
+  createdAt: Date
+}) => {
   if (!text) return "No description"
   const [expanded, setExpanded] = useState(false)
 
@@ -16,7 +25,10 @@ const Description = ({ text }: { text: string }) => {
 
   return (
     <div className="rounded-xl bg-accent p-3 text-sm wrap-break-word whitespace-pre-wrap">
-      <span>{displayText.trim()}</span>
+      <div className="font-medium">
+        {views} views {getVideoCreationDate(createdAt)}
+      </div>
+      <span className="text-sm">{displayText.trim()}</span>
 
       {shouldTruncate && (
         <button

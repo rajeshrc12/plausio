@@ -157,7 +157,11 @@ const View = ({ id }: { id: string }) => {
             </div>
           </div>
         </div>
-        <Description text={video?.description} />
+        <Description
+          views={video?.views}
+          createdAt={video?.createdAt}
+          text={video?.description}
+        />
         <div className="text-xl font-bold">
           {video?.comments?.length} Comments
         </div>
