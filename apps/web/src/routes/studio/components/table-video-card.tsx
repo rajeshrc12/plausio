@@ -14,7 +14,7 @@ const TableVideoCard = ({
   return (
     <div className="flex gap-2">
       <div className="relative overflow-hidden rounded-xl">
-        <img src={src} alt={title} className="h-20 object-cover" />
+        <img src={src} alt={title} className="h-20 w-30 object-cover" />
 
         <span className="absolute right-2 bottom-2 rounded bg-primary/90 px-1.5 py-0.5 text-xs font-medium text-background">
           {formatVideoDuration(duration)}

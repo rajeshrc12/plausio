@@ -25,6 +25,7 @@ import {
 import { env } from "@/config/env"
 import channelApi from "@/api/channel"
 import videoApi from "@/api/video"
+import { getVideoUrl } from "@/utils/video"
 
 const View = ({ id }: { id: string }) => {
   const { data: video, refetch } = useVideo(id ?? "")
@@ -86,7 +87,7 @@ const View = ({ id }: { id: string }) => {
           <video
             className="h-full w-full object-cover"
             controls
-            src="https://avtshare01.rz.tu-ilmenau.de/avt-vqdb-uhd-1/test_1/segments/bigbuck_bunny_8bit_15000kbps_1080p_60.0fps_h264.mp4"
+            src={getVideoUrl(Number(id))}
           />
         </div>
         <div className="text-xl font-bold">{video?.title}</div>

@@ -1,6 +1,6 @@
 import type { VideoWithChannel } from "@/types/video"
 import { getVideoCreationDate } from "@/utils/date"
-import { formatVideoDuration } from "@/utils/video"
+import { formatVideoDuration, getThumbnailUrl } from "@/utils/video"
 import { Play } from "lucide-react"
 import { Link } from "react-router"
 const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
@@ -9,7 +9,7 @@ const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
       <div key={video.id} className="grid grid-cols-12 gap-3">
         <div className="relative col-span-6">
           <img
-            src={`https://picsum.photos/seed/${video.id}/320/180`}
+            src={getThumbnailUrl(video.id)}
             alt={video.title}
             className="h-30 w-full rounded-md object-cover"
           />

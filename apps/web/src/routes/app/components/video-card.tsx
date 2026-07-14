@@ -6,7 +6,7 @@ import {
 } from "@workspace/ui/components/avatar"
 import { getVideoCreationDate } from "@/utils/date"
 import type { VideoWithChannel } from "@/types/video"
-import { formatVideoDuration } from "@/utils/video"
+import { formatVideoDuration, getThumbnailUrl } from "@/utils/video"
 
 const VideoCard = ({ video }: { video: VideoWithChannel }) => {
   return (
@@ -14,7 +14,7 @@ const VideoCard = ({ video }: { video: VideoWithChannel }) => {
       {/* Thumbnail */}
       <div className="relative overflow-hidden rounded-xl">
         <img
-          src={`https://picsum.photos/seed/${video.id}/320/180`}
+          src={getThumbnailUrl(video.id)}
           alt={video.title}
           className="aspect-video w-full object-cover"
         />

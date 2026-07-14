@@ -11,16 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@workspace/ui/components/dialog"
-import { CircleX, Upload } from "lucide-react"
+import { CircleX, Loader, Upload } from "lucide-react"
 import type { FileData } from "@/types/video"
 import videoApi from "@/api/video"
-import {
-  getImageContainer,
-  getVideoContainer,
-  getVideoDuration,
-} from "@/utils/video"
+import { getVideoDuration } from "@/utils/video"
 import { useNavigate } from "react-router"
 import { toast } from "@workspace/ui/components/sonner"
+import { thumbnailUpload, videoUploadMultipart } from "@/service/file"
 
 const UploadDialog = () => {
   const navigate = useNavigate()
@@ -31,6 +28,7 @@ const UploadDialog = () => {
     description: "",
     visibility: "public",
   })
+  const [progress, setProgress] = useState(0)
 
   const handleFile = (file: File) => {
     setFile(file)
@@ -51,17 +49,55 @@ const UploadDialog = () => {
       )
       return
     }
+    setProgress(1)
     const { title, description, visibility } = fileData
-    const { name, size, type: ft } = file
+    const { name, size, type } = file
     const { name: tn, size: ts, type: tt } = thumbnail
     const duration = await getVideoDuration(file)
-    const type = getVideoContainer(ft)
-
-    const video = await videoApi.post("/video/init", {
-      file: { name, size, type, duration, title, description, visibility },
-      thumbnail: { name: tn, size: ts, type: getImageContainer(tt) },
-    })
-    if (video.status === 200) navigate("/studio/content")
+    try {
+      const response = await videoApi.post("/video/init", {
+        file: { name, size, type, duration, title, description, visibility },
+        thumbnail: { name: tn, size: ts, type: tt },
+      })
+      const {
+        video: { id: videoId },
+        videoKey,
+        thumbnailKey,
+        videoUploadId,
+        thumbnailUploadId,
+        videoUrls,
+        thumbnailUrl,
+        videoPartSize,
+      } = response.data
+      const videoResult = await videoUploadMultipart({
+        file,
+        partSize: videoPartSize,
+        urls: videoUrls,
+        contentType: type,
+        onProgress: setProgress,
+      })
+      const thumbnailResult = await thumbnailUpload({
+        thumbnailUrl: thumbnailUrl,
+        file: thumbnail,
+        contentType: tt,
+      })
+      const { data: completeData } = await videoApi.post("/video/complete", {
+        videoParts: videoResult.parts,
+        thumbnailParts: thumbnailResult,
+        videoId,
+        videoKey,
+        videoUploadId,
+        thumbnailUploadId,
+        thumbnailKey,
+      })
+      console.log(completeData)
+      if (completeData.message) navigate("/studio/content")
+    } catch (err) {
+      console.error(err)
+      console.log("Upload failed")
+    } finally {
+      setProgress(0)
+    }
   }
   const cleanup = () => {
     setFile(undefined)
@@ -105,8 +141,24 @@ const UploadDialog = () => {
         </div>
         {file && (
           <DialogFooter className="bg-background px-4">
-            <DialogClose render={<Button variant="outline">Close</Button>} />
-            <Button onClick={handleSave}>Save</Button>
+            <DialogClose
+              render={
+                <Button disabled={progress !== 0} variant="outline">
+                  Cancel
+                </Button>
+              }
+            />
+
+            <Button disabled={progress !== 0} onClick={handleSave}>
+              {progress === 0 ? (
+                "Save"
+              ) : (
+                <>
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                  {progress}%
+                </>
+              )}
+            </Button>
           </DialogFooter>
         )}
       </DialogContent>

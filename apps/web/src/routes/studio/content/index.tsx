@@ -10,6 +10,7 @@ import TableVideoCard from "@/routes/studio/components/table-video-card"
 import { useVideos } from "@/hooks/useVideos"
 import type { Video } from "@workspace/db"
 import { getVideoCreationDate } from "@/utils/date"
+import { getThumbnailUrl } from "@/utils/video"
 
 const Content = () => {
   const { data: videos, isLoading } = useVideos()
@@ -41,7 +42,7 @@ const Content = () => {
               <TableRow key={video.id}>
                 <TableCell>
                   <TableVideoCard
-                    src={`https://picsum.photos/seed/${video.id}/320/180`}
+                    src={getThumbnailUrl(video.id)}
                     title={video.title}
                     description={video.description}
                     duration={video.duration}

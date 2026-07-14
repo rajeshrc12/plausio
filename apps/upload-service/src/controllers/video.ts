@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
 import { Channel, prisma } from "@workspace/db"
+import { uploadFiles } from "@/services/video"
+import { env } from "@/config/env"
+import { completeMultipartUpload } from "@/services/s3"
 
 export const initUpload = async (
   req: Request,
@@ -30,12 +33,81 @@ export const initUpload = async (
       },
     })
 
-    res.status(200).json({ video, thumbnail })
+    const {
+      videoUrls,
+      thumbnailUrl,
+      videoKey,
+      thumbnailKey,
+      videoUploadId,
+      thumbnailUploadId,
+    } = await uploadFiles({
+      videoId: video.id,
+      videoType: file.type,
+      videoSize: file.size,
+      thumbnailType: thumbnail.type,
+    })
+
+    res.status(200).json({
+      video,
+      thumbnail,
+      videoKey,
+      thumbnailKey,
+      videoUploadId,
+      thumbnailUploadId,
+      videoUrls,
+      thumbnailUrl,
+      videoPartSize: env.AWS_S3_PART_SIZE_IN_MB,
+    })
   } catch (error) {
     console.error(error)
 
     res.status(500).json({
       message: "Failed to initialize upload",
+    })
+  }
+}
+export const completeUpload = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const {
+      videoUploadId,
+      thumbnailUploadId,
+      videoKey,
+      thumbnailKey,
+      videoParts,
+      thumbnailParts,
+      videoId,
+    } = req.body
+
+    await completeMultipartUpload({
+      key: videoKey,
+      parts: videoParts,
+      uploadId: videoUploadId,
+    })
+    await completeMultipartUpload({
+      key: thumbnailKey,
+      parts: thumbnailParts,
+      uploadId: thumbnailUploadId,
+    })
+    const video = await prisma.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        status: "uploaded",
+      },
+    })
+    res.status(200).json({
+      video,
+      message: "Upload completed successfully",
+    })
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to complete upload",
     })
   }
 }

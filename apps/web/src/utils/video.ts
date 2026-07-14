@@ -1,3 +1,4 @@
+import { env } from "@/config/env"
 import { Duration } from "luxon"
 
 export const getVideoDuration = (file: File): Promise<number> => {
@@ -47,4 +48,11 @@ export const formatVideoDuration = (duration: number) => {
   }
 
   return `${minutes}:${String(seconds).padStart(2, "0")}`
+}
+
+export const getThumbnailUrl = (videoId: number) => {
+  return `${env.AWS_CDN_URL}/thumbnail/${videoId}/original`
+}
+export const getVideoUrl = (videoId: number) => {
+  return `${env.AWS_CDN_URL}/video/${videoId}/original`
 }
