@@ -10,7 +10,12 @@ async function bootstrap() {
       console.log(`🚀 Server running on ${env.PORT}`)
     })
 
+    let shuttingDown = false
+
     async function shutdown() {
+      if (shuttingDown) return
+      shuttingDown = true
+
       console.log("Shutting down...")
 
       server.close(async () => {
@@ -19,8 +24,8 @@ async function bootstrap() {
       })
     }
 
-    process.on("SIGINT", shutdown)
-    process.on("SIGTERM", shutdown)
+    process.once("SIGINT", shutdown)
+    process.once("SIGTERM", shutdown)
   } catch (err) {
     console.error(err)
     process.exit(1)
