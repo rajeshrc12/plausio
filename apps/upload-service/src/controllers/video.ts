@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { prisma, Channel } from "@workspace/db"
+import { Channel, prisma } from "@workspace/db"
 
 export const initUpload = async (
   req: Request,
@@ -92,7 +92,38 @@ export const getVideo = async (req: Request, res: Response): Promise<void> => {
         channelId: videoChannelId,
       },
     })
-    res.status(200).json({ ...video, isSubscribed: !!subscribe })
+    const videoReaction = await prisma.videoReaction.findFirst({
+      where: {
+        videoId: Number(id),
+        channelId: myChannelId,
+      },
+    })
+    const reactionCounts = await prisma.videoReaction.groupBy({
+      by: ["type"],
+      where: {
+        videoId: Number(id),
+      },
+      _count: {
+        _all: true,
+      },
+    })
+
+    const reactions = {
+      like: 0,
+      dislike: 0,
+    }
+
+    for (const reaction of reactionCounts) {
+      reactions[reaction.type.toLowerCase() as "like" | "dislike"] =
+        reaction._count._all
+    }
+    res.status(200).json({
+      ...video,
+      likes: reactions.like,
+      dislikes: reactions.dislike,
+      isSubscribed: !!subscribe,
+      reaction: videoReaction,
+    })
   } catch (error) {
     console.error(error)
 
@@ -134,6 +165,52 @@ export const addComment = async (
     })
 
     res.status(200).json(comment)
+  } catch (error) {
+    console.error(error)
+
+    res.status(500).json({
+      message: "Failed to fetch videos",
+    })
+  }
+}
+
+export const updateReaction = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { type, videoId } = req.body
+    const channel = req.channel as Channel
+    let reaction
+    if (type === "like" || type === "dislike") {
+      reaction = await prisma.videoReaction.upsert({
+        where: {
+          videoId_channelId: {
+            videoId,
+            channelId: channel.id,
+          },
+        },
+        update: {
+          type,
+        },
+        create: {
+          videoId,
+          channelId: channel.id,
+          type,
+        },
+      })
+    }
+    if (type === "remove") {
+      reaction = await prisma.videoReaction.delete({
+        where: {
+          videoId_channelId: {
+            videoId,
+            channelId: channel.id,
+          },
+        },
+      })
+    }
+    res.status(200).json(reaction)
   } catch (error) {
     console.error(error)
 

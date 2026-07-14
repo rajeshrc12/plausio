@@ -24,12 +24,12 @@ import {
 } from "@workspace/ui/components/popover"
 import { env } from "@/config/env"
 import channelApi from "@/api/channel"
+import videoApi from "@/api/video"
 
 const View = ({ id }: { id: string }) => {
   const { data: video, refetch } = useVideo(id ?? "")
   const { data: channel, isError } = useMyChannel()
   const [loading, setLoading] = useState(false)
-
   const setAppSidebar = useSidebar((state) => state.setAppSidebar)
   useEffect(() => {
     setAppSidebar(false)
@@ -68,6 +68,17 @@ const View = ({ id }: { id: string }) => {
       setLoading(false)
     }
   }
+
+  const handleReaction = async (type: string) => {
+    const videoReaction = video?.reaction?.type ? video.reaction?.type : null
+
+    await videoApi.post("/video/reaction", {
+      videoId: video.id,
+      type: videoReaction === type ? "remove" : type,
+    })
+    refetch()
+  }
+
   return (
     <div className="grid grid-cols-12 p-4">
       <div className="col-span-8 flex flex-col gap-4 p-2">
@@ -140,12 +151,28 @@ const View = ({ id }: { id: string }) => {
           <div className="flex gap-3">
             <div className="flex gap-2 rounded-full bg-accent px-4 py-2">
               <button className={"flex items-center gap-2 font-medium"}>
-                <ThumbsUp size={20} />
+                <ThumbsUp
+                  className={
+                    video?.reaction?.type === "like"
+                      ? "fill-current"
+                      : "fill-none"
+                  }
+                  onClick={() => handleReaction("like")}
+                  size={20}
+                />
                 <span>{video?.likes}</span>
               </button>
               <span className="border"></span>
               <button className={"flex items-center gap-2 font-medium"}>
-                <ThumbsDown size={20} />
+                <ThumbsDown
+                  className={
+                    video?.reaction?.type === "dislike"
+                      ? "fill-current"
+                      : "fill-none"
+                  }
+                  onClick={() => handleReaction("dislike")}
+                  size={20}
+                />
                 <span>{video?.dislikes}</span>
               </button>
             </div>

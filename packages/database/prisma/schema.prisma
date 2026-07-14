@@ -39,7 +39,8 @@ model Channel {
 
   subscriptions Subscription[] @relation("Subscriber")
 
-  subscribers Subscription[] @relation("SubscribedTo")
+  subscribers    Subscription[]  @relation("SubscribedTo")
+  videoReactions VideoReaction[]
 }
 
 model Subscription {
@@ -78,8 +79,24 @@ model Video {
   channelId Int
   channel   Channel @relation(fields: [channelId], references: [id])
 
-  comments  Comment[]
-  thumbnail Thumbnail?
+  comments       Comment[]
+  thumbnail      Thumbnail?
+  videoReactions VideoReaction[]
+}
+
+model VideoReaction {
+  id Int @id @default(autoincrement())
+
+  videoId   Int
+  channelId Int
+  type      String
+
+  video   Video   @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([videoId, channelId])
 }
 
 model Thumbnail {
