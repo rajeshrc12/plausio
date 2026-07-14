@@ -54,7 +54,7 @@ export const getThumbnailUrl = (videoId: number) => {
   return `${env.AWS_CDN_URL}/thumbnail/${videoId}/original`
 }
 export const getVideoUrl = (videoId: number) => {
-  return `${env.AWS_CDN_URL}/video/${videoId}/original`
+  return `${env.AWS_CDN_URL}/video/${videoId}/hls/index.m3u8`
 }
 export const getProfileUrl = (channelId: number) => {
   return `${env.AWS_CDN_URL}/profile/${channelId}/original`
