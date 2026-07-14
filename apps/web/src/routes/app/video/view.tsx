@@ -195,7 +195,7 @@ const View = ({ id }: { id: string }) => {
         </div>
         <AddComment
           videoId={video?.id}
-          channelId={video?.channel?.id}
+          channelId={channel?.id}
           refetch={refetch}
         />
         <Comments comments={video?.comments} />

@@ -3,6 +3,7 @@ import { Channel, prisma } from "@workspace/db"
 import { uploadFiles } from "@/services/video"
 import { env } from "@/config/env"
 import { completeMultipartUpload } from "@/services/s3"
+import { createVideoJob } from "@/services/rabbitmq"
 
 export const initUpload = async (
   req: Request,
@@ -99,6 +100,7 @@ export const completeUpload = async (
         status: "uploaded",
       },
     })
+    if (video) createVideoJob({ id: video.id, type: video.type })
     res.status(200).json({
       video,
       message: "Upload completed successfully",
