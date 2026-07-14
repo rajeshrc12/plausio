@@ -7,6 +7,7 @@ import {
   AvatarImage,
 } from "@workspace/ui/components/avatar"
 import { useMyChannel } from "@/hooks/useMyChannel"
+import { getProfileUrl } from "@/utils/video"
 
 const Customization = () => {
   const { data: channel, isLoading } = useMyChannel()
@@ -42,7 +43,7 @@ const Customization = () => {
         <section className="grid grid-cols-[240px_1fr] gap-6">
           <div className="h-40 overflow-hidden rounded-lg border bg-muted">
             <img
-              src={channel.bannerImage}
+              src={getProfileUrl(channel.id)}
               alt="Banner"
               className="h-full w-full object-cover"
             />
@@ -68,7 +69,7 @@ const Customization = () => {
         <section className="grid grid-cols-[240px_1fr] gap-6 pt-8">
           <div className="flex h-40 items-center justify-center rounded-lg border bg-muted">
             <Avatar className={"h-35 w-35"}>
-              <AvatarImage src={channel.profileImage} />
+              <AvatarImage src={getProfileUrl(channel.id)} />
               <AvatarFallback>name</AvatarFallback>
             </Avatar>
           </div>

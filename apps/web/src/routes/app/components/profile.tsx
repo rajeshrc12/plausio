@@ -1,6 +1,7 @@
 import channelApi from "@/api/channel"
 import { env } from "@/config/env"
 import { useMyChannel } from "@/hooks/useMyChannel"
+import { getProfileUrl } from "@/utils/video"
 import {
   Avatar,
   AvatarFallback,
@@ -49,7 +50,7 @@ const AppProfile = () => {
     <Popover>
       <PopoverTrigger>
         <Avatar className="h-9 w-9">
-          <AvatarImage src={channel.profileImage} />
+          <AvatarImage src={getProfileUrl(channel?.id)} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
@@ -58,7 +59,7 @@ const AppProfile = () => {
         {/* Header */}
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">
-            <AvatarImage src={`https://i.pravatar.cc/150?img=1`} />
+            <AvatarImage src={getProfileUrl(channel?.id)} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
 

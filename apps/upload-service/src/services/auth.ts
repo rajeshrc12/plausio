@@ -1,6 +1,7 @@
 import { googleClient } from "@/services/google"
 import { generateAccessToken } from "@/utils/jwt"
 import { prisma } from "@workspace/db"
+import { uploadGoogleProfileImage } from "@/services/s3"
 
 export const getGoogleAuthUrl = () => {
   return googleClient.generateAuthUrl({
@@ -50,6 +51,12 @@ export const loginWithGoogle = async (code: string) => {
         country: "India",
       },
     })
+    if (dbChannel?.id && payload?.picture) {
+      await uploadGoogleProfileImage({
+        id: dbChannel.id,
+        url: payload.picture,
+      })
+    }
   }
 
   const accessToken = generateAccessToken({

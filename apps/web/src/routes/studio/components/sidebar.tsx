@@ -6,6 +6,7 @@ import {
   AvatarImage,
 } from "@workspace/ui/components/avatar"
 import { useMyChannel } from "@/hooks/useMyChannel"
+import { getProfileUrl } from "@/utils/video"
 const menu = [
   {
     path: "/studio",
@@ -38,7 +39,7 @@ const StudioSidebar = () => {
     <div className="sidebar-scrollbar relative flex h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2">
       <div className="sticky top-0 flex flex-col items-center bg-background p-2">
         <Avatar className={"h-28 w-28"}>
-          <AvatarImage src={channel.profileImage} />
+          <AvatarImage src={getProfileUrl(channel.id)} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div className="pt-2 text-xs font-medium">Your channel</div>

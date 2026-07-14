@@ -1,4 +1,5 @@
 import videoApi from "@/api/video"
+import { getProfileUrl } from "@/utils/video"
 import {
   Avatar,
   AvatarFallback,
@@ -9,9 +10,11 @@ import { useState } from "react"
 
 const AddComment = ({
   videoId,
+  channelId,
   refetch,
 }: {
   videoId: number
+  channelId: number
   refetch: () => void
 }) => {
   const [btn, setBtn] = useState(false)
@@ -27,7 +30,7 @@ const AddComment = ({
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <Avatar className={"h-6 w-6"}>
-          <AvatarImage src={`https://i.pravatar.cc/150?img=1`} />
+          <AvatarImage src={getProfileUrl(channelId)} />
           <AvatarFallback>name</AvatarFallback>
         </Avatar>
         <input

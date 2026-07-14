@@ -11,3 +11,6 @@ export const getVideoKey = ({ id }: File) => {
 export const getThumbnailKey = ({ id }: File) => {
   return `${env.AWS_S3_BUCKET_THUMBNAIL_PATH}/${id}/original`
 }
+export const getProfileKey = ({ id }: File) => {
+  return `${env.AWS_S3_BUCKET_PROFILE_PATH}/${id}/original`
+}

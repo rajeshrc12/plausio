@@ -6,7 +6,11 @@ import {
 } from "@workspace/ui/components/avatar"
 import { getVideoCreationDate } from "@/utils/date"
 import type { VideoWithChannel } from "@/types/video"
-import { formatVideoDuration, getThumbnailUrl } from "@/utils/video"
+import {
+  formatVideoDuration,
+  getProfileUrl,
+  getThumbnailUrl,
+} from "@/utils/video"
 
 const VideoCard = ({ video }: { video: VideoWithChannel }) => {
   return (
@@ -29,7 +33,7 @@ const VideoCard = ({ video }: { video: VideoWithChannel }) => {
         {/* Channel Avatar */}
         {video.channel && (
           <Avatar className={"h-10 w-10"}>
-            <AvatarImage src={video.channel.profileImage} />
+            <AvatarImage src={getProfileUrl(video?.channel?.id)} />
             <AvatarFallback>{video.channel.name[0]}</AvatarFallback>
           </Avatar>
         )}

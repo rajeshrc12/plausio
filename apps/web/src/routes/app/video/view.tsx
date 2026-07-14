@@ -25,7 +25,7 @@ import {
 import { env } from "@/config/env"
 import channelApi from "@/api/channel"
 import videoApi from "@/api/video"
-import { getVideoUrl } from "@/utils/video"
+import { getProfileUrl, getVideoUrl } from "@/utils/video"
 
 const View = ({ id }: { id: string }) => {
   const { data: video, refetch } = useVideo(id ?? "")
@@ -95,7 +95,7 @@ const View = ({ id }: { id: string }) => {
           <div className="flex gap-3">
             <Link to={`/@${video?.channel?.handle}`} className="flex gap-3">
               <Avatar className={"h-10 w-10"}>
-                <AvatarImage src={video?.channel?.profileImage} />
+                <AvatarImage src={getProfileUrl(video?.channel?.id)} />
                 <AvatarFallback>{video?.channel?.name[0]}</AvatarFallback>
               </Avatar>
               <div>
@@ -193,7 +193,11 @@ const View = ({ id }: { id: string }) => {
         <div className="text-xl font-bold">
           {video?.comments?.length} Comments
         </div>
-        <AddComment videoId={video?.id} refetch={refetch} />
+        <AddComment
+          videoId={video?.id}
+          channelId={video?.channel?.id}
+          refetch={refetch}
+        />
         <Comments comments={video?.comments} />
       </div>
       <div className="col-span-4 flex flex-col gap-2 p-2">

@@ -8,6 +8,7 @@ import { useSidebar } from "@/hooks/useSidebar"
 import { HomeIcon, TvIcon } from "lucide-react"
 import { useMyChannel } from "@/hooks/useMyChannel"
 import type { Channel } from "@workspace/db"
+import { getProfileUrl } from "@/utils/video"
 
 const menu = [
   {
@@ -51,7 +52,7 @@ const AppSidebar = () => {
             className="mx-4 flex items-center gap-5 rounded-lg p-2 text-sm hover:bg-sidebar-accent"
           >
             <Avatar className={"h-6 w-6"}>
-              <AvatarImage src={channel.profileImage} />
+              <AvatarImage src={getProfileUrl(channel?.id)} />
               <AvatarFallback>{channel.name[0]}</AvatarFallback>
             </Avatar>
             <div>{channel.name}</div>

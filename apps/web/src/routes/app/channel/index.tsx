@@ -10,6 +10,7 @@ import { Link } from "react-router"
 import { useChannel } from "@/hooks/useChannel"
 import type { VideoWithChannel } from "@/types/video"
 import { useMyChannel } from "@/hooks/useMyChannel"
+import { getProfileUrl } from "@/utils/video"
 
 const Channel = ({ name }: { name: string }) => {
   const { data: myChannel, isError: myChannelError } = useMyChannel()
@@ -23,13 +24,13 @@ const Channel = ({ name }: { name: string }) => {
     <div className="flex flex-col p-5">
       <div className="h-36 overflow-hidden rounded-2xl">
         <img
-          src={channel?.bannerImage}
+          src={getProfileUrl(channel?.id)}
           className="h-full w-full object-cover"
         />
       </div>
       <div className="flex">
         <Avatar className={"m-5 h-40 w-40"}>
-          <AvatarImage src={channel?.profileImage} />
+          <AvatarImage src={getProfileUrl(channel?.id)} />
           <AvatarFallback>{channel.name}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-center gap-2">

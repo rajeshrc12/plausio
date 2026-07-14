@@ -15,6 +15,7 @@ import { LogOut, TvIcon } from "lucide-react"
 import { Link } from "react-router"
 import channelApi from "@/api/channel"
 import { useMyChannel } from "@/hooks/useMyChannel"
+import { getProfileUrl } from "@/utils/video"
 
 const StudioProfile = () => {
   const { data: channel, isLoading } = useMyChannel()
@@ -41,7 +42,7 @@ const StudioProfile = () => {
     <Popover>
       <PopoverTrigger>
         <Avatar className="h-9 w-9">
-          <AvatarImage src={channel.profileImage} />
+          <AvatarImage src={getProfileUrl(channel?.id)} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
@@ -50,7 +51,7 @@ const StudioProfile = () => {
         {/* Header */}
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">
-            <AvatarImage src={channel.profileImage} />
+            <AvatarImage src={getProfileUrl(channel?.id)} />
             <AvatarFallback>RC</AvatarFallback>
           </Avatar>
 

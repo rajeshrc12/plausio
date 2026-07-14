@@ -1,5 +1,6 @@
 import { env } from "@/config/env"
 import { s3 } from "@/config/s3"
+import { getProfileKey } from "@/utils/s3"
 import {
   CompleteMultipartUploadCommand,
   CompleteMultipartUploadCommandOutput,
@@ -7,6 +8,7 @@ import {
   CompletedPart,
   UploadPartCommand,
   GetObjectCommand,
+  PutObjectCommand,
 } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 
@@ -105,4 +107,38 @@ export const createPresignedUrl = async (key: string) => {
   return await getSignedUrl(s3, command, {
     expiresIn: 60 * 60, // 1 hour
   })
+}
+export const uploadGoogleProfileImage = async ({
+  id,
+  url,
+}: {
+  id: string
+  url: string
+}) => {
+  try {
+    // Download image
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error(`Failed to download image: ${response.status}`)
+    }
+
+    const contentType = response.headers.get("content-type") || "image/jpeg"
+    const arrayBuffer = await response.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    const key = getProfileKey({ id })
+
+    // Upload to S3
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: env.AWS_S3_BUCKET,
+        Key: key,
+        Body: buffer,
+        ContentType: contentType,
+      })
+    )
+  } catch (err) {
+    console.log(err)
+  }
 }
