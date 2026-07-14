@@ -87,6 +87,9 @@ const View = ({ id }: { id: string }) => {
           <video
             className="h-full w-full object-cover"
             controls
+            autoPlay
+            muted
+            playsInline
             src={getVideoUrl(Number(id))}
           />
         </div>
