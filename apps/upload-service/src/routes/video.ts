@@ -8,8 +8,8 @@ import { Router } from "express"
 
 const router = Router()
 
-router.get("/recommond", getRecommondVideos)
 router.get("/public", getPublicVideos)
+router.get("/recommond", getRecommondVideos)
 router.get("/:id", getVideo)
 
 router.post("/", addVideo)

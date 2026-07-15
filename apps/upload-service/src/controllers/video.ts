@@ -5,7 +5,7 @@ import { Request, Response } from "express"
 export const addVideo = async (req: Request<Video>, res: Response) => {
   const videoData = req.body
   const video = await prisma.video.create({ data: videoData })
-  res.status(200).json(video)
+  res.status(201).json(video)
 }
 
 export const getRecommondVideos = async (_req: Request, res: Response) => {
