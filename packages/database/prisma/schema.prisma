@@ -7,14 +7,52 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Status {
-  ACTIVE
-  INACTIVE
+enum VideoVisibility {
+  PUBLIC
+  PRIVATE
 }
 
-model User {
-  id     Int    @id @default(autoincrement())
-  email  String @unique
-  name   String
-  status Status
+enum VideoStatus {
+  INIT
+  PROCESSING
+  UPLOADED
+  FAILED
+}
+
+model Channel {
+  id          Int    @id @default(autoincrement())
+  handle      String @unique
+  email       String @unique
+  name        String
+  description String
+  country     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  videos Video[]
+}
+
+model Video {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  type        String
+
+  visibility VideoVisibility @default(PUBLIC)
+  status     VideoStatus     @default(INIT)
+
+  likes    Int @default(0)
+  dislikes Int @default(0)
+  views    Int @default(0)
+
+  duration Int
+  size     Int
+  name     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  channelId Int
+  channel   Channel @relation(fields: [channelId], references: [id])
 }

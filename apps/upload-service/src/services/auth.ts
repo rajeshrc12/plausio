@@ -1,6 +1,6 @@
 import { googleClient } from "@/services/google"
 import { generateAccessToken } from "@/utils/jwt"
-import { prisma, Status } from "@workspace/db"
+import { prisma } from "@workspace/db"
 
 export const getGoogleAuthUrl = () => {
   return googleClient.generateAuthUrl({
@@ -23,7 +23,7 @@ export const loginWithGoogle = async (code: string) => {
 
   const payload = ticket.getPayload()
 
-  if (!payload) {
+  if (!payload?.email) {
     throw new Error("Invalid google token")
   }
 
@@ -34,16 +34,18 @@ export const loginWithGoogle = async (code: string) => {
     avatar: payload.picture,
   }
 
-  let dbUser = await prisma.user.findUnique({
+  let dbUser = await prisma.channel.findUnique({
     where: { email: payload.email },
   })
 
   if (!dbUser) {
-    dbUser = await prisma.user.create({
+    dbUser = await prisma.channel.create({
       data: {
-        email: payload.email || "",
+        handle: payload.email.split("@")[0],
+        email: payload.email,
         name: payload.name || "",
-        status: Status.ACTIVE,
+        description: "This is description",
+        country: "India",
       },
     })
   }
