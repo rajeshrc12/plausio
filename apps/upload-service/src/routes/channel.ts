@@ -3,6 +3,6 @@ import { Router } from "express"
 
 const router = Router()
 
-router.get("/", getChannel)
+router.get("/:handle", getChannel)
 
 export default router
