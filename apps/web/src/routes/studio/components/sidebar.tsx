@@ -1,5 +1,5 @@
 const StudioSidebar = () => {
-  return <div>StudioSidebar</div>
+  return <div className="border-r">StudioSidebar</div>
 }
 
 export default StudioSidebar
