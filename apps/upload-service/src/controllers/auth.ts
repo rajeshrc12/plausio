@@ -9,25 +9,17 @@ export const googleAuth = async (_req: Request, res: Response) => {
 }
 
 export const googleCallback = async (req: Request, res: Response) => {
-  try {
-    const code = req.query.code as string
+  const code = req.query.code as string
 
-    const data = await loginWithGoogle(code)
+  const data = await loginWithGoogle(code)
 
-    res.cookie("accessToken", data.accessToken, {
-      httpOnly: true,
-      secure: false, // true in production (HTTPS)
-      sameSite: "lax",
-    })
+  res.cookie("accessToken", data.accessToken, {
+    httpOnly: true,
+    secure: false, // true in production (HTTPS)
+    sameSite: "lax",
+  })
 
-    res.redirect(`${env.FRONTEND_URL}/`)
-  } catch (error) {
-    console.error(error)
-
-    res.status(500).json({
-      message: "Google auth failed",
-    })
-  }
+  res.redirect(`${env.FRONTEND_URL}/`)
 }
 
 export const logout = async (_req: Request, res: Response) => {

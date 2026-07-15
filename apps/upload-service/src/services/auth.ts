@@ -1,4 +1,5 @@
 import { googleClient } from "@/services/google"
+import { AppError } from "@/utils/errorHandler"
 import { generateAccessToken } from "@/utils/jwt"
 import { prisma } from "@workspace/db"
 
@@ -13,7 +14,7 @@ export const loginWithGoogle = async (code: string) => {
   const { tokens } = await googleClient.getToken(code)
 
   if (!tokens.id_token) {
-    throw new Error("No id token")
+    throw new AppError("Google did not return an ID token", 401, "fail")
   }
 
   const ticket = await googleClient.verifyIdToken({
@@ -23,8 +24,8 @@ export const loginWithGoogle = async (code: string) => {
 
   const payload = ticket.getPayload()
 
-  if (!payload?.email) {
-    throw new Error("Invalid google token")
+  if (!payload || !payload.email) {
+    throw new AppError("Unable to verify Google token", 401, "fail")
   }
 
   const user = {
