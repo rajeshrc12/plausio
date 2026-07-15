@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@workspace/ui/components/button"
 import {
   Dialog,
@@ -10,14 +10,33 @@ import {
   DialogTrigger,
 } from "@workspace/ui/components/dialog"
 import { Upload } from "lucide-react"
+import type { FileData } from "@/types/video"
+import UploadVideo from "@/routes/studio/components/upload-video"
+import PreviewVideo from "@/routes/studio/components/preview-video"
 
 const UploadDialog = () => {
-  const cleanup = () => {}
-  useEffect(() => {
-    return cleanup
-  }, [])
+  const [video, setVideo] = useState<File>()
+  const [thumbnail, setThumbnail] = useState<File>()
+  const [videoData, setVideoData] = useState<FileData>({
+    title: "",
+    description: "",
+    visibility: "public",
+  })
+
+  const cleanup = () => {
+    setVideo(undefined)
+    setThumbnail(undefined)
+    setVideoData({
+      title: "",
+      description: "",
+      visibility: "public",
+    })
+  }
+  const handleSave = () => {
+    console.log({ video, thumbnail, videoData })
+  }
   return (
-    <Dialog onOpenChange={cleanup}>
+    <Dialog disablePointerDismissal={true} onOpenChange={cleanup}>
       <DialogTrigger
         render={
           <Button variant={"outline"} className="h-10 w-10 rounded-full">
@@ -25,17 +44,29 @@ const UploadDialog = () => {
           </Button>
         }
       />
-      <DialogContent className={"max-w-200!"}>
+      <DialogContent showCloseButton={!video} className={"max-w-200!"}>
         <DialogHeader>
-          <DialogTitle>Upload file</DialogTitle>
+          <DialogTitle>{!video ? "Upload File" : video.name}</DialogTitle>
         </DialogHeader>
-        <div className="sidebar-scrollbar max-h-[70vh] overflow-y-auto px-4">
-          Hi
+        <div className="sidebar-scrollbar max-h-[70vh] overflow-y-auto">
+          {!video ? (
+            <UploadVideo handleFile={setVideo} />
+          ) : (
+            <PreviewVideo
+              file={video}
+              thumbnail={thumbnail as File}
+              handleThumbnail={setThumbnail}
+              fileData={videoData as FileData}
+              handleFileData={setVideoData}
+            />
+          )}
         </div>
-        <DialogFooter className="bg-background px-4">
-          <DialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button>save</Button>
-        </DialogFooter>
+        {video && (
+          <DialogFooter className="border-none bg-background px-4">
+            <DialogClose render={<Button variant="outline">Cancel</Button>} />
+            <Button onClick={handleSave}>save</Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   )
