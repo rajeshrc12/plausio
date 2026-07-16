@@ -1,5 +1,6 @@
 import {
   addVideo,
+  getMyVideos,
   getPublicVideos,
   getRecommondVideos,
   getVideo,
@@ -10,6 +11,7 @@ const router = Router()
 
 router.get("/public", getPublicVideos)
 router.get("/recommond", getRecommondVideos)
+router.get("/me", getMyVideos)
 router.get("/:id", getVideo)
 
 router.post("/", addVideo)

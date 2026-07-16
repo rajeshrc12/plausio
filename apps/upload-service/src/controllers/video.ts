@@ -1,10 +1,14 @@
 import { Id } from "@/types/controller"
-import { prisma, Video } from "@workspace/db"
+import { Prisma, prisma, Video } from "@workspace/db"
 import { Request, Response } from "express"
 
-export const addVideo = async (req: Request<Video>, res: Response) => {
+export const addVideo = async (
+  req: Request<Prisma.VideoCreateInput>,
+  res: Response
+) => {
   const videoData = req.body
-  const video = await prisma.video.create({ data: videoData })
+  const channelId = 1
+  const video = await prisma.video.create({ data: { ...videoData, channelId } })
   res.status(201).json(video)
 }
 
@@ -14,6 +18,10 @@ export const getRecommondVideos = async (_req: Request, res: Response) => {
 }
 
 export const getPublicVideos = async (_req: Request, res: Response) => {
+  const videos = await prisma.video.findMany()
+  res.status(200).json(videos)
+}
+export const getMyVideos = async (_req: Request, res: Response) => {
   const videos = await prisma.video.findMany()
   res.status(200).json(videos)
 }

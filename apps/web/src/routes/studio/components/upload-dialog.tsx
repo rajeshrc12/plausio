@@ -13,6 +13,8 @@ import { Upload } from "lucide-react"
 import type { FileData } from "@/types/video"
 import UploadVideo from "@/routes/studio/components/upload-video"
 import PreviewVideo from "@/routes/studio/components/preview-video"
+import { useMyVideos } from "@/queries/video"
+import { useAddVideo } from "@/mutations/video"
 
 const UploadDialog = () => {
   const [video, setVideo] = useState<File>()
@@ -22,7 +24,9 @@ const UploadDialog = () => {
     description: "",
     visibility: "public",
   })
-
+  const { data: myVideos } = useMyVideos()
+  const addVideo = useAddVideo()
+  console.log({ myVideos })
   const cleanup = () => {
     setVideo(undefined)
     setThumbnail(undefined)
@@ -33,7 +37,14 @@ const UploadDialog = () => {
     })
   }
   const handleSave = () => {
-    console.log({ video, thumbnail, videoData })
+    addVideo.mutate({
+      title: "string",
+      description: "string",
+      name: "string",
+      type: "string",
+      duration: 1,
+      size: 1,
+    })
   }
   return (
     <Dialog disablePointerDismissal={true} onOpenChange={cleanup}>
@@ -63,8 +74,13 @@ const UploadDialog = () => {
         </div>
         {video && (
           <DialogFooter className="border-none bg-background px-4">
-            <DialogClose render={<Button variant="outline">Cancel</Button>} />
-            <Button onClick={handleSave}>save</Button>
+            <DialogClose
+              disabled={addVideo.isPending}
+              render={<Button variant="outline">Cancel</Button>}
+            />
+            <Button disabled={addVideo.isPending} onClick={handleSave}>
+              save
+            </Button>
           </DialogFooter>
         )}
       </DialogContent>
