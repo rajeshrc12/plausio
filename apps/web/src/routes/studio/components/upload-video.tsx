@@ -161,10 +161,10 @@ export default function VideoUploadForm() {
                   {field.value && (
                     <div className="mt-3 rounded-md border bg-muted/30 p-3 text-sm">
                       <div className="truncate font-medium">
-                        {field.value.name}
+                        Name: {field.value.name}
                       </div>
                       <div className="mt-1 text-muted-foreground">
-                        {(field.value.size / (1024 * 1024)).toFixed(2)} MB
+                        size: {(field.value.size / (1024 * 1024)).toFixed(2)} MB
                       </div>
                     </div>
                   )}
