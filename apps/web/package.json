@@ -14,13 +14,14 @@
   "dependencies": {
     "@fontsource/roboto": "^5.2.10",
     "@tanstack/react-query": "^5.101.2",
-    "@workspace/ui": "workspace:*",
     "@workspace/db": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "axios": "^1.18.1",
     "lucide-react": "^1.24.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-dropzone": "^17.0.0",
+    "react-hook-form": "^7.81.0",
     "react-router": "^8.2.0"
   },
   "devDependencies": {
