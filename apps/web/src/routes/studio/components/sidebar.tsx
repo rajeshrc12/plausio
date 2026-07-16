@@ -7,8 +7,8 @@ import {
 } from "@workspace/ui/components/avatar"
 import { Button } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
-import { LayoutDashboard } from "lucide-react"
-import { NavLink } from "react-router"
+import { LayoutDashboard, TvMinimalPlay } from "lucide-react"
+import { Link, useLocation } from "react-router"
 
 const menu = [
   {
@@ -16,9 +16,15 @@ const menu = [
     name: "Dashboard",
     Icon: LayoutDashboard,
   },
+  {
+    path: "/studio/content",
+    name: "Content",
+    Icon: TvMinimalPlay,
+  },
 ]
 
 const StudioSidebar = () => {
+  const { pathname } = useLocation()
   const { data: myChannel, isLoading } = useMyChannel()
   if (isLoading || !myChannel) return "Loading..."
   return (
@@ -34,9 +40,10 @@ const StudioSidebar = () => {
         </div>
       </div>
       <div className="flex flex-col justify-start px-5">
-        {menu?.map(({ path, name, Icon }) => (
-          <NavLink key={name} to={path}>
-            {({ isActive }) => (
+        {menu?.map(({ path, name, Icon }) => {
+          const isActive = path === pathname
+          return (
+            <Link key={name} to={path}>
               <Button
                 variant={isActive ? "secondary" : "ghost"}
                 className={"flex h-10 w-full justify-start gap-5"}
@@ -49,9 +56,9 @@ const StudioSidebar = () => {
                 />
                 <div>{name}</div>
               </Button>
-            )}
-          </NavLink>
-        ))}
+            </Link>
+          )
+        })}
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ export const getChannelJoinedDate = ({ date }: { date: Date }) => {
 }
 
 export const getVideoCreationDate = (
-  date: string | Date | DateTime
+  date: string | Date | DateTime | null
 ): string => {
   const dt =
     typeof date === "string"
@@ -14,5 +14,5 @@ export const getVideoCreationDate = (
         ? DateTime.fromJSDate(date)
         : date
 
-  return dt.toRelative() ?? ""
+  return dt?.toRelative() ?? ""
 }

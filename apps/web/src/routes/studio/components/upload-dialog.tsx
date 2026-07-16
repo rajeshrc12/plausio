@@ -19,7 +19,7 @@ const UploadDialog = () => {
           </Button>
         }
       />
-      <DialogContent className={"h-[80vh] max-w-200! overflow-y-scroll"}>
+      <DialogContent className={"h-[80vh] max-w-200! overflow-y-auto"}>
         <DialogHeader>
           <DialogTitle className={"text-2xl"}>Upload video</DialogTitle>
         </DialogHeader>

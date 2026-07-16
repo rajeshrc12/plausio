@@ -3,6 +3,7 @@ import App from "@/routes/app"
 import Studio from "@/routes/studio"
 import Home from "@/routes/app/home"
 import Dashboard from "@/routes/studio/dashboard"
+import Content from "@/routes/studio/content"
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "",
         Component: Dashboard,
+      },
+      {
+        path: "content",
+        Component: Content,
       },
     ],
   },
