@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@workspace/ui/components/select"
+import { useAddVideo } from "@/mutations/video"
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -40,144 +41,161 @@ const UploadVideo = () => {
       visibility: "PUBLIC",
     },
   })
-
+  const addVideo = useAddVideo()
   function onSubmit(values: FormValues) {
-    console.log(values)
+    const { name, type, size } = values.video
+    const { title, description, visibility, thumbnail } = values
+    addVideo.mutate({
+      file: {
+        name,
+        type,
+        size,
+        visibility,
+        title,
+        description,
+        duration: 0,
+      },
+      thumbnail,
+    })
+    console.log(addVideo.data)
   }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Left Side */}
-        <div className="space-y-3">
-          <Controller
-            name="title"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Title</FieldLabel>
+      <fieldset disabled={addVideo.isPending}>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Left Side */}
+          <div className="space-y-3">
+            <Controller
+              name="title"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Title</FieldLabel>
 
-                <FieldContent>
-                  <Input {...field} placeholder="Video title" />
+                  <FieldContent>
+                    <Input {...field} placeholder="Video title" />
 
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </FieldContent>
-              </Field>
-            )}
-          />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldContent>
+                </Field>
+              )}
+            />
 
-          <Controller
-            name="description"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Description</FieldLabel>
+            <Controller
+              name="description"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Description</FieldLabel>
 
-                <FieldContent>
-                  <Textarea
-                    {...field}
-                    rows={6}
-                    placeholder="Video description"
-                  />
+                  <FieldContent>
+                    <Textarea
+                      {...field}
+                      rows={6}
+                      placeholder="Video description"
+                    />
 
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </FieldContent>
-              </Field>
-            )}
-          />
-          <Controller
-            name="visibility"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Visibility</FieldLabel>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldContent>
+                </Field>
+              )}
+            />
+            <Controller
+              name="visibility"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Visibility</FieldLabel>
 
-                <FieldContent>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className={"w-full"}>
-                      <SelectValue placeholder="Select visibility" />
-                    </SelectTrigger>
+                  <FieldContent>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className={"w-full"}>
+                        <SelectValue placeholder="Select visibility" />
+                      </SelectTrigger>
 
-                    <SelectContent>
-                      <SelectItem value="PUBLIC">Public</SelectItem>
-                      <SelectItem value="PRIVATE">Private</SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        <SelectItem value="PUBLIC">Public</SelectItem>
+                        <SelectItem value="PRIVATE">Private</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </FieldContent>
-              </Field>
-            )}
-          />
-          <Controller
-            name="thumbnail"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid} className="h-30 w-40">
-                <FieldLabel>Thumbnail</FieldLabel>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldContent>
+                </Field>
+              )}
+            />
+            <Controller
+              name="thumbnail"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid} className="h-30 w-40">
+                  <FieldLabel>Thumbnail</FieldLabel>
 
-                <FieldContent>
-                  <FileDropzone
-                    value={field.value}
-                    onChange={field.onChange}
-                    accept={{ "image/*": [] }}
-                    label="Drop a thumbnail"
-                  />
-                  {fieldState.invalid && "Select thumbnail"}
-                </FieldContent>
-              </Field>
-            )}
-          />
+                  <FieldContent>
+                    <FileDropzone
+                      value={field.value}
+                      onChange={field.onChange}
+                      accept={{ "image/*": [] }}
+                      label="Drop a thumbnail"
+                    />
+                    {fieldState.invalid && "Select thumbnail"}
+                  </FieldContent>
+                </Field>
+              )}
+            />
+          </div>
+
+          {/* Right Side */}
+          <div className="flex">
+            <Controller
+              name="video"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field
+                  data-invalid={fieldState.invalid}
+                  className="flex w-full flex-col"
+                >
+                  <FieldLabel>Video</FieldLabel>
+
+                  <FieldContent>
+                    <FileDropzone
+                      value={field.value}
+                      onChange={field.onChange}
+                      accept={{ "video/*": [] }}
+                      label="Drag & drop a video or click"
+                    />
+
+                    {fieldState.invalid && "Select video"}
+
+                    {field.value && (
+                      <div className="mt-3 rounded-md border bg-muted/30 p-3 text-sm">
+                        <div className="truncate font-medium">
+                          Name: {field.value.name}
+                        </div>
+                        <div className="mt-1 text-muted-foreground">
+                          size: {(field.value.size / (1024 * 1024)).toFixed(2)}{" "}
+                          MB
+                        </div>
+                      </div>
+                    )}
+                  </FieldContent>
+                </Field>
+              )}
+            />
+          </div>
         </div>
 
-        {/* Right Side */}
-        <div className="flex">
-          <Controller
-            name="video"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field
-                data-invalid={fieldState.invalid}
-                className="flex w-full flex-col"
-              >
-                <FieldLabel>Video</FieldLabel>
-
-                <FieldContent>
-                  <FileDropzone
-                    value={field.value}
-                    onChange={field.onChange}
-                    accept={{ "video/*": [] }}
-                    label="Drag & drop a video or click"
-                  />
-
-                  {fieldState.invalid && "Select video"}
-
-                  {field.value && (
-                    <div className="mt-3 rounded-md border bg-muted/30 p-3 text-sm">
-                      <div className="truncate font-medium">
-                        Name: {field.value.name}
-                      </div>
-                      <div className="mt-1 text-muted-foreground">
-                        size: {(field.value.size / (1024 * 1024)).toFixed(2)} MB
-                      </div>
-                    </div>
-                  )}
-                </FieldContent>
-              </Field>
-            )}
-          />
-        </div>
-      </div>
-
-      <Button className={"float-right"} type="submit">
-        Upload
-      </Button>
+        <Button className={"float-right"} type="submit">
+          Upload
+        </Button>
+      </fieldset>
     </form>
   )
 }

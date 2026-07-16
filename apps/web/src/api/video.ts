@@ -28,6 +28,6 @@ export const getMyVideos = async () => {
 }
 
 export const addVideo = async (video: AddVideoDto) => {
-  const { data } = await api.post("/", video)
+  const { data } = await api.post("/init", video)
   return data
 }

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export function useMyVideos() {
   return useQuery({
-    queryKey: videoKeys.all,
+    queryKey: videoKeys.me(),
     queryFn: getMyVideos,
   })
 }

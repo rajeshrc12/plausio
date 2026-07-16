@@ -1,4 +1,5 @@
 import { googleClient } from "@/services/google"
+import { uploadGoogleProfileImage } from "@/services/s3"
 import { AppError } from "@/utils/errorHandler"
 import { generateAccessToken } from "@/utils/jwt"
 import { prisma } from "@workspace/db"
@@ -49,6 +50,9 @@ export const loginWithGoogle = async (code: string) => {
         country: "India",
       },
     })
+    if (dbUser.email && payload.picture) {
+      uploadGoogleProfileImage({ id: dbUser.id, url: payload.picture })
+    }
   }
 
   const accessToken = generateAccessToken({

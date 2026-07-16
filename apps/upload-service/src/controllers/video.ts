@@ -1,15 +1,59 @@
+import { env } from "@/config/env"
+import { uploadFiles } from "@/services/video"
 import { Id } from "@/types/controller"
-import { Prisma, prisma, Video } from "@workspace/db"
+import { Channel, prisma } from "@workspace/db"
 import { Request, Response } from "express"
 
-export const addVideo = async (
-  req: Request<Prisma.VideoCreateInput>,
-  res: Response
-) => {
-  const videoData = req.body
-  const channelId = 1
-  const video = await prisma.video.create({ data: { ...videoData, channelId } })
-  res.status(201).json(video)
+export const initUpload = async (req: Request, res: Response) => {
+  const { file, thumbnail: t } = req.body
+  const channel = req.channel as Channel
+
+  const video = await prisma.video.create({
+    data: {
+      title: file.title,
+      description: file.description,
+      visibility: file.visibility.toUpperCase(),
+      duration: file.duration,
+      size: file.size,
+      name: file.name,
+      type: file.type,
+      channelId: channel.id,
+    },
+  })
+  const thumbnail = await prisma.thumbnail.create({
+    data: {
+      type: t.type,
+      size: t.size,
+      name: t.name,
+      videoId: video.id,
+    },
+  })
+
+  const {
+    videoUrls,
+    thumbnailUrl,
+    videoKey,
+    thumbnailKey,
+    videoUploadId,
+    thumbnailUploadId,
+  } = await uploadFiles({
+    videoId: video.id,
+    videoType: file.type,
+    videoSize: file.size,
+    thumbnailType: thumbnail.type,
+  })
+
+  res.status(201).json({
+    video,
+    thumbnail,
+    videoKey,
+    thumbnailKey,
+    videoUploadId,
+    thumbnailUploadId,
+    videoUrls,
+    thumbnailUrl,
+    videoPartSize: env.AWS_S3_PART_SIZE_IN_MB,
+  })
 }
 
 export const getRecommondVideos = async (_req: Request, res: Response) => {

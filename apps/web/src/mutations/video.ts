@@ -10,7 +10,7 @@ export function useAddVideo() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: videoKeys.all,
+        queryKey: videoKeys.me(),
       })
     },
   })

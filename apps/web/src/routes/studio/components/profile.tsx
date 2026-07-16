@@ -10,29 +10,33 @@ import {
   PopoverTrigger,
 } from "@workspace/ui/components/popover"
 import LogoImg from "@/assets/logo.png"
-import { LogOut } from "lucide-react"
 import { Link } from "react-router"
+import { useMyChannel } from "@/queries/channel"
+import { getProfileUrl } from "@/utils/video"
+import SignOut from "@/components/sign-out"
 
 const StudioProfile = () => {
+  const { data: myChannel, isLoading } = useMyChannel()
+  if (isLoading || !myChannel) return "Loading..."
   return (
     <Popover>
       <PopoverTrigger>
         <Avatar className="h-9 w-9">
-          <AvatarImage src="" />
-          <AvatarFallback>RC</AvatarFallback>
+          <AvatarImage src={getProfileUrl(myChannel.id)} />
+          <AvatarFallback>{myChannel.name[0]}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
 
       <PopoverContent align="end" className="w-60 p-0">
         <div className="flex items-start gap-3 border-b p-4">
           <Avatar className="h-12 w-12">
-            <AvatarImage src="" />
-            <AvatarFallback>RC</AvatarFallback>
+            <AvatarImage src={getProfileUrl(myChannel.id)} />
+            <AvatarFallback>{myChannel.name}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate">rajesh</p>
-            <p className="truncate text-muted-foreground">rajesh@gmail.com</p>
-            <Link to={`/@rajesh`}>
+            <p className="truncate">{myChannel.name}</p>
+            <p className="truncate text-muted-foreground">{myChannel.email}</p>
+            <Link to={`/@${myChannel.handle}`}>
               <Button variant={"link"} className="mt-1 h-auto p-0">
                 View your channel
               </Button>
@@ -50,13 +54,7 @@ const StudioProfile = () => {
         </div>
 
         <div className="border-t p-2">
-          <Button
-            variant="ghost"
-            className="h-11 w-full justify-start text-destructive hover:text-destructive"
-          >
-            <LogOut className="mr-3 h-5 w-5" />
-            Sign out
-          </Button>
+          <SignOut />
         </div>
       </PopoverContent>
     </Popover>

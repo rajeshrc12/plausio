@@ -54,5 +54,19 @@ model Video {
   updatedAt DateTime? @updatedAt
 
   channelId Int
-  channel   Channel @relation(fields: [channelId], references: [id])
+  channel   Channel    @relation(fields: [channelId], references: [id])
+  thumbnail Thumbnail?
+}
+
+model Thumbnail {
+  id   Int    @id @default(autoincrement())
+  name String
+  size Int
+  type String
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  videoId Int   @unique
+  video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
 }
