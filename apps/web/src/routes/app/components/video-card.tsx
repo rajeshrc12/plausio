@@ -11,10 +11,15 @@ import {
   getProfileUrl,
   getThumbnailUrl,
 } from "@/utils/video"
+import { Link } from "react-router"
 
 const VideoCard = ({ video }: { video: VideoWithChannel }) => {
   return (
-    <div>
+    <Link
+      key={video.id}
+      to={`/watch?v=${video.id}`}
+      className="rounded-xl p-3 transition-all hover:bg-accent"
+    >
       {/* Thumbnail */}
       <div className="relative overflow-hidden rounded-xl">
         <img
@@ -50,7 +55,7 @@ const VideoCard = ({ video }: { video: VideoWithChannel }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -1,6 +1,7 @@
 import {
   completeUpload,
   getMyVideos,
+  getPublicVideo,
   getPublicVideos,
   getRecommondVideos,
   getVideo,
@@ -12,7 +13,7 @@ import { Router } from "express"
 const router = Router()
 
 router.get("/public", getPublicVideos)
-router.get("/public/:id", getVideo)
+router.get("/public/:id", getPublicVideo)
 
 router.use(authenticateToken)
 

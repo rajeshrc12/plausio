@@ -31,6 +31,10 @@ export const getPublicVideos = async () => {
   const { data } = await api.get("/public")
   return data
 }
+export const getPublicVideo = async (id: string) => {
+  const { data } = await api.get(`/public/${id}`)
+  return data
+}
 
 export const addVideo = async ({
   videoFile,
