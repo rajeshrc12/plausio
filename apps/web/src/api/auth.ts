@@ -1,7 +1,7 @@
 import { env } from "@/config/env"
 import axios from "axios"
 
-const authApi = axios.create({
+const api = axios.create({
   baseURL: `${env.UPLOAD_API_URL}/auth`,
   withCredentials: true, // important to send cookies
 })
@@ -11,7 +11,7 @@ export const signIn = async () => {
 }
 
 export const signOut = async () => {
-  await authApi.post(
+  await api.post(
     "/logout",
     {},
     {

@@ -1,4 +1,5 @@
 import { env } from "@/config/env"
+import { uploadMultipartFile, uploadSingleFile } from "@/services/video"
 import type { AddVideoDto } from "@/types/video"
 import axios from "axios"
 
@@ -27,7 +28,33 @@ export const getMyVideos = async () => {
   return data
 }
 
-export const addVideo = async (video: AddVideoDto) => {
-  const { data } = await api.post("/init", video)
-  return data
+export const addVideo = async ({
+  videoFile,
+  thumbnailFile,
+  videoData,
+  thumbnailData,
+}: AddVideoDto) => {
+  const { data } = await api.post("/init", {
+    video: videoData,
+    thumbnail: thumbnailData,
+  })
+  const videoParts = await uploadMultipartFile(
+    videoFile,
+    data.videoUrls,
+    data.videoPartSize
+  )
+
+  const thumbnailPart = await uploadSingleFile(thumbnailFile, data.thumbnailUrl)
+
+  const response = await api.post("/complete", {
+    videoId: data.video.id,
+    videoKey: data.videoKey,
+    videoUploadId: data.videoUploadId,
+    videoParts: videoParts,
+    thumbnailKey: data.thumbnailKey,
+    thumbnailUploadId: data.thumbnailUploadId,
+    thumbnailParts: [thumbnailPart],
+  })
+  if (response.status === 201) return true
+  return false
 }

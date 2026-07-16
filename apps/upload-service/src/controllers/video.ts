@@ -1,22 +1,23 @@
 import { env } from "@/config/env"
+import { completeMultipartUpload } from "@/services/s3"
 import { uploadFiles } from "@/services/video"
 import { Id } from "@/types/controller"
-import { Channel, prisma } from "@workspace/db"
+import { Channel, prisma, VideoStatus } from "@workspace/db"
 import { Request, Response } from "express"
 
 export const initUpload = async (req: Request, res: Response) => {
-  const { file, thumbnail: t } = req.body
+  const { video: v, thumbnail: t } = req.body
   const channel = req.channel as Channel
 
   const video = await prisma.video.create({
     data: {
-      title: file.title,
-      description: file.description,
-      visibility: file.visibility.toUpperCase(),
-      duration: file.duration,
-      size: file.size,
-      name: file.name,
-      type: file.type,
+      title: v.title,
+      description: v.description,
+      visibility: v.visibility.toUpperCase(),
+      duration: v.duration,
+      size: v.size,
+      name: v.name,
+      type: v.type,
       channelId: channel.id,
     },
   })
@@ -38,8 +39,8 @@ export const initUpload = async (req: Request, res: Response) => {
     thumbnailUploadId,
   } = await uploadFiles({
     videoId: video.id,
-    videoType: file.type,
-    videoSize: file.size,
+    videoType: v.type,
+    videoSize: v.size,
     thumbnailType: thumbnail.type,
   })
 
@@ -53,6 +54,44 @@ export const initUpload = async (req: Request, res: Response) => {
     videoUrls,
     thumbnailUrl,
     videoPartSize: env.AWS_S3_PART_SIZE_IN_MB,
+  })
+}
+
+export const completeUpload = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const {
+    videoId,
+    videoKey,
+    videoUploadId,
+    videoParts,
+    thumbnailKey,
+    thumbnailUploadId,
+    thumbnailParts,
+  } = req.body
+
+  await completeMultipartUpload({
+    key: videoKey,
+    parts: videoParts,
+    uploadId: videoUploadId,
+  })
+  await completeMultipartUpload({
+    key: thumbnailKey,
+    parts: thumbnailParts,
+    uploadId: thumbnailUploadId,
+  })
+  const video = await prisma.video.update({
+    where: {
+      id: videoId,
+    },
+    data: {
+      status: VideoStatus.UPLOADED,
+    },
+  })
+  res.status(201).json({
+    video,
+    message: "Upload completed successfully",
   })
 }
 

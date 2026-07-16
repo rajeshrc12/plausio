@@ -21,6 +21,8 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select"
 import { useAddVideo } from "@/mutations/video"
+import { Loader } from "lucide-react"
+import { toast } from "@workspace/ui/components/sonner"
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -42,11 +44,13 @@ const UploadVideo = () => {
     },
   })
   const addVideo = useAddVideo()
-  function onSubmit(values: FormValues) {
+  const onSubmit = async (values: FormValues) => {
     const { name, type, size } = values.video
     const { title, description, visibility, thumbnail } = values
-    addVideo.mutate({
-      file: {
+    const response = await addVideo.mutateAsync({
+      videoFile: values.video,
+      thumbnailFile: thumbnail,
+      videoData: {
         name,
         type,
         size,
@@ -55,14 +59,19 @@ const UploadVideo = () => {
         description,
         duration: 0,
       },
-      thumbnail,
+      thumbnailData: {
+        name: thumbnail.name,
+        type: thumbnail.type,
+        size: thumbnail.size,
+      },
     })
-    console.log(addVideo.data)
+    if (response) toast.success("Video upload complete")
+    else toast.error("Video upload failed")
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      <fieldset disabled={addVideo.isPending}>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <fieldset disabled={addVideo.isPending} className="space-y-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Left Side */}
           <div className="space-y-3">
@@ -193,7 +202,7 @@ const UploadVideo = () => {
         </div>
 
         <Button className={"float-right"} type="submit">
-          Upload
+          {addVideo.isPending ? <Loader className="animate-spin" /> : "Save"}
         </Button>
       </fieldset>
     </form>

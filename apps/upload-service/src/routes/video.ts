@@ -1,4 +1,5 @@
 import {
+  completeUpload,
   getMyVideos,
   getPublicVideos,
   getRecommondVideos,
@@ -18,5 +19,6 @@ router.use(authenticateToken)
 router.get("/recommond", getRecommondVideos)
 router.get("/me", getMyVideos)
 router.post("/init", initUpload)
+router.post("/complete", completeUpload)
 
 export default router
