@@ -31,7 +31,7 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>
 
-export default function VideoUploadForm() {
+const UploadVideo = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -181,3 +181,4 @@ export default function VideoUploadForm() {
     </form>
   )
 }
+export default UploadVideo
