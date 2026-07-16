@@ -1,5 +1,5 @@
 const AppSidebar = () => {
-  return <div className="border-r">AppSidebar</div>
+  return <div className="w-50 border-r">AppSidebar</div>
 }
 
 export default AppSidebar

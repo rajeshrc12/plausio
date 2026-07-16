@@ -5,10 +5,9 @@ import axios from "axios"
 
 const api = axios.create({
   baseURL: `${env.UPLOAD_API_URL}/video`,
-  withCredentials: true, // important to send cookies
+  withCredentials: true,
 })
 
-// Response interceptor to handle 401 globally
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -25,6 +24,11 @@ api.interceptors.response.use(
 
 export const getMyVideos = async () => {
   const { data } = await api.get("/me")
+  return data
+}
+
+export const getPublicVideos = async () => {
+  const { data } = await api.get("/public")
   return data
 }
 

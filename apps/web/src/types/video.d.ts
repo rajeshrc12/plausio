@@ -7,3 +7,7 @@ export type AddVideoDto = {
   videoData: Omit<Prisma.VideoCreateInput, "channel">
   thumbnailData: Omit<Prisma.ThumbnailCreateInput, "video">
 }
+
+export type VideoWithChannel = Video & {
+  channel: Channel
+}
