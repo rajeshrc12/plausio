@@ -4,11 +4,11 @@ import { Request, Response } from "express"
 
 export const getChannel = async (req: Request, res: Response) => {
   const { handle } = req.params
-
-  if (handle) throw new AppError("Channel handle is required", 500, "fail")
+  if (!handle) throw new AppError("Channel handle is required", 500, "fail")
 
   const channel = await prisma.channel.findFirst({
-    where: { handle },
+    where: { handle: String(handle.slice(1)) },
+    include: { videos: true },
   })
   res.status(200).json(channel)
 }

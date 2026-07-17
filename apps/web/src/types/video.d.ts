@@ -10,4 +10,9 @@ export type AddVideoDto = {
 
 export type VideoWithChannel = Video & {
   channel: Channel
+  comments: Comment[]
+}
+
+export type ChannelWithVideos = Channel & {
+  videos: Video[]
 }

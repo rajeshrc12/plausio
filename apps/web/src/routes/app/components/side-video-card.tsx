@@ -1,10 +1,16 @@
-import type { VideoWithChannel } from "@/types/video"
 import { getVideoCreationDate } from "@/utils/date"
 import { formatVideoDuration, getThumbnailUrl } from "@/utils/video"
+import type { Channel, Video } from "@workspace/db"
 import { Play } from "lucide-react"
 import { Link } from "react-router"
 
-const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
+const SideVideoCard = ({
+  video,
+  channel,
+}: {
+  video: Video
+  channel: Channel
+}) => {
   return (
     <Link to={`/watch?v=${video.id}`}>
       <div key={video.id} className="grid grid-cols-12 gap-3">
@@ -25,7 +31,7 @@ const SideVideoCard = ({ video }: { video: VideoWithChannel }) => {
             {video.title}
           </h3>
 
-          <p className="text-xs text-muted-foreground">{video.channel.name}</p>
+          <p className="text-xs text-muted-foreground">{channel.name}</p>
 
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
             <Play size={10} /> {video.views} views •{" "}

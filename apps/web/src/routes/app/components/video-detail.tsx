@@ -1,15 +1,21 @@
-import type { VideoWithChannel } from "@/types/video"
 import { Forward } from "lucide-react"
 import Subscribe from "@/routes/app/components/subscribe"
 import Reaction from "@/routes/app/components/reaction"
 import VideoDescription from "@/routes/app/components/video-description"
+import type { Channel, Video } from "@workspace/db"
 
-const VideoDetail = ({ video }: { video: VideoWithChannel }) => {
+const VideoDetail = ({
+  video,
+  channel,
+}: {
+  video: Video
+  channel: Channel
+}) => {
   if (!video) return
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between">
-        <Subscribe channel={video.channel} />
+        <Subscribe channel={channel} />
         <div className="flex gap-3">
           <Reaction likes={video.likes || 0} dislikes={video.dislikes || 0} />
           <div className="flex gap-2 rounded-full bg-accent px-4 py-2">

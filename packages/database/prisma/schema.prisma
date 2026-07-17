@@ -19,6 +19,11 @@ enum VideoStatus {
   FAILED
 }
 
+enum VideoReaction {
+  LIKE
+  DISLIKE
+}
+
 model Channel {
   id          Int    @id @default(autoincrement())
   handle      String @unique
@@ -30,7 +35,24 @@ model Channel {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  videos Video[]
+  videos    Video[]
+  comments  Comment[]
+  reactions Reaction[]
+
+  subscriptions Subscription[] @relation("Subscriber")
+  subscribers   Subscription[] @relation("SubscribedTo")
+}
+
+model Subscription {
+  subscriberId Int
+  subscriber   Channel @relation("Subscriber", fields: [subscriberId], references: [id])
+
+  channelId Int
+  channel   Channel @relation("SubscribedTo", fields: [channelId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([subscriberId, channelId])
 }
 
 model Video {
@@ -56,6 +78,37 @@ model Video {
   channelId Int
   channel   Channel    @relation(fields: [channelId], references: [id])
   thumbnail Thumbnail?
+  comments  Comment[]
+  reactions Reaction[]
+}
+
+model Reaction {
+  id Int @id @default(autoincrement())
+
+  videoId   Int
+  channelId Int
+  type      VideoReaction
+
+  video   Video   @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([videoId, channelId])
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id])
+
+  channelId Int
+  channel   Channel @relation(fields: [channelId], references: [id])
 }
 
 model Thumbnail {

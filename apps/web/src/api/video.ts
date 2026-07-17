@@ -1,6 +1,7 @@
 import { env } from "@/config/env"
 import { uploadMultipartFile, uploadSingleFile } from "@/services/video"
-import type { AddVideoDto } from "@/types/video"
+import type { AddVideoDto, VideoWithChannel } from "@/types/video"
+import type { Video } from "@workspace/db"
 import axios from "axios"
 
 const api = axios.create({
@@ -23,16 +24,16 @@ api.interceptors.response.use(
 )
 
 export const getMyVideos = async () => {
-  const { data } = await api.get("/me")
+  const { data } = await api.get<Video[]>("/me")
   return data
 }
 
 export const getPublicVideos = async () => {
-  const { data } = await api.get("/public")
+  const { data } = await api.get<VideoWithChannel[]>("/public")
   return data
 }
 export const getPublicVideo = async (id: string) => {
-  const { data } = await api.get(`/public/${id}`)
+  const { data } = await api.get<VideoWithChannel>(`/public/${id}`)
   return data
 }
 

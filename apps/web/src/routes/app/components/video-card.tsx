@@ -5,15 +5,15 @@ import {
   AvatarImage,
 } from "@workspace/ui/components/avatar"
 import { getVideoCreationDate } from "@/utils/date"
-import type { VideoWithChannel } from "@/types/video"
 import {
   formatVideoDuration,
   getProfileUrl,
   getThumbnailUrl,
 } from "@/utils/video"
 import { Link } from "react-router"
+import type { Channel, Video } from "@workspace/db"
 
-const VideoCard = ({ video }: { video: VideoWithChannel }) => {
+const VideoCard = ({ video, channel }: { video: Video; channel: Channel }) => {
   return (
     <Link
       key={video.id}
@@ -36,10 +36,10 @@ const VideoCard = ({ video }: { video: VideoWithChannel }) => {
       {/* Video Details */}
       <div className="mt-3 flex gap-3">
         {/* Channel Avatar */}
-        {video.channel && (
+        {channel && (
           <Avatar className={"h-10 w-10"}>
-            <AvatarImage src={getProfileUrl(video?.channel?.id)} />
-            <AvatarFallback>{video.channel.name[0]}</AvatarFallback>
+            <AvatarImage src={getProfileUrl(channel?.id)} />
+            <AvatarFallback>{channel.name[0]}</AvatarFallback>
           </Avatar>
         )}
 
@@ -48,7 +48,7 @@ const VideoCard = ({ video }: { video: VideoWithChannel }) => {
             {video.title}
           </h3>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <div>{video?.channel?.name}</div>
+            <div>{channel?.name}</div>
             <Play size={10} />
             <div>{video.views}</div>
             <div>{getVideoCreationDate(video.createdAt)}</div>

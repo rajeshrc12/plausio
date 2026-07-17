@@ -1,7 +1,6 @@
 import { usePublicVideo, usePublicVideos } from "@/queries/video"
 import SideVideoCard from "@/routes/app/components/side-video-card"
 import VideoDetail from "@/routes/app/components/video-detail"
-import type { VideoWithChannel } from "@/types/video"
 
 const View = ({ videoId }: { videoId: string }) => {
   const { data: videoData } = usePublicVideo(videoId)
@@ -17,14 +16,14 @@ const View = ({ videoId }: { videoId: string }) => {
             src="https://samplelib.com/mp4/sample-5s-360p.mp4"
           />
         </div>
-        <VideoDetail video={videoData} />
+        <VideoDetail video={videoData} channel={videoData.channel} />
         <div className="text-xl font-bold">
           {videoData?.comments?.length} Comments
         </div>
       </div>
       <div className="col-span-4 flex flex-col gap-4">
-        {videos?.map((video: VideoWithChannel) => (
-          <SideVideoCard key={video.id} video={video} />
+        {videos?.map((video) => (
+          <SideVideoCard key={video.id} video={video} channel={video.channel} />
         ))}
       </div>
     </div>

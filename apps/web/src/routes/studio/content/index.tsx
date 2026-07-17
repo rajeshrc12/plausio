@@ -7,7 +7,6 @@ import {
   TableRow,
 } from "@workspace/ui/components/table"
 import TableVideoCard from "@/routes/studio/components/table-video-card"
-import type { Video } from "@workspace/db"
 import { getVideoCreationDate } from "@/utils/date"
 import { getThumbnailUrl } from "@/utils/video"
 import { useMyVideos } from "@/queries/video"
@@ -39,7 +38,7 @@ const Content = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {videos?.map((video: Video) => (
+            {videos?.map((video) => (
               <TableRow key={video.id}>
                 <TableCell>
                   <TableVideoCard

@@ -1,4 +1,5 @@
 import { env } from "@/config/env"
+import type { ChannelWithVideos } from "@/types/video"
 import type { Channel } from "@workspace/db"
 import axios from "axios"
 
@@ -22,5 +23,9 @@ api.interceptors.response.use(
 
 export const getMyChannel = async () => {
   const { data } = await api.get<Channel>("/me")
+  return data
+}
+export const getChannel = async (handle: string) => {
+  const { data } = await api.get<ChannelWithVideos>(`/public/${handle}`)
   return data
 }
