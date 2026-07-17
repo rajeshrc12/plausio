@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className="grid grid-cols-3 p-2">
       {publicVideos?.map((video: VideoWithChannel) => (
-        <VideoCard video={video} />
+        <VideoCard key={video.id} video={video} />
       ))}
     </div>
   )

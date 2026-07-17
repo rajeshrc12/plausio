@@ -39,19 +39,19 @@ model Video {
   description String
   type        String
 
-  visibility VideoVisibility? @default(PUBLIC)
-  status     VideoStatus?     @default(INIT)
+  visibility VideoVisibility @default(PUBLIC)
+  status     VideoStatus     @default(INIT)
 
-  likes    Int? @default(0)
-  dislikes Int? @default(0)
-  views    Int? @default(0)
+  likes    Int @default(0)
+  dislikes Int @default(0)
+  views    Int @default(0)
 
   duration Int
   size     Int
   name     String
 
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   channelId Int
   channel   Channel    @relation(fields: [channelId], references: [id])
@@ -64,8 +64,8 @@ model Thumbnail {
   size Int
   type String
 
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   videoId Int   @unique
   video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
