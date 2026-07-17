@@ -23,7 +23,7 @@ const VideoDetail = ({
           {myChannel?.id !== channel.id && <Subscribe id={channel.id} />}
         </div>
         <div className="flex gap-3">
-          <Reaction likes={video.likes || 0} dislikes={video.dislikes || 0} />
+          <Reaction id={video.id} />
           <div className="flex gap-2 rounded-full bg-accent px-4 py-2">
             <button className={"flex items-center gap-2 font-medium"}>
               <Forward />

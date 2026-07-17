@@ -126,3 +126,72 @@ export const getVideo = async (req: Request<Id>, res: Response) => {
   const video = await prisma.video.findFirst({ where: { id: Number(id) } })
   res.status(200).json(video)
 }
+
+export const addReaction = async (req: Request<Id>, res: Response) => {
+  const { id, type } = req.body
+  const channel = req.channel as Channel
+  let reaction
+  if (type === "LIKE" || type === "DISLIKE") {
+    reaction = await prisma.reaction.upsert({
+      where: {
+        videoId_channelId: {
+          videoId: id,
+          channelId: channel.id,
+        },
+      },
+      update: {
+        type: type,
+      },
+      create: {
+        videoId: id,
+        channelId: channel.id,
+        type: type,
+      },
+    })
+  }
+  if (type === "REMOVE") {
+    reaction = await prisma.reaction.delete({
+      where: {
+        videoId_channelId: {
+          videoId: id,
+          channelId: channel.id,
+        },
+      },
+    })
+  }
+  res.status(201).json(reaction)
+}
+
+export const getReaction = async (req: Request<Id>, res: Response) => {
+  const { id } = req.params
+  const reactions = await prisma.reaction.groupBy({
+    by: ["type"],
+    where: {
+      videoId: Number(id),
+    },
+    _count: {
+      _all: true,
+    },
+  })
+  const reaction = {
+    likes: 0,
+    dislikes: 0,
+  }
+  for (const r of reactions) {
+    if (r["type"] === "LIKE") reaction["likes"] += r["_count"]["_all"]
+    if (r["type"] === "DISLIKE") reaction["dislikes"] += r["_count"]["_all"]
+  }
+  res.status(200).json(reaction)
+}
+
+export const getMyReaction = async (req: Request<Id>, res: Response) => {
+  const { id } = req.params
+  const channel = req.channel as Channel
+  const reaction = await prisma.reaction.findFirst({
+    where: {
+      videoId: Number(id),
+      channelId: channel.id,
+    },
+  })
+  res.status(200).json(reaction)
+}
