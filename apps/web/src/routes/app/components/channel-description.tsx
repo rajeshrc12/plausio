@@ -1,5 +1,5 @@
+import type { ChannelWithVideos } from "@/types/video"
 import { getChannelJoinedDate } from "@/utils/date"
-import type { Channel } from "@workspace/db"
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
 } from "@workspace/ui/components/dialog"
 import { Globe, Info, PersonStanding, Play, Video, View } from "lucide-react"
 
-const ChannelDescription = ({ channel }: { channel: Channel }) => {
+const ChannelDescription = ({ channel }: { channel: ChannelWithVideos }) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -45,15 +45,15 @@ const ChannelDescription = ({ channel }: { channel: Channel }) => {
             </div>
             <div className="flex items-center gap-2">
               <PersonStanding />
-              <div>{channel.id} Subscribers</div>
+              <div>{channel.subscribers} Subscribers</div>
             </div>
             <div className="flex items-center gap-2">
               <Video />
-              <div>{channel.id} videos</div>
+              <div>{channel.videos.length} videos</div>
             </div>
             <div className="flex items-center gap-2">
               <View />
-              <div>{channel.id} views</div>
+              <div>{channel.views || 0} views</div>
             </div>
           </div>
         </div>

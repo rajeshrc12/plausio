@@ -113,8 +113,11 @@ export const getPublicVideo = async (req: Request<Id>, res: Response) => {
   })
   res.status(200).json(video)
 }
-export const getMyVideos = async (_req: Request, res: Response) => {
-  const videos = await prisma.video.findMany()
+export const getMyVideos = async (req: Request, res: Response) => {
+  const channel = req.channel as Channel
+  const videos = await prisma.video.findMany({
+    where: { channelId: channel.id },
+  })
   res.status(200).json(videos)
 }
 

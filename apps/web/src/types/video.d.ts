@@ -14,5 +14,7 @@ export type VideoWithChannel = Video & {
 }
 
 export type ChannelWithVideos = Channel & {
+  subscribers: number
+  views: number
   videos: Video[]
 }

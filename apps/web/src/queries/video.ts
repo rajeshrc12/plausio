@@ -6,6 +6,11 @@ export function useMyVideos() {
   return useQuery({
     queryKey: videoKeys.me(),
     queryFn: getMyVideos,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
   })
 }
 

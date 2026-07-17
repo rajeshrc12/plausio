@@ -1,28 +1,52 @@
-import { getProfileUrl } from "@/utils/video"
-import type { Channel } from "@workspace/db"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@workspace/ui/components/avatar"
+import SignIn from "@/components/sign-in"
 import { Button } from "@workspace/ui/components/button"
-import { Link } from "react-router"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover"
+import { useSubscriptionStatus } from "@/queries/channel"
+import { useHandleSubscription } from "@/mutations/channel"
 
-const Subscribe = ({ channel }: { channel: Channel }) => {
+const Subscribe = ({ id }: { id: number }) => {
+  const { data, isLoading, isError } = useSubscriptionStatus(id)
+  const handleSubscription = useHandleSubscription()
+  const handle = () => {
+    handleSubscription.mutate({ isSubscribed: !!data?.isSubscribed, id })
+  }
+  if (isLoading) return
+  if (isError)
+    return (
+      <Popover>
+        <PopoverTrigger
+          render={<Button className={"rounded-full p-5"}>Subscribe </Button>}
+        ></PopoverTrigger>
+        <PopoverContent className={"p-4 shadow"}>
+          <PopoverHeader>
+            <PopoverTitle className={"text-xl font-bold"}>
+              Want to subscribe to this channel?
+            </PopoverTitle>
+            <PopoverDescription>
+              Sign in to subscribe to this channel.
+            </PopoverDescription>
+            <SignIn />
+          </PopoverHeader>
+        </PopoverContent>
+      </Popover>
+    )
+
   return (
-    <div className="flex gap-3">
-      <Link to={`/@${channel?.handle}`} className="flex gap-3">
-        <Avatar className={"h-10 w-10"}>
-          <AvatarImage src={getProfileUrl(channel?.id)} />
-          <AvatarFallback>{channel?.name[0]}</AvatarFallback>
-        </Avatar>
-        <div>
-          <div className="font-bold">{channel?.name}</div>
-          <div className="text-xs text-muted-foreground">397k subscribers</div>
-        </div>
-      </Link>
-      <Button className={"rounded-full p-5"}>Subscribe</Button>
-    </div>
+    <Button
+      variant={data?.isSubscribed ? "secondary" : "default"}
+      disabled={handleSubscription.isPending}
+      className={"rounded-full p-5"}
+      onClick={handle}
+    >
+      {data?.isSubscribed ? "Unsubscribe" : "Subscribe"}
+    </Button>
   )
 }
 

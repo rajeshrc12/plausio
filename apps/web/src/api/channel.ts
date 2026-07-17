@@ -1,6 +1,6 @@
 import { env } from "@/config/env"
 import type { ChannelWithVideos } from "@/types/video"
-import type { Channel } from "@workspace/db"
+import type { Subscription } from "@workspace/db"
 import axios from "axios"
 
 const api = axios.create({
@@ -22,10 +22,33 @@ api.interceptors.response.use(
 )
 
 export const getMyChannel = async () => {
-  const { data } = await api.get<Channel>("/me")
+  const { data } = await api.get<ChannelWithVideos>("/me")
   return data
 }
 export const getChannel = async (handle: string) => {
   const { data } = await api.get<ChannelWithVideos>(`/public/${handle}`)
+  return data
+}
+export const handleSubscription = async ({
+  isSubscribed,
+  id,
+}: {
+  isSubscribed: boolean
+  id: number
+}) => {
+  let response
+  if (isSubscribed)
+    response = await api.delete<Subscription>(`/subscription/${id}`)
+  else
+    response = await api.post<Subscription>(`/subscription`, {
+      id,
+    })
+  return response.data
+}
+
+export const getSubscriptionStatus = async (id: number) => {
+  const { data } = await api.get<{ isSubscribed: boolean }>(
+    `/subscription/${id}`
+  )
   return data
 }

@@ -3,6 +3,8 @@ import Subscribe from "@/routes/app/components/subscribe"
 import Reaction from "@/routes/app/components/reaction"
 import VideoDescription from "@/routes/app/components/video-description"
 import type { Channel, Video } from "@workspace/db"
+import ChannelCard from "@/routes/app/components/channel-card"
+import { useMyChannel } from "@/queries/channel"
 
 const VideoDetail = ({
   video,
@@ -11,11 +13,15 @@ const VideoDetail = ({
   video: Video
   channel: Channel
 }) => {
+  const { data: myChannel } = useMyChannel()
   if (!video) return
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between">
-        <Subscribe channel={channel} />
+        <div className="flex gap-3">
+          <ChannelCard channel={channel} />
+          {myChannel?.id !== channel.id && <Subscribe id={channel.id} />}
+        </div>
         <div className="flex gap-3">
           <Reaction likes={video.likes || 0} dislikes={video.dislikes || 0} />
           <div className="flex gap-2 rounded-full bg-accent px-4 py-2">

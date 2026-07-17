@@ -6,10 +6,13 @@ import {
 import ChannelDescription from "@/routes/app/components/channel-description"
 import VideoCard from "@/routes/app/components/video-card"
 import { getProfileUrl } from "@/utils/video"
-import { useChannel } from "@/queries/channel"
+import { useChannel, useMyChannel } from "@/queries/channel"
+import Subscribe from "@/routes/app/components/subscribe"
 
 const Channel = ({ handle }: { handle: string }) => {
   const { data: channel, isLoading } = useChannel(handle)
+
+  const { data: myChannel } = useMyChannel()
   if (isLoading || !channel) return "Loading..."
   return (
     <div className="flex flex-col p-5">
@@ -29,11 +32,18 @@ const Channel = ({ handle }: { handle: string }) => {
           <div className="flex gap-2 text-sm">
             <div className="font-medium">@{channel.handle}</div>
             <div className="text-muted-foreground">
-              {channel.id} subscribers
+              {channel.subscribers} subscribers
             </div>
-            <div className="text-muted-foreground">{channel.id} videos</div>
+            <div className="text-muted-foreground">
+              {channel.videos.length} videos
+            </div>
           </div>
           <ChannelDescription channel={channel} />
+          {myChannel?.id !== channel.id && (
+            <div>
+              <Subscribe id={channel.id} />
+            </div>
+          )}
         </div>
       </div>
       <div className="border-b">
