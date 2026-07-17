@@ -22,7 +22,6 @@ const AddComment = ({
   const addComment = useAddComment()
   const [btn, setBtn] = useState(false)
   const [content, setContent] = useState("")
-  console.log(id, content)
   const handleComment = () => {
     addComment.mutateAsync({ id, content })
     setContent("")
