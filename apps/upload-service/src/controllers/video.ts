@@ -109,7 +109,17 @@ export const getPublicVideo = async (req: Request<Id>, res: Response) => {
 
   const video = await prisma.video.findFirst({
     where: { id: Number(id) },
-    include: { channel: true },
+    include: {
+      channel: true,
+      comments: {
+        include: {
+          channel: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   })
   res.status(200).json(video)
 }
@@ -194,4 +204,17 @@ export const getMyReaction = async (req: Request<Id>, res: Response) => {
     },
   })
   res.status(200).json(reaction)
+}
+
+export const addComment = async (req: Request, res: Response) => {
+  const { videoId, content } = req.body
+  const channel = req.channel as Channel
+  const comment = await prisma.comment.create({
+    data: {
+      content,
+      videoId,
+      channelId: channel.id,
+    },
+  })
+  res.status(200).json(comment)
 }

@@ -32,7 +32,7 @@ export function usePublicVideos() {
   })
 }
 
-export function usePublicVideo(id: string) {
+export function usePublicVideo(id: number) {
   return useQuery({
     queryKey: videoKeys.detail(id),
     queryFn: () => getPublicVideo(id),

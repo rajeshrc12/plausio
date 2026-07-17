@@ -1,7 +1,7 @@
 import { env } from "@/config/env"
 import { uploadMultipartFile, uploadSingleFile } from "@/services/video"
 import type { AddVideoDto, VideoWithChannel } from "@/types/video"
-import type { Reaction, Video } from "@workspace/db"
+import type { Comment, Reaction, Video } from "@workspace/db"
 import axios from "axios"
 
 const api = axios.create({
@@ -32,7 +32,7 @@ export const getPublicVideos = async () => {
   const { data } = await api.get<VideoWithChannel[]>("/public")
   return data
 }
-export const getPublicVideo = async (id: string) => {
+export const getPublicVideo = async (id: number) => {
   const { data } = await api.get<VideoWithChannel>(`/public/${id}`)
   return data
 }
@@ -56,6 +56,17 @@ export const getVideoReaction = async (id: number) => {
 
 export const getMyReaction = async (id: number) => {
   const { data } = await api.get<{ type: string }>(`/reaction/${id}`)
+  return data
+}
+
+export const addComment = async ({
+  id,
+  content,
+}: {
+  id: number
+  content: string
+}) => {
+  const { data } = await api.post<Comment>(`/comment`, { videoId: id, content })
   return data
 }
 

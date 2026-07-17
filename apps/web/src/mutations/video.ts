@@ -1,4 +1,4 @@
-import { addVideo, addVideoReaction } from "@/api/video"
+import { addComment, addVideo, addVideoReaction } from "@/api/video"
 import { videoKeys } from "@/queryKeys/video"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
@@ -21,6 +21,20 @@ export function useAddVideoReaction() {
 
   return useMutation({
     mutationFn: addVideoReaction,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: videoKeys.all,
+      })
+    },
+  })
+}
+
+export function useAddComment() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: addComment,
 
     onSuccess: () => {
       queryClient.invalidateQueries({

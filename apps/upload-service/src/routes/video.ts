@@ -1,4 +1,5 @@
 import {
+  addComment,
   addReaction,
   completeUpload,
   getMyReaction,
@@ -7,7 +8,6 @@ import {
   getPublicVideos,
   getReaction,
   getRecommondVideos,
-  getVideo,
   initUpload,
 } from "@/controllers/video"
 import { authenticateToken } from "@/utils/middleware"
@@ -27,5 +27,6 @@ router.post("/init", initUpload)
 router.post("/complete", completeUpload)
 router.post("/reaction", addReaction)
 router.get("/reaction/:id", getMyReaction)
+router.post("/comment", addComment)
 
 export default router
