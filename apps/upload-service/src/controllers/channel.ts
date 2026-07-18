@@ -74,6 +74,11 @@ export const getMyChannel = async (req: Request, res: Response) => {
           subscribers: true,
         },
       },
+      subscriptions: {
+        include: {
+          channel: true,
+        },
+      },
     },
   })
   const view = await prisma.video.aggregate({

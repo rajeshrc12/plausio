@@ -21,7 +21,6 @@ const menu = [
 const AppSidebar = () => {
   const { data: channel, isError } = useMyChannel()
   const { pathname } = useLocation()
-
   if (!pathname.includes("watch"))
     return (
       <div className="sidebar-scrollbar flex h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2">
@@ -52,15 +51,15 @@ const AppSidebar = () => {
           ) : (
             channel?.subscriptions?.map(({ channel }: { channel: Channel }) => (
               <Link
-                key={channel.id}
-                to={`/@${channel.handle}`}
+                key={channel?.id}
+                to={`/@${channel?.handle}`}
                 className="flex items-center gap-5 rounded-lg p-2 text-sm hover:bg-sidebar-accent"
               >
                 <Avatar className={"h-6 w-6"}>
                   <AvatarImage src={getProfileUrl(channel?.id)} />
-                  <AvatarFallback>{channel.name[0]}</AvatarFallback>
+                  <AvatarFallback>{channel?.name[0]}</AvatarFallback>
                 </Avatar>
-                <div>{channel.name}</div>
+                <div>{channel?.name}</div>
               </Link>
             ))
           )}
