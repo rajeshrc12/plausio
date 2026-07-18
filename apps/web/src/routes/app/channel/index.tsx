@@ -11,9 +11,9 @@ import Subscribe from "@/routes/app/components/subscribe"
 import ChannelSkeleton from "@/routes/app/components/skeleton/channel"
 
 const Channel = ({ handle }: { handle: string }) => {
-  const { data: channel, isError } = useChannel(handle)
+  const { data: channel } = useChannel(handle)
   const { data: myChannel } = useMyChannel()
-  if (isError) return "No channel found"
+  if (!channel?.id && channel?.views) return "No channel found"
 
   if (channel?.id)
     return (

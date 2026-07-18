@@ -6,7 +6,7 @@ const Video = () => {
   const { path } = useParams()
   const [searchParams] = useSearchParams()
   const videoId = searchParams.get("v")
-  if (videoId) return <View videoId={videoId} />
+  if (videoId) return <View videoId={Number(videoId)} />
   if (path) return <Channel handle={path} />
   return "Not found"
 }
