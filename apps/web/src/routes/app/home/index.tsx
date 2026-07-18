@@ -3,6 +3,7 @@ import HomeSkeleton from "@/routes/app/components/skeleton/home"
 import VideoCard from "@/routes/app/components/video-card"
 const Home = () => {
   const { data: publicVideos } = usePublicVideos()
+  if (publicVideos?.length === 0) return "No videos found"
   if (Array.isArray(publicVideos) && publicVideos.length > 0)
     return (
       <div className="grid grid-cols-3 p-2">

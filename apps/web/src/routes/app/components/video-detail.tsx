@@ -17,6 +17,7 @@ const VideoDetail = ({
   if (!video) return
   return (
     <div className="flex flex-col gap-3">
+      <div className="text-xl font-bold">{video?.title}</div>
       <div className="flex justify-between">
         <div className="flex gap-3">
           <ChannelCard channel={channel} />

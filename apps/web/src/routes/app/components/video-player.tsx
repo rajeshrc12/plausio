@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import { updateView } from "@/api/video"
+import { getVideoUrl } from "@/utils/video"
 
 const VideoPlayer = ({ id }: { id: number }) => {
   const hasCountedView = useRef(false)
@@ -23,7 +24,7 @@ const VideoPlayer = ({ id }: { id: number }) => {
     <video
       className="h-full w-full object-cover"
       controls
-      src="https://samplelib.com/mp4/sample-5s-360p.mp4"
+      src={getVideoUrl(id)}
       onTimeUpdate={handleTimeUpdate}
     />
   )

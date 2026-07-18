@@ -44,19 +44,24 @@ export const getMyChannel = async (req: Request, res: Response) => {
   const myChannel = req.channel as Channel
 
   const channel = await prisma.channel.findFirst({
-    where: { id: myChannel.id },
+    where: {
+      id: myChannel.id,
+    },
     include: {
-      subscriptions: {
-        take: 10,
+      videos: {
+        take: 1,
         orderBy: {
           createdAt: "desc",
         },
         include: {
-          channel: {
+          _count: {
             select: {
-              id: true,
-              name: true,
-              handle: true,
+              comments: true,
+              reactions: {
+                where: {
+                  type: "LIKE",
+                },
+              },
             },
           },
         },
@@ -76,12 +81,23 @@ export const getMyChannel = async (req: Request, res: Response) => {
       views: true,
     },
   })
+  let lastVideo = null
+  if (channel?.videos[0]) {
+    lastVideo = {
+      id: channel?.videos[0]?.id,
+      comments: channel?.videos[0]._count.comments,
+      likes: channel?.videos[0]._count.reactions,
+      views: channel?.videos[0].views,
+    }
+  }
   const data = {
     ...channel,
     subscribers: channel?._count.subscribers,
     views: view._sum.views ?? 0,
+    lastVideo,
   }
   delete data._count
+  delete data.videos
   res.status(200).json(data)
 }
 

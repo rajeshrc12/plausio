@@ -24,6 +24,7 @@ import { useAddVideo } from "@/mutations/video"
 import { Loader } from "lucide-react"
 import { toast } from "@workspace/ui/components/sonner"
 import { useNavigate } from "react-router"
+import { getVideoDuration } from "@/utils/video"
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -49,6 +50,7 @@ const UploadVideo = () => {
   const onSubmit = async (values: FormValues) => {
     const { name, type, size } = values.video
     const { title, description, visibility, thumbnail } = values
+    const duration = await getVideoDuration(values.video)
     const response = await addVideo.mutateAsync({
       videoFile: values.video,
       thumbnailFile: thumbnail,
@@ -59,7 +61,7 @@ const UploadVideo = () => {
         visibility,
         title,
         description,
-        duration: 0,
+        duration,
       },
       thumbnailData: {
         name: thumbnail.name,

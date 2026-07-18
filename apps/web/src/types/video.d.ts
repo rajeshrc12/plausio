@@ -20,6 +20,7 @@ export type ChannelWithVideos = Channel & {
   views: number
   videos: Video[]
   subscriptions: SubscriptionWithChannel[]
+  lastVideo: { id: number; comments: number; likes: number; views: number }
 }
 
 export type CommentWithChannel = Comment & {
