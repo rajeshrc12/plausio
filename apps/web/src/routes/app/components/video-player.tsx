@@ -1,5 +1,4 @@
 import { useRef } from "react"
-import { Skeleton } from "@workspace/ui/components/skeleton"
 import { updateView } from "@/api/video"
 
 const VideoPlayer = ({ id }: { id: number }) => {
@@ -18,10 +17,6 @@ const VideoPlayer = ({ id }: { id: number }) => {
         hasCountedView.current = false
       })
     }
-  }
-
-  if (!id) {
-    return <Skeleton className="h-full w-full" />
   }
 
   return (

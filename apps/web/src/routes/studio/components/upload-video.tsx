@@ -23,6 +23,7 @@ import {
 import { useAddVideo } from "@/mutations/video"
 import { Loader } from "lucide-react"
 import { toast } from "@workspace/ui/components/sonner"
+import { useNavigate } from "react-router"
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -35,6 +36,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>
 
 const UploadVideo = () => {
+  const navigate = useNavigate()
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -65,8 +67,10 @@ const UploadVideo = () => {
         size: thumbnail.size,
       },
     })
-    if (response) toast.success("Video upload complete")
-    else toast.error("Video upload failed")
+    if (response) {
+      toast.success("Video upload complete")
+      navigate("content")
+    } else toast.error("Video upload failed")
   }
 
   return (
