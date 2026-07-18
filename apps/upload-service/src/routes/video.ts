@@ -9,6 +9,7 @@ import {
   getReaction,
   getRecommondVideos,
   initUpload,
+  updateView,
 } from "@/controllers/video"
 import { authenticateToken } from "@/utils/middleware"
 import { Router } from "express"
@@ -17,6 +18,7 @@ const router = Router()
 
 router.get("/public", getPublicVideos)
 router.get("/public/:id", getPublicVideo)
+router.post("/public", updateView)
 router.get("/public/reaction/:id", getReaction)
 
 router.use(authenticateToken)

@@ -2,6 +2,7 @@ import { usePublicVideo, usePublicVideos } from "@/queries/video"
 import AddComment from "@/routes/app/components/add-comment"
 import SideVideoCard from "@/routes/app/components/side-video-card"
 import VideoDetail from "@/routes/app/components/video-detail"
+import VideoPlayer from "@/routes/app/components/video-player"
 
 const View = ({ videoId }: { videoId: number }) => {
   const { data: videoData } = usePublicVideo(videoId)
@@ -11,11 +12,7 @@ const View = ({ videoId }: { videoId: number }) => {
     <div className="grid grid-cols-12 gap-6 p-4">
       <div className="col-span-8 flex flex-col gap-6">
         <div className="aspect-video w-full overflow-hidden rounded-xl">
-          <video
-            className="h-full w-full object-cover"
-            controls
-            src="https://samplelib.com/mp4/sample-5s-360p.mp4"
-          />
+          <VideoPlayer id={videoData.id} />
         </div>
         <VideoDetail video={videoData} channel={videoData.channel} />
 

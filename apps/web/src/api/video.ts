@@ -36,6 +36,10 @@ export const getPublicVideo = async (id: number) => {
   const { data } = await api.get<VideoWithChannel>(`/public/${id}`)
   return data
 }
+export const updateView = async (id: number) => {
+  const { data } = await api.post(`/public`, { id })
+  return data
+}
 export const addVideoReaction = async ({
   type,
   id,

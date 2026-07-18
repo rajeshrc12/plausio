@@ -123,6 +123,19 @@ export const getPublicVideo = async (req: Request<Id>, res: Response) => {
   })
   res.status(200).json(video)
 }
+export const updateView = async (req: Request<Id>, res: Response) => {
+  const { id } = req.body
+
+  const video = await prisma.video.update({
+    data: {
+      views: {
+        increment: 1,
+      },
+    },
+    where: { id: Number(id) },
+  })
+  res.status(200).json(video)
+}
 export const getMyVideos = async (req: Request, res: Response) => {
   const channel = req.channel as Channel
   const videos = await prisma.video.findMany({
