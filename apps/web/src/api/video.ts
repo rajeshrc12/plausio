@@ -1,7 +1,7 @@
 import { env } from "@/config/env"
 import { uploadMultipartFile, uploadSingleFile } from "@/services/video"
 import type { AddVideoDto, VideoWithChannel } from "@/types/video"
-import type { Comment, Reaction, Video } from "@workspace/db"
+import type { Comment, Reaction } from "@workspace/db"
 import axios from "axios"
 
 const api = axios.create({
@@ -24,7 +24,7 @@ api.interceptors.response.use(
 )
 
 export const getMyVideos = async () => {
-  const { data } = await api.get<Video[]>("/me")
+  const { data } = await api.get<VideoWithChannel[]>("/me")
   return data
 }
 

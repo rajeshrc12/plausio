@@ -145,6 +145,7 @@ const UploadVideo = () => {
               )}
             />
             <Controller
+              disabled={addVideo.isPending}
               name="thumbnail"
               control={form.control}
               render={({ field, fieldState }) => (
@@ -168,6 +169,7 @@ const UploadVideo = () => {
           {/* Right Side */}
           <div className="flex">
             <Controller
+              disabled={addVideo.isPending}
               name="video"
               control={form.control}
               render={({ field, fieldState }) => (
@@ -206,7 +208,14 @@ const UploadVideo = () => {
         </div>
 
         <Button className={"float-right"} type="submit">
-          {addVideo.isPending ? <Loader className="animate-spin" /> : "Save"}
+          {addVideo.isPending ? (
+            <div className="flex gap-2">
+              <div>Uploading...</div>
+              <Loader className="animate-spin" />
+            </div>
+          ) : (
+            "Save"
+          )}
         </Button>
       </fieldset>
     </form>

@@ -52,7 +52,7 @@ const Content = () => {
                 <TableCell>{video.status}</TableCell>
                 <TableCell>{getVideoCreationDate(video.createdAt)}</TableCell>
                 <TableCell>{video.views}</TableCell>
-                <TableCell>{0}</TableCell>
+                <TableCell>{video?.comments?.length}</TableCell>
               </TableRow>
             ))}
           </TableBody>

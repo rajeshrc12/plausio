@@ -140,6 +140,9 @@ export const getMyVideos = async (req: Request, res: Response) => {
   const channel = req.channel as Channel
   const videos = await prisma.video.findMany({
     where: { channelId: channel.id },
+    include: {
+      comments: true,
+    },
   })
   res.status(200).json(videos)
 }
