@@ -51,6 +51,15 @@ export const getMyChannel = async (req: Request, res: Response) => {
         orderBy: {
           createdAt: "desc",
         },
+        include: {
+          channel: {
+            select: {
+              id: true,
+              name: true,
+              handle: true,
+            },
+          },
+        },
       },
       _count: {
         select: {
