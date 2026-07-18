@@ -1,5 +1,6 @@
 import { env } from "@/config/env"
 import { completeMultipartUpload } from "@/services/s3"
+import { addS3UrlToSQS } from "@/services/sqs"
 import { uploadFiles } from "@/services/video"
 import { Id } from "@/types/controller"
 import { Channel, prisma, VideoStatus } from "@workspace/db"
@@ -89,6 +90,7 @@ export const completeUpload = async (
       status: VideoStatus.UPLOADED,
     },
   })
+  addS3UrlToSQS({ id: video.id, key: videoKey, type: video.type })
   res.status(201).json({
     video,
     message: "Upload completed successfully",
