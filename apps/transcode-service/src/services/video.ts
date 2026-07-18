@@ -8,6 +8,8 @@ import { mkdir, readdir, rm } from "node:fs/promises"
 import { spawn } from "node:child_process"
 import { getExtensionFromMimeType } from "@/utils/mime"
 import { env } from "@/config/env"
+import { prisma, VideoStatus } from "@workspace/db"
+import pLimit from "p-limit"
 
 export interface TranscodeMessage {
   id: number
@@ -118,31 +120,40 @@ export class TranscodeHandler {
 
       console.log(`[${id}] Uploading ${files.length} HLS file(s) to S3...`)
 
+      const limit = pLimit(8) // adjust between 5–20 depending on your environment
+
       await Promise.all(
-        files.map(async (file) => {
-          console.log(`[${id}] Uploading ${file}...`)
+        files.map((file) =>
+          limit(async () => {
+            console.log(`[${id}] Uploading ${file}...`)
 
-          const contentType = file.endsWith(".m3u8")
-            ? "application/vnd.apple.mpegurl"
-            : "video/mp2t"
+            const contentType = file.endsWith(".m3u8")
+              ? "application/vnd.apple.mpegurl"
+              : "video/mp2t"
 
-          await s3.send(
-            new PutObjectCommand({
-              Bucket: bucket,
-              Key: `${baseKey}/hls/${file}`,
-              Body: createReadStream(join(hlsDir, file)),
-              ContentType: contentType,
-            })
-          )
+            await s3.send(
+              new PutObjectCommand({
+                Bucket: bucket,
+                Key: `${baseKey}/hls/${file}`,
+                Body: createReadStream(join(hlsDir, file)),
+                ContentType: contentType,
+              })
+            )
 
-          console.log(`[${id}] ✅ Uploaded ${file}`)
-        })
+            console.log(`[${id}] ✅ Uploaded ${file}`)
+          })
+        )
       )
 
       // ---------------- Success ----------------
       console.log(`[${id}] 🎉 Upload completed`)
       console.log(`[${id}] Video processing finished successfully`)
       console.log("========================================")
+
+      await prisma.video.update({
+        where: { id },
+        data: { status: VideoStatus.UPLOADED },
+      })
     } catch (err) {
       console.error(`[${id}] ❌ Video processing failed`)
       console.error(err)

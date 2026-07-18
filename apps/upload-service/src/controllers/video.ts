@@ -87,7 +87,7 @@ export const completeUpload = async (
       id: videoId,
     },
     data: {
-      status: VideoStatus.UPLOADED,
+      status: VideoStatus.PROCESSING,
     },
   })
   addS3UrlToSQS({ id: video.id, key: videoKey, type: video.type })
@@ -98,12 +98,17 @@ export const completeUpload = async (
 }
 
 export const getRecommondVideos = async (_req: Request, res: Response) => {
-  const videos = await prisma.video.findMany()
+  const videos = await prisma.video.findMany({
+    where: { status: VideoStatus.UPLOADED },
+  })
   res.status(200).json(videos)
 }
 
 export const getPublicVideos = async (_req: Request, res: Response) => {
-  const videos = await prisma.video.findMany({ include: { channel: true } })
+  const videos = await prisma.video.findMany({
+    include: { channel: true },
+    where: { status: VideoStatus.UPLOADED },
+  })
   res.status(200).json(videos)
 }
 export const getPublicVideo = async (req: Request<Id>, res: Response) => {
@@ -144,6 +149,9 @@ export const getMyVideos = async (req: Request, res: Response) => {
     where: { channelId: channel.id },
     include: {
       comments: true,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   })
   res.status(200).json(videos)

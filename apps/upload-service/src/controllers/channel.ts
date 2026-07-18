@@ -1,5 +1,5 @@
 import { AppError } from "@/utils/errorHandler"
-import { Channel, prisma } from "@workspace/db"
+import { Channel, prisma, VideoStatus } from "@workspace/db"
 import { Request, Response } from "express"
 
 export const getChannel = async (req: Request, res: Response) => {
@@ -49,6 +49,9 @@ export const getMyChannel = async (req: Request, res: Response) => {
     },
     include: {
       videos: {
+        where: {
+          status: VideoStatus.UPLOADED,
+        },
         take: 1,
         orderBy: {
           createdAt: "desc",

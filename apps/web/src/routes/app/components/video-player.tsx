@@ -10,7 +10,7 @@ const VideoPlayer = ({ id }: { id: number }) => {
 
     const video = e.currentTarget
 
-    if (video.currentTime >= 3) {
+    if (video.currentTime >= 10) {
       hasCountedView.current = true
 
       void updateView(id).catch((error) => {
@@ -23,6 +23,9 @@ const VideoPlayer = ({ id }: { id: number }) => {
   return (
     <video
       className="h-full w-full object-cover"
+      autoPlay
+      muted
+      playsInline
       controls
       src={getVideoUrl(id)}
       onTimeUpdate={handleTimeUpdate}

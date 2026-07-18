@@ -12,7 +12,7 @@ const View = ({ videoId }: { videoId: number }) => {
   if (videoData && videos?.length)
     return (
       <div className="grid grid-cols-12 gap-6 p-4">
-        <div className="col-span-8 flex flex-col gap-4">
+        <div className="col-span-8 flex flex-col gap-4 pl-4">
           <div className="aspect-video w-full overflow-hidden rounded-xl">
             <VideoPlayer id={videoData.id} />
           </div>
