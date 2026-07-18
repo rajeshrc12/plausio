@@ -24,9 +24,18 @@ export const getChannel = async (req: Request, res: Response) => {
       },
     },
   })
+  const view = await prisma.video.aggregate({
+    where: {
+      channelId: channel?.id,
+    },
+    _sum: {
+      views: true,
+    },
+  })
   const data = {
     ...channel,
     subscribers: channel?._count.subscribers,
+    views: view._sum.views ?? 0,
   }
   delete data._count
   res.status(200).json(data)
@@ -50,9 +59,18 @@ export const getMyChannel = async (req: Request, res: Response) => {
       },
     },
   })
+  const view = await prisma.video.aggregate({
+    where: {
+      channelId: channel?.id,
+    },
+    _sum: {
+      views: true,
+    },
+  })
   const data = {
     ...channel,
     subscribers: channel?._count.subscribers,
+    views: view._sum.views ?? 0,
   }
   delete data._count
   res.status(200).json(data)

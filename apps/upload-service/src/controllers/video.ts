@@ -134,7 +134,7 @@ export const updateView = async (req: Request<Id>, res: Response) => {
     },
     where: { id: Number(id) },
   })
-  res.status(200).json(video)
+  res.status(201).json(video)
 }
 export const getMyVideos = async (req: Request, res: Response) => {
   const channel = req.channel as Channel
