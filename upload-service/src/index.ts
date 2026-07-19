@@ -1,5 +1,5 @@
-function greet(name: string): void {
-  console.log(`Hello, ${name}!`);
-}
+import app from "./app.js";
 
-greet("World");
+app.listen(3000, () => {
+  console.log(`Upload sevice running on 3000`);
+});
