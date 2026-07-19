@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsup",
-    "db:generate": "prisma generate && tsup",
+    "build": "prisma generate && tsup",
+    "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:reset": "prisma migrate reset"
@@ -29,5 +29,9 @@
     }
   },
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts"
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "generated"
+  ]
 }
