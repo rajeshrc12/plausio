@@ -25,10 +25,18 @@ COPY --from=pruner /app/out/full/ .
 RUN pnpm turbo run build --filter=upload-service
 
 RUN pnpm deploy --legacy --filter=upload-service --prod /prod/upload-service
+
+# ---------- Migration ----------
+FROM builder AS migrate
+
+CMD ["corepack", "pnpm", "--filter=@workspace/db", "db:deploy"]
+
 # ---------- Runtime ----------
 FROM node:22-alpine AS runner
 
 WORKDIR /app
+
+RUN corepack enable
 
 ENV NODE_ENV=production
 
