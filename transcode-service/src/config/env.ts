@@ -1,9 +1,9 @@
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 export const env = {
-  PORT: process.env.PORT || 3000,
+  PORT: 3001,
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET!,
@@ -25,4 +25,4 @@ export const env = {
   AWS_S3_BUCKET_PROFILE_PATH: process.env.AWS_S3_BUCKET_PROFILE_PATH!,
 
   AWS_SQS_URL: process.env.AWS_SQS_URL!,
-}
+};
