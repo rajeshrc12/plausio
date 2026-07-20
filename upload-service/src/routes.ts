@@ -1,28 +1,23 @@
 import { Router } from "express";
-import { pool } from "./db.js";
+import { prisma } from "./lib/prisma.js";
 
 const router = Router();
 
 router.get("/", async (_, res) => {
   try {
-    const { rows } = await pool.query("SELECT * FROM users ORDER BY id ASC");
-
-    res.json(rows);
+    const users = await prisma.user.findMany();
+    res.json({ users });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 });
-router.post("/users", async (req, res) => {
+router.post("/user", async (req, res) => {
   try {
     const { name } = req.body;
+    const user = await prisma.user.create({ data: { name } });
 
-    const { rows } = await pool.query(
-      "INSERT INTO users(name) VALUES($1) RETURNING *",
-      [name],
-    );
-
-    res.status(201).json(rows[0]);
+    res.status(201).json(user);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Database error" });
