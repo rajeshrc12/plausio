@@ -1,8 +1,7 @@
 node_modules
 dist
+generated
 .git
 .gitignore
-Dockerfile
+.env*
 npm-debug.log
-.env
-generated/prisma
