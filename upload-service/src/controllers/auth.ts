@@ -15,8 +15,8 @@ export const googleCallback = async (req: Request, res: Response) => {
 
   res.cookie("accessToken", data.accessToken, {
     httpOnly: true,
-    secure: false, // true in production (HTTPS)
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
   });
 
   res.redirect(`${env.FRONTEND_URL}/`);
