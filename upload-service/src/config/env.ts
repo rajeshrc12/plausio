@@ -1,0 +1,28 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const env = {
+  PORT: 3000,
+
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET!,
+  GOOGLE_FALLBACK_URL: process.env.GOOGLE_FALLBACK_URL!,
+
+  JWT_SECRET: process.env.JWT_SECRET!,
+  DATABASE_URL: process.env.DATABASE_URL!,
+
+  FRONTEND_URL: process.env.FRONTEND_URL!,
+
+  AWS_REGION: process.env.AWS_REGION!,
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY!,
+  AWS_S3_BUCKET: process.env.AWS_S3_BUCKET!,
+  AWS_S3_PART_SIZE_IN_MB:
+    Number(process.env.AWS_S3_PART_SIZE_IN_MB) * 1024 * 1024,
+  AWS_S3_BUCKET_VIDEO_PATH: process.env.AWS_S3_BUCKET_VIDEO_PATH!,
+  AWS_S3_BUCKET_THUMBNAIL_PATH: process.env.AWS_S3_BUCKET_THUMBNAIL_PATH!,
+  AWS_S3_BUCKET_PROFILE_PATH: process.env.AWS_S3_BUCKET_PROFILE_PATH!,
+
+  AWS_SQS_URL: process.env.AWS_SQS_URL!,
+};
