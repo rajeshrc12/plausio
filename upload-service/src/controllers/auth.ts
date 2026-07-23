@@ -25,12 +25,11 @@ export const googleCallback = async (req: Request, res: Response) => {
 export const logout = async (_req: Request, res: Response) => {
   res.clearCookie("accessToken", {
     httpOnly: true,
-    secure: false, // true in production
-    sameSite: "lax",
+    secure: true, // true in production
+    sameSite: "none",
   });
 
   res.status(200).json({
     message: "Logged out successfully",
   });
-  res.redirect(`${env.FRONTEND_URL}/`);
 };
