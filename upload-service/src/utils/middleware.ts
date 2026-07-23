@@ -9,7 +9,7 @@ export const authenticateToken = (
   next: NextFunction,
 ) => {
   const token = req.cookies?.accessToken;
-
+  console.log(req.cookies);
   if (!token) {
     throw new AppError("Token missing", 401, "fail");
   }
