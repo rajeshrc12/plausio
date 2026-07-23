@@ -1,6 +1,7 @@
 import {
   addComment,
   addReaction,
+  changeStatus,
   completeUpload,
   getMyReaction,
   getMyVideos,
@@ -20,6 +21,7 @@ router.get("/public", getPublicVideos);
 router.get("/public/:id", getPublicVideo);
 router.post("/public", updateView);
 router.get("/public/reaction/:id", getReaction);
+router.post("/status", changeStatus);
 
 router.use(authenticateToken);
 

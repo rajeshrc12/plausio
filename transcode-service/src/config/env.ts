@@ -25,4 +25,5 @@ export const env = {
   AWS_S3_BUCKET_PROFILE_PATH: process.env.AWS_S3_BUCKET_PROFILE_PATH!,
 
   AWS_SQS_URL: process.env.AWS_SQS_URL!,
+  UPLOAD_SERVICE_API_URL: process.env.UPLOAD_SERVICE_API_URL!,
 };

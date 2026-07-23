@@ -246,3 +246,17 @@ export const addComment = async (req: Request, res: Response) => {
   });
   res.status(200).json(comment);
 };
+
+export const changeStatus = async (req: Request, res: Response) => {
+  const { id, status } = req.body;
+
+  const video = await prisma.video.update({
+    where: {
+      id,
+    },
+    data: {
+      status,
+    },
+  });
+  res.status(200).json(video);
+};

@@ -9,6 +9,7 @@ import pLimit from "p-limit";
 import { env } from "../config/env.js";
 import { getExtensionFromMimeType } from "../utils/mime.js";
 import { s3 } from "../config/s3.js";
+import { AppError } from "../utils/errorHandler.ts";
 
 export interface TranscodeMessage {
   id: number;
@@ -148,7 +149,9 @@ export class TranscodeHandler {
       console.log(`[${id}] 🎉 Upload completed`);
       console.log(`[${id}] Video processing finished successfully`);
       console.log("========================================");
+      updateVideoStatus({ id, status: "UPLOADED" });
     } catch (err) {
+      updateVideoStatus({ id, status: "FAILED" });
       console.error(`[${id}] ❌ Video processing failed`);
       console.error(err);
     } finally {
@@ -160,4 +163,36 @@ export class TranscodeHandler {
       console.log(`[${id}] Temporary files cleaned up`);
     }
   }
+}
+
+export async function updateVideoStatus({
+  id,
+  status,
+}: {
+  id: number;
+  status: string;
+}) {
+  const response = await fetch(
+    `${env.UPLOAD_SERVICE_API_URL}/api/video/status`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+        status,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new AppError(
+      `Failed to update video status (${response.status}): ${error}`,
+      500,
+      "fail",
+    );
+  }
+  console.log("success", await response.json());
 }
