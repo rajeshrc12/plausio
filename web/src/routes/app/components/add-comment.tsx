@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import type { CommentWithChannel } from "@/types/combine"
+import { Loader } from "lucide-react"
 
 const AddComment = ({
   id,
@@ -44,10 +45,20 @@ const AddComment = ({
           </div>
           {btn && (
             <div className="flex justify-end">
-              <Button variant={"ghost"} onClick={() => setBtn(false)}>
+              <Button
+                disabled={addComment.isPending}
+                variant={"ghost"}
+                onClick={() => setBtn(false)}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleComment}>Comment</Button>
+              <Button disabled={addComment.isPending} onClick={handleComment}>
+                {addComment.isPending ? (
+                  <Loader className="animate-spin" />
+                ) : (
+                  "Comment"
+                )}
+              </Button>
             </div>
           )}
         </div>

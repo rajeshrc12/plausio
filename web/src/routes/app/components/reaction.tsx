@@ -11,7 +11,6 @@ const Reaction = ({ id }: { id: number }) => {
   const debouncedReaction = useMemo(
     () =>
       debounce((type: string) => {
-        console.log(type)
         addVideoReaction.mutate({ id, type })
       }, 1000),
     [id]
