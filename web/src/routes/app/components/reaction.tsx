@@ -12,7 +12,7 @@ const Reaction = ({ id }: { id: number }) => {
     () =>
       debounce((type: string) => {
         addVideoReaction.mutate({ id, type })
-      }, 1000),
+      }, 500),
     [id]
   )
 

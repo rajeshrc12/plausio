@@ -20,7 +20,7 @@ const Subscribe = ({ id }: { id: number }) => {
     () =>
       debounce(() => {
         handleSubscription.mutate({ isSubscribed: !!data?.isSubscribed, id })
-      }, 1000),
+      }, 500),
     [data?.isSubscribed]
   )
   if (isLoading) return
