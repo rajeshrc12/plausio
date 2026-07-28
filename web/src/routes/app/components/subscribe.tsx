@@ -10,13 +10,19 @@ import {
 } from "@/components/ui/popover"
 import { useSubscriptionStatus } from "@/queries/channel"
 import { useHandleSubscription } from "@/mutations/channel"
+import { useMemo } from "react"
+import debounce from "lodash/debounce"
 
 const Subscribe = ({ id }: { id: number }) => {
   const { data, isLoading, isError } = useSubscriptionStatus(id)
   const handleSubscription = useHandleSubscription()
-  const handle = () => {
-    handleSubscription.mutate({ isSubscribed: !!data?.isSubscribed, id })
-  }
+  const handle = useMemo(
+    () =>
+      debounce(() => {
+        handleSubscription.mutate({ isSubscribed: !!data?.isSubscribed, id })
+      }, 1000),
+    [data?.isSubscribed]
+  )
   if (isLoading) return
   if (isError)
     return (
