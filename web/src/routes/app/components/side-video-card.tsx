@@ -1,5 +1,9 @@
 import { getVideoCreationDate } from "@/utils/date"
-import { formatVideoDuration, getThumbnailUrl } from "@/utils/video"
+import {
+  formatVideoDuration,
+  formatViews,
+  getThumbnailUrl,
+} from "@/utils/video"
 import type { Channel, Video } from "@/types/schema"
 import { Play } from "lucide-react"
 import { Link } from "react-router"
@@ -31,10 +35,14 @@ const SideVideoCard = ({
             {video.title}
           </h3>
 
-          <p className="text-xs text-muted-foreground">{channel.name}</p>
+          <p className="line-clamp-1 text-xs text-muted-foreground">
+            {channel.name}
+          </p>
 
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Play size={10} /> {video.views} views •{" "}
+            <div className="flex items-center gap-1">
+              <Play size={10} /> {formatViews(video.views)}
+            </div>
             {getVideoCreationDate(video.createdAt)}
           </p>
         </div>

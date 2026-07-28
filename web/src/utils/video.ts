@@ -61,3 +61,8 @@ export const getVideoUrl = (videoId: number) => {
 export const getProfileUrl = (channelId: number) => {
   return `${env.AWS_CDN_URL}/profile/${channelId}/original`
 }
+export const formatViews = (count: number) =>
+  new Intl.NumberFormat("en", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(count)

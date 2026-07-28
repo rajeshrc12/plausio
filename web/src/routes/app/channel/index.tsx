@@ -49,7 +49,12 @@ const Channel = ({ handle }: { handle: string }) => {
         </div>
         <div className="grid grid-cols-3 gap-5 p-5">
           {channel?.videos?.map((video) => (
-            <VideoCard key={video.id} video={video} channel={channel} />
+            <VideoCard
+              key={video.id}
+              video={video}
+              channel={channel}
+              channelDetail={false}
+            />
           ))}
         </div>
       </div>

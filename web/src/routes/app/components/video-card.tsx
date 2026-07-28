@@ -1,15 +1,23 @@
-import { Play } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getVideoCreationDate } from "@/utils/date"
 import {
   formatVideoDuration,
+  formatViews,
   getProfileUrl,
   getThumbnailUrl,
 } from "@/utils/video"
 import { Link } from "react-router"
 import type { Channel, Video } from "@/types/schema"
 
-const VideoCard = ({ video, channel }: { video: Video; channel: Channel }) => {
+const VideoCard = ({
+  video,
+  channel,
+  channelDetail = true,
+}: {
+  video: Video
+  channel: Channel
+  channelDetail?: boolean
+}) => {
   return (
     <Link
       key={video.id}
@@ -32,7 +40,7 @@ const VideoCard = ({ video, channel }: { video: Video; channel: Channel }) => {
       {/* Video Details */}
       <div className="mt-3 flex gap-3">
         {/* Channel Avatar */}
-        {channel && (
+        {channelDetail && (
           <Avatar className={"h-10 w-10"}>
             <AvatarImage src={getProfileUrl(channel?.id)} />
             <AvatarFallback>{channel.name[0]}</AvatarFallback>
@@ -44,9 +52,10 @@ const VideoCard = ({ video, channel }: { video: Video; channel: Channel }) => {
             {video.title}
           </h3>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <div>{channel?.name}</div>
-            <Play size={10} />
-            <div>{video.views}</div>
+            <div className="max-w-[30%] min-w-0 truncate">
+              {channelDetail && channel?.name}
+            </div>
+            <div>{formatViews(video.views)} views</div>
             <div>{getVideoCreationDate(video.createdAt)}</div>
           </div>
         </div>
