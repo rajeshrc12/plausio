@@ -1,11 +1,8 @@
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-
 import {
   Field,
   FieldContent,
@@ -25,21 +22,12 @@ import { Loader } from "lucide-react"
 import { useNavigate } from "react-router"
 import { getVideoDuration } from "@/utils/video"
 import { toast } from "sonner"
-
-const schema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  visibility: z.enum(["PUBLIC", "PRIVATE"]),
-  video: z.instanceof(File),
-  thumbnail: z.instanceof(File),
-})
-
-type FormValues = z.infer<typeof schema>
+import { uploadSchema, type UploadValues } from "@/types/schema"
 
 const UploadVideo = () => {
   const navigate = useNavigate()
-  const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+  const form = useForm<UploadValues>({
+    resolver: zodResolver(uploadSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -47,7 +35,7 @@ const UploadVideo = () => {
     },
   })
   const addVideo = useAddVideo()
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: UploadValues) => {
     const { name, type, size } = values.video
     const { title, description, visibility, thumbnail } = values
     const duration = await getVideoDuration(values.video)
@@ -161,7 +149,7 @@ const UploadVideo = () => {
                       accept={{ "image/*": [] }}
                       label="Drop a thumbnail"
                     />
-                    {fieldState.invalid && "Select thumbnail"}
+                    {fieldState.invalid && fieldState.error?.message}
                   </FieldContent>
                 </Field>
               )}
@@ -189,9 +177,9 @@ const UploadVideo = () => {
                       label="Drag & drop a video or click"
                     />
 
-                    {fieldState.invalid && "Select video"}
+                    {fieldState.invalid && fieldState.error?.message}
 
-                    {field.value && (
+                    {field.value && !fieldState.invalid && (
                       <div className="mt-3 rounded-md border bg-muted/30 p-3 text-sm">
                         <div className="truncate font-medium">
                           Name: {field.value.name}

@@ -4,6 +4,12 @@ import {
   VideoVisibilitySchema,
 } from "@/types/enum"
 import { z } from "zod"
+import {
+  IMAGE_TYPES,
+  MAX_THUMBNAIL_SIZE,
+  MAX_VIDEO_SIZE,
+  VIDEO_TYPES,
+} from "@/types/constant"
 
 /* ============================
  * Channel
@@ -117,3 +123,35 @@ export const ThumbnailSchema = z.object({
 })
 
 export type Thumbnail = z.infer<typeof ThumbnailSchema>
+
+export const uploadSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  visibility: z.enum(["PUBLIC", "PRIVATE"]),
+
+  thumbnail: z
+    .instanceof(File, { message: "Thumbnail is required" })
+    .refine((file) => IMAGE_TYPES.includes(file.type), {
+      message: "Thumbnail must be a JPG, JPEG, or PNG image",
+    })
+    .refine((file) => file.size <= MAX_THUMBNAIL_SIZE, {
+      message: "Thumbnail must be less than 1 MB",
+    }),
+
+  video: z
+    .instanceof(File, { message: "Video is required" })
+    .refine(
+      (file) => {
+        const ext = file.name.split(".").pop()?.toLowerCase()
+        return VIDEO_TYPES.includes(ext ?? "")
+      },
+      {
+        message: "Video must be an MP4 or MKV file",
+      }
+    )
+    .refine((file) => file.size <= MAX_VIDEO_SIZE, {
+      message: "Video must be less than 50 MB",
+    }),
+})
+
+export type UploadValues = z.infer<typeof uploadSchema>
