@@ -125,8 +125,15 @@ export const ThumbnailSchema = z.object({
 export type Thumbnail = z.infer<typeof ThumbnailSchema>
 
 export const uploadSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title cannot exceed 100 characters"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(2000, "Description cannot exceed 2000 characters"),
+
   visibility: z.enum(["PUBLIC", "PRIVATE"]),
 
   thumbnail: z
