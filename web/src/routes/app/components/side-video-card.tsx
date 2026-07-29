@@ -39,12 +39,12 @@ const SideVideoCard = ({
             {channel.name}
           </p>
 
-          <p className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
               <Play size={10} /> {formatViews(video.views)}
             </div>
             {getVideoCreationDate(video.createdAt)}
-          </p>
+          </div>
         </div>
       </div>
     </Link>

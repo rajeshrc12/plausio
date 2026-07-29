@@ -1,7 +1,5 @@
 import { getVideoCreationDate } from "@/utils/date"
-import { useMemo, useState } from "react"
-
-const MAX_LENGTH = 300
+import { useEffect, useRef, useState } from "react"
 
 const VideoDescription = ({
   description,
@@ -12,30 +10,61 @@ const VideoDescription = ({
   views: number
   createdAt: Date
 }) => {
-  if (!description) return "No description"
   const [expanded, setExpanded] = useState(false)
+  const [showMore, setShowMore] = useState(false)
 
-  const shouldTruncate = description.length > MAX_LENGTH
+  const contentRef = useRef<HTMLDivElement>(null)
 
-  const displayText = useMemo(() => {
-    if (expanded || !shouldTruncate) return description
+  useEffect(() => {
+    const checkOverflow = () => {
+      const el = contentRef.current
+      if (!el) return
 
-    return description.slice(0, MAX_LENGTH).trimEnd() + "..."
-  }, [expanded, shouldTruncate, description])
+      setShowMore(el.scrollHeight > el.clientHeight + 1)
+    }
+
+    checkOverflow()
+
+    window.addEventListener("resize", checkOverflow)
+
+    return () => {
+      window.removeEventListener("resize", checkOverflow)
+    }
+  }, [description])
+
+  if (!description) {
+    return (
+      <div className="rounded-xl bg-accent p-3 text-sm">
+        <div className="font-medium">
+          {views} views {getVideoCreationDate(createdAt)}
+        </div>
+        <div>No description</div>
+      </div>
+    )
+  }
 
   return (
-    <div className="rounded-xl bg-accent p-3 text-sm wrap-break-word whitespace-pre-wrap">
+    <div className="rounded-xl bg-accent p-3 text-sm">
       <div className="font-medium">
         {views} views {getVideoCreationDate(createdAt)}
       </div>
-      <span className="text-sm">{displayText.trim()}</span>
 
-      {shouldTruncate && (
+      <div
+        ref={contentRef}
+        className={`wrap-break-words mt-2 overflow-hidden whitespace-pre-wrap ${
+          expanded ? "" : "max-h-5"
+        }`}
+      >
+        {description}
+      </div>
+
+      {showMore && (
         <button
+          type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="ml-1 font-semibold hover:underline"
+          className="mt-2 font-semibold hover:underline"
         >
-          {expanded ? "show less" : "more"}
+          {expanded ? "Show less" : "Show more"}
         </button>
       )}
     </div>

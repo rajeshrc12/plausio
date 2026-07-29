@@ -97,7 +97,8 @@ const UploadVideo = () => {
                   <FieldContent>
                     <Textarea
                       {...field}
-                      rows={6}
+                      className="field-sizing-fixed resize-none"
+                      rows={3}
                       placeholder="Video description"
                     />
 
