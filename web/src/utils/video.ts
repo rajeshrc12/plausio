@@ -61,6 +61,11 @@ export const getVideoUrl = (videoId: number) => {
 export const getProfileUrl = (channelId: number) => {
   return `${env.AWS_CDN_URL}/profile/${channelId}/original`
 }
+export const getBannerUrl = (name: string) =>
+  `https://placehold.co/600x400/111827/f8fafc?font=montserrat&text=${encodeURIComponent(
+    name
+  )}`
+
 export const formatViews = (count: number) =>
   new Intl.NumberFormat("en", {
     notation: "compact",

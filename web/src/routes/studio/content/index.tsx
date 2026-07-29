@@ -26,21 +26,21 @@ const Content = () => {
           </button>
         </div>
 
-        <Table>
+        <Table className="w-full table-fixed">
           <TableHeader>
             <TableRow>
-              <TableHead>Video</TableHead>
+              <TableHead className="w-130">Video</TableHead>
               <TableHead>Visibility</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead>Views</TableHead>
-              <TableHead>Comments</TableHead>
+              <TableHead className="w-14">Views</TableHead>
+              <TableHead className="w-20">Comments</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {videos?.map((video) => (
               <TableRow key={video.id}>
-                <TableCell>
+                <TableCell className="w-130">
                   <TableVideoCard
                     src={getThumbnailUrl(video.id)}
                     title={video.title}
@@ -51,8 +51,10 @@ const Content = () => {
                 <TableCell>{video.visibility}</TableCell>
                 <TableCell>{video.status}</TableCell>
                 <TableCell>{getVideoCreationDate(video.createdAt)}</TableCell>
-                <TableCell>{video.views}</TableCell>
-                <TableCell>{video?.comments?.length}</TableCell>
+                <TableCell className="w-14">{video.views}</TableCell>
+                <TableCell className="w-20">
+                  {video?.comments?.length}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

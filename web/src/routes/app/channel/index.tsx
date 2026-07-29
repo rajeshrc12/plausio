@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import ChannelDescription from "@/routes/app/components/channel-description"
 import VideoCard from "@/routes/app/components/video-card"
-import { getProfileUrl } from "@/utils/video"
+import { getBannerUrl, getProfileUrl } from "@/utils/video"
 import { useChannel, useMyChannel } from "@/queries/channel"
 import Subscribe from "@/routes/app/components/subscribe"
 import ChannelSkeleton from "@/routes/app/components/skeleton/channel"
@@ -16,7 +16,7 @@ const Channel = ({ handle }: { handle: string }) => {
       <div className="flex flex-col p-5">
         <div className="h-36 overflow-hidden rounded-2xl">
           <img
-            src={getProfileUrl(channel.id)}
+            src={getBannerUrl(channel.name)}
             className="h-full w-full object-cover"
           />
         </div>
