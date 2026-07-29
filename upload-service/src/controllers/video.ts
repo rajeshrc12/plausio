@@ -4,7 +4,7 @@ import { uploadFiles } from "../services/video.js";
 import { env } from "../config/env.js";
 import { completeMultipartUpload } from "../services/s3.js";
 import { addS3UrlToSQS } from "../services/sqs.js";
-import { VideoStatus } from "../../generated/prisma/enums.js";
+import { VideoStatus, VideoVisibility } from "../../generated/prisma/enums.js";
 import { Id } from "../types/controller.js";
 import { Channel } from "../../generated/prisma/client.js";
 
@@ -109,7 +109,7 @@ export const getRecommondVideos = async (_req: Request, res: Response) => {
 export const getPublicVideos = async (_req: Request, res: Response) => {
   const videos = await prisma.video.findMany({
     include: { channel: true },
-    where: { status: VideoStatus.UPLOADED },
+    where: { status: VideoStatus.UPLOADED, visibility: VideoVisibility.PUBLIC },
   });
   res.status(200).json(videos);
 };
