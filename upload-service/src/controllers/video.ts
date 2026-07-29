@@ -110,6 +110,9 @@ export const getPublicVideos = async (_req: Request, res: Response) => {
   const videos = await prisma.video.findMany({
     include: { channel: true },
     where: { status: VideoStatus.UPLOADED, visibility: VideoVisibility.PUBLIC },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   res.status(200).json(videos);
 };

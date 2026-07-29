@@ -6,9 +6,9 @@ import VideoDetail from "@/routes/app/components/video-detail"
 import VideoPlayer from "@/routes/app/components/video-player"
 
 const View = ({ videoId }: { videoId: number }) => {
-  const { data: videoData } = usePublicVideo(videoId)
+  const { data: videoData, isLoading } = usePublicVideo(videoId)
   const { data: videos } = usePublicVideos()
-
+  if (isLoading) return <ViewSkeleton />
   if (videoData && videos?.length)
     return (
       <div className="grid grid-cols-12 gap-6 p-4">
@@ -31,7 +31,7 @@ const View = ({ videoId }: { videoId: number }) => {
         </div>
       </div>
     )
-  return <ViewSkeleton />
+  if (!videoData) return "No video found"
 }
 
 export default View

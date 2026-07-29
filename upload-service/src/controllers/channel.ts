@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { AppError } from "../utils/errorHandler.js";
 import { prisma } from "../lib/prisma.js";
-import { Channel, VideoStatus } from "../../generated/prisma/client.js";
+import {
+  Channel,
+  VideoStatus,
+  VideoVisibility,
+} from "../../generated/prisma/client.js";
 
 export const getChannel = async (req: Request, res: Response) => {
   const { handle } = req.params;
@@ -11,7 +15,14 @@ export const getChannel = async (req: Request, res: Response) => {
       handle: String(handle.slice(1)),
     },
     include: {
-      videos: true,
+      videos: {
+        where: {
+          visibility: VideoVisibility.PUBLIC,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       subscriptions: {
         take: 10,
         orderBy: {
