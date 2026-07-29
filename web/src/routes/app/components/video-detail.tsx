@@ -1,10 +1,10 @@
-import { Forward } from "lucide-react"
 import Subscribe from "@/routes/app/components/subscribe"
 import Reaction from "@/routes/app/components/reaction"
 import VideoDescription from "@/routes/app/components/video-description"
 import type { Channel, Video } from "@/types/schema"
 import ChannelCard from "@/routes/app/components/channel-card"
 import { useMyChannel } from "@/queries/channel"
+import Share from "@/routes/app/components/share"
 
 const VideoDetail = ({
   video,
@@ -25,12 +25,7 @@ const VideoDetail = ({
         </div>
         <div className="flex gap-3">
           <Reaction id={video.id} />
-          <div className="flex gap-2 rounded-full bg-accent px-4 py-2">
-            <button className={"flex items-center gap-2 font-medium"}>
-              <Forward />
-              <span>Share</span>
-            </button>
-          </div>
+          <Share id={video.id} />
         </div>
       </div>
       <VideoDescription
