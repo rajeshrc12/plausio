@@ -2,6 +2,7 @@
 
 A full-stack **video sharing platform** built with React, Node.js, and AWS. Users can upload videos, stream them using **HLS (HTTP Live Streaming)**, interact with content, and manage subscriptions.
 
+https://github.com/user-attachments/assets/f405187d-2d01-44a9-a045-201fd3568bb1
 
 ## ✨ Features
 
