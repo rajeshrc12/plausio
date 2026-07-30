@@ -6,8 +6,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Globe, Info, PersonStanding, Play, Video, View } from "lucide-react"
+import { Info, PersonStanding, Play, Video, View } from "lucide-react"
 import type { ChannelWithVideos } from "@/types/combine"
+import { env } from "@/config/env"
 
 const ChannelDescription = ({ channel }: { channel: ChannelWithVideos }) => {
   return (
@@ -31,11 +32,9 @@ const ChannelDescription = ({ channel }: { channel: ChannelWithVideos }) => {
             <div className="text-xl font-bold">More Info</div>
             <div className="flex items-center gap-2">
               <Play />
-              <div>www.plausio.site/@{channel.handle}</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe />
-              <div>{channel.country}</div>
+              <div>
+                {env.WEB_URL}/@{channel.handle}
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <Info />
