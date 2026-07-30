@@ -6,7 +6,7 @@ const Home = () => {
   if (publicVideos?.length === 0) return "No videos found"
   if (Array.isArray(publicVideos) && publicVideos.length > 0)
     return (
-      <div className="grid grid-cols-3 p-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {publicVideos?.map((video) => (
           <VideoCard key={video.id} video={video} channel={video.channel} />
         ))}

@@ -11,17 +11,19 @@ const View = ({ videoId }: { videoId: number }) => {
   if (isLoading) return <ViewSkeleton />
   if (videoData && videos?.length)
     return (
-      <div className="grid grid-cols-12 gap-6 p-4">
-        <div className="col-span-8 flex flex-col gap-4 pl-4">
+      <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12">
+        <div className="flex flex-col gap-4 lg:col-span-8 lg:pl-4">
           <div className="aspect-video w-full overflow-hidden rounded-xl">
             <VideoPlayer id={videoData.id} />
           </div>
+
           <VideoDetail video={videoData} channel={videoData.channel} />
 
           <AddComment id={videoData.id} comments={videoData.comments} />
         </div>
-        <div className="col-span-4 flex flex-col gap-4">
-          {videos?.map((video) => (
+
+        <div className="flex flex-col gap-4 lg:col-span-4">
+          {videos.map((video) => (
             <SideVideoCard
               key={video.id}
               video={video}

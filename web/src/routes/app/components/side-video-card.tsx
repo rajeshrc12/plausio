@@ -17,12 +17,15 @@ const SideVideoCard = ({
 }) => {
   return (
     <Link to={`/watch?v=${video.id}`}>
-      <div key={video.id} className="grid grid-cols-12 gap-3">
+      <div
+        key={video.id}
+        className="flex flex-col gap-3 sm:grid sm:grid-cols-12"
+      >
         <div className="relative col-span-6">
           <img
             src={getThumbnailUrl(video.id)}
             alt={video.title}
-            className="h-30 w-full rounded-md object-cover"
+            className="h-60 w-full rounded-md object-cover lg:h-34"
           />
 
           <span className="absolute right-1 bottom-1 rounded bg-primary/90 px-1.5 py-0.5 text-xs font-medium text-background">

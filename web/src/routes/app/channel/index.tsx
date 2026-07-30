@@ -26,8 +26,8 @@ const Channel = ({ handle }: { handle: string }) => {
             <AvatarFallback>{channel.name}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-center gap-2">
-            <div className="text-4xl font-bold">{channel.name}</div>
-            <div className="flex gap-2 text-sm">
+            <div className="text-2xl font-bold md:text-4xl">{channel.name}</div>
+            <div className="flex flex-wrap gap-2 text-sm">
               <div className="font-medium">@{channel.handle}</div>
               <div className="text-muted-foreground">
                 {channel.subscribers} subscribers
@@ -47,8 +47,8 @@ const Channel = ({ handle }: { handle: string }) => {
         <div className="border-b">
           <button className="border-b-2 border-primary py-2">Videos</button>
         </div>
-        <div className="grid grid-cols-3 gap-5 p-5">
-          {channel?.videos?.map((video) => (
+        <div className="grid grid-cols-1 p-2 sm:grid-cols-2 lg:grid-cols-3">
+          {channel.videos.map((video) => (
             <VideoCard
               key={video.id}
               video={video}

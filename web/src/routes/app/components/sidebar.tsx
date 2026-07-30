@@ -19,7 +19,7 @@ const AppSidebar = () => {
   const { pathname } = useLocation()
   if (!pathname.includes("watch"))
     return (
-      <div className="sidebar-scrollbar flex h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2">
+      <div className="sidebar-scrollbar hidden h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2 lg:flex">
         {menu?.map(({ path, name, Icon }) => (
           <Link
             key={name}

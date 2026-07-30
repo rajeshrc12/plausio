@@ -12,7 +12,7 @@ const ChannelCard = ({ channel }: { channel: Channel }) => {
         <AvatarImage src={getProfileUrl(channel?.id)} />
         <AvatarFallback>{channel?.name[0]}</AvatarFallback>
       </Avatar>
-      <div>
+      <div className="hidden sm:block">
         <div className="font-bold">{channel?.name}</div>
         <div className="text-xs text-muted-foreground">
           {data?.subscribers} subscribers
