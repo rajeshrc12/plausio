@@ -13,7 +13,7 @@ const Dashboard = () => {
           <UploadDialog />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-6 p-6">
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
         <div className="flex flex-col gap-3 rounded-xl border p-6">
           <div className="font-bold">Latest video performance</div>
           <div className="overflow-hidden rounded-xl">

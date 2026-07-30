@@ -24,7 +24,7 @@ const StudioSidebar = () => {
   const { data: myChannel, isLoading } = useMyChannel()
   if (isLoading || !myChannel) return "Loading..."
   return (
-    <div className="sidebar-scrollbar relative flex h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2">
+    <div className="sidebar-scrollbar relative hidden h-full w-60 shrink-0 flex-col gap-2 overflow-y-auto py-2 md:flex">
       <div className="sticky top-0 flex flex-col items-center bg-background p-2">
         <Avatar className={"h-28 w-28"}>
           <AvatarImage src={getProfileUrl(myChannel.id)} />

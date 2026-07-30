@@ -21,7 +21,7 @@ const TableVideoCard = ({
         </span>
       </div>
 
-      <div className="min-w-0 flex-1">
+      <div className="w-40 flex-1 truncate lg:min-w-0">
         <div className="truncate font-medium">{title}</div>
         <div className="truncate text-muted-foreground">{description}</div>
       </div>
