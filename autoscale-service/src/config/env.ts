@@ -14,11 +14,16 @@ export const env = {
   POLL_INTERVAL_MS: 5_000,
 
   BULLMQ_QUEUE: process.env.BULLMQ_QUEUE!,
+  REDIS_CONTAINER_KEY: process.env.REDIS_CONTAINER_KEY!,
   REDIS_HOST: process.env.REDIS_HOST!,
   REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
 
   ECS_CLUSTER: process.env.ECS_CLUSTER!,
+  ECS_CLUSTER_ARN: process.env.ECS_CLUSTER_ARN!,
+
   ECS_TASK_DEFINITION: process.env.ECS_TASK_DEFINITION!,
+  ECS_TASK_ARN: process.env.ECS_TASK_ARN!,
+
   ECS_SUBNET_IDS: process.env.ECS_SUBNET_IDS!.split(",").map((id) => id.trim()),
   ECS_SECURITY_GROUP_IDS: process.env
     .ECS_SECURITY_GROUP_IDS!.split(",")

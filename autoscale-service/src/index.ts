@@ -1,6 +1,7 @@
 import { env } from "./config/env.js";
 // import { spinUp } from "./services/ecs.js";
-import { getQueueStats } from "./services/bullmq.ts";
+import { getQueueStats } from "./services/bullmq.js";
+import { addCpuContainer, getCpuContainers } from "./services/container.js";
 
 async function poll() {
   try {
@@ -11,7 +12,14 @@ async function poll() {
     // console.log(workersToStart);
     // const result = await spinUp(workersToStart);
 
-    // console.log(result.tasks.map((task) => task.taskArn));
+    // console.log(JSON.stringify(result.tasks, null, 4));
+    for (const task of new Array(stats.ready)) {
+      await addCpuContainer({
+        id: task?.taskArn?.split("/")[2] || Math.floor(Math.random() * 10000),
+        status: "init",
+      });
+    }
+    console.log(await getCpuContainers());
     // Autoscaling logic will go here.
   } catch (error) {
     console.error("BullMQ polling failed:", error);

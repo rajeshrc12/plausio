@@ -1,17 +1,14 @@
+import { Worker } from "bullmq";
+import { env } from "./config/env.js";
+import { connection } from "./config/bullmq.js";
 import { processVideo } from "./services/video.js";
 
-async function main() {
-  console.log("Transcode worker starting...");
+const worker = new Worker(env.BULLMQ_QUEUE, processVideo, { connection });
 
-  try {
-    await processVideo({});
-  } catch (error) {
-    console.error("Failed to process message:", error);
-    process.exit(1);
-  }
-}
+worker.on("completed", (job) => {
+  console.log(`Job ${job.id} completed`);
+});
 
-main().catch((error) => {
-  console.error("Worker failed:", error);
-  process.exit(1);
+worker.on("failed", (job, error) => {
+  console.error(`Job ${job?.id} failed:`, error);
 });
