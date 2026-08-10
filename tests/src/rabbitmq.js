@@ -4,7 +4,7 @@ import { env } from "./config/env.js";
 async function main() {
   const queueUrl = env.RABBITMQ_URL;
   const queueName = env.RABBITMQ_QUEUE_NAME;
-  const jobCount = 5;
+  const jobCount = 1;
 
   const connection = await amqp.connect(queueUrl);
   const channel = await connection.createChannel();
