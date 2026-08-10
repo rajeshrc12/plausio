@@ -10,6 +10,7 @@ export const env = {
   AWS_S3_BUCKET_VIDEO_PATH: process.env.AWS_S3_BUCKET_VIDEO_PATH,
   AWS_SQS_URL: process.env.AWS_SQS_URL,
   UPLOAD_SERVICE_API_URL: process.env.UPLOAD_SERVICE_API_URL,
-  RABBITMQ_URL: process.env.RABBITMQ_URL,
-  RABBITMQ_QUEUE_NAME: process.env.RABBITMQ_QUEUE_NAME,
+  BULLMQ_QUEUE: process.env.BULLMQ_QUEUE,
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
 };

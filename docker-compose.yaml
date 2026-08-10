@@ -17,19 +17,16 @@ services:
       retries: 10
     restart: unless-stopped
 
-  rabbitmq:
-    image: rabbitmq:4-management-alpine
-    container_name: rabbitmq
+  redis:
+    image: redis:7-alpine
+    container_name: redis
     ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: rabbitmq
-      RABBITMQ_DEFAULT_PASS: rabbitmq
+      - "6379:6379"
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - redis_data:/data
+    command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -59,10 +56,10 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
-      rabbitmq:
+      redis:
         condition: service_healthy
     restart: unless-stopped
 
 volumes:
   postgres_data:
-  rabbitmq_data:
+  redis_data:
