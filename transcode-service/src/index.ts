@@ -1,25 +1,38 @@
-import { TranscodeHandler, TranscodeMessage } from "./services/video.js";
+import amqp from "amqplib";
 import { env } from "./config/env.js";
-import { SqsConsumer } from "./services/sqs.js";
-import { sqs } from "./config/sqs.js";
+import { processVideo } from "./services/video.js";
 
-async function bootstrap() {
-  const handler = new TranscodeHandler();
+async function main() {
+  const connection = await amqp.connect(env.RABBITMQ_URL);
+  const channel = await connection.createChannel();
 
-  const consumer = new SqsConsumer<TranscodeMessage>(sqs, env.AWS_SQS_URL);
+  await channel.assertQueue(env.RABBITMQ_QUEUE_NAME, {
+    durable: true,
+  });
 
-  consumer.start((message) => handler.handle(message));
+  await channel.prefetch(1);
 
-  const shutdown = async () => {
-    console.log("Shutting down...");
-    consumer.stop();
-  };
+  console.log(`Worker listening on "${env.RABBITMQ_QUEUE_NAME}"`);
 
-  process.on("SIGINT", shutdown);
-  process.on("SIGTERM", shutdown);
+  await channel.consume(env.RABBITMQ_QUEUE_NAME, async (msg) => {
+    if (!msg) return;
+
+    try {
+      const message = JSON.parse(msg.content.toString());
+
+      await processVideo(message);
+
+      channel.ack(msg);
+    } catch (error) {
+      console.error("Failed to process message:", error);
+
+      // Requeue the message.
+      channel.nack(msg, false, true);
+    }
+  });
 }
 
-bootstrap().catch((err) => {
-  console.error(err);
+main().catch((error) => {
+  console.error("Worker failed:", error);
   process.exit(1);
 });
