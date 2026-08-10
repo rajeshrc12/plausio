@@ -1,0 +1,15 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "scripts": {},
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1090.0",
+    "@aws-sdk/client-sqs": "^3.1090.0",
+    "@aws-sdk/s3-request-presigner": "^3.1090.0",
+    "dotenv": "^17.4.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
