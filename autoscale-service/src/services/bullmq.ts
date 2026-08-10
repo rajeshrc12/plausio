@@ -1,4 +1,4 @@
-import { bullmq } from "../config/bullmq.ts";
+import { bullmq } from "../config/bullmq.js";
 
 export interface QueueStats {
   ready: number;
