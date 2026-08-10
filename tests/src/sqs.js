@@ -13,12 +13,18 @@ const addS3UrlToSQS = async (message) => {
   console.log("Message sent:", response.MessageId);
 };
 
-const messages = [
-  { id: 1, type: "video/mp4" },
-  { id: 12, type: "video/mp4" },
-  { id: 13, type: "video/mp4" },
-  { id: 14, type: "video/mp4" },
-  { id: 15, type: "video/mp4" },
-];
+const count = Number(process.argv[2]);
 
-await Promise.all(messages.map((message) => addS3UrlToSQS(message)));
+if (!Number.isInteger(count) || count <= 0) {
+  console.error("Please provide a positive number. Example: node index.js 10");
+  process.exit(1);
+}
+
+const messages = Array.from({ length: count }, (_, index) => ({
+  id: index + 1,
+  type: "video/mp4",
+}));
+
+await Promise.all(messages.map(addS3UrlToSQS));
+
+console.log(`${count} messages sent successfully.`);
