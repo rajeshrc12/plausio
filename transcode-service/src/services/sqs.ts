@@ -23,31 +23,47 @@ export class SqsConsumer<T> {
     this.running = false;
   }
 
-  private async poll(handler: (message: T) => Promise<void>) {
+  private async poll(handler: (message: T) => Promise<void>): Promise<void> {
+    console.log("SQS Started");
     while (this.running) {
       try {
         const response = await this.sqs.send(
           new ReceiveMessageCommand({
             QueueUrl: this.queueUrl,
-            MaxNumberOfMessages: 10,
+            MaxNumberOfMessages: 1,
             WaitTimeSeconds: 20,
             VisibilityTimeout: 60,
           }),
         );
 
-        for (const message of response.Messages ?? []) {
-          try {
-            await handler(JSON.parse(message.Body!) as T);
+        const message = response.Messages?.[0];
 
+        if (!message) {
+          continue;
+        }
+
+        try {
+          if (!message.Body) {
+            console.error("Received SQS message without a body");
+            continue;
+          }
+
+          const parsedMessage = JSON.parse(message.Body) as T;
+
+          await handler(parsedMessage);
+
+          if (message.ReceiptHandle) {
             await this.sqs.send(
               new DeleteMessageCommand({
                 QueueUrl: this.queueUrl,
-                ReceiptHandle: message.ReceiptHandle!,
+                ReceiptHandle: message.ReceiptHandle,
               }),
             );
-          } catch (err) {
-            console.error("Message processing failed", err);
           }
+        } catch (err) {
+          console.error("Message processing failed", err);
+          // Message is NOT deleted.
+          // SQS can make it visible again after VisibilityTimeout.
         }
       } catch (err) {
         if (this.running) {

@@ -1,8 +1,6 @@
-import { Server } from "http";
 import { TranscodeHandler, TranscodeMessage } from "./services/video.js";
 import { env } from "./config/env.js";
 import { SqsConsumer } from "./services/sqs.js";
-import app from "./app.js";
 import { sqs } from "./config/sqs.js";
 
 async function bootstrap() {
@@ -12,19 +10,9 @@ async function bootstrap() {
 
   consumer.start((message) => handler.handle(message));
 
-  const server: Server = app.listen(env.PORT, () => {
-    console.log(`Transcode service running on ${env.PORT}`);
-  });
-
   const shutdown = async () => {
     console.log("Shutting down...");
-
     consumer.stop();
-
-    server.close(() => {
-      console.log("HTTP server closed");
-      process.exit(0);
-    });
   };
 
   process.on("SIGINT", shutdown);
