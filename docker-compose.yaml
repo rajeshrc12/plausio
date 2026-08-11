@@ -60,6 +60,18 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  autoscale-service:
+    build:
+      context: autoscale-service
+      dockerfile: Dockerfile
+    container_name: autoscale-service
+    env_file:
+      - autoscale-service/.env
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
