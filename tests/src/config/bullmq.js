@@ -6,6 +6,6 @@ const connection = {
   port: env.REDIS_PORT,
 };
 
-export const uploadQueue = new Queue(env.BULLMQ_QUEUE, {
+export const bullmq = new Queue(env.BULLMQ_QUEUE, {
   connection,
 });
