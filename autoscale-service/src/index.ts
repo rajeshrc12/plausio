@@ -1,7 +1,13 @@
 import { env } from "./config/env.js";
 // import { spinUp } from "./services/ecs.js";
 import { getQueueStats } from "./services/bullmq.js";
-import { addCpuContainer, getCpuContainers } from "./services/container.js";
+import {
+  addCpuContainer,
+  clearCpuContainers,
+  getCpuContainers,
+} from "./services/container.js";
+
+clearCpuContainers();
 
 async function poll() {
   try {
