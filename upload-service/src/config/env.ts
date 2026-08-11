@@ -25,4 +25,8 @@ export const env = {
   AWS_S3_BUCKET_PROFILE_PATH: process.env.AWS_S3_BUCKET_PROFILE_PATH!,
 
   AWS_SQS_URL: process.env.AWS_SQS_URL!,
+
+  REDIS_CONTAINER_KEY: process.env.REDIS_CONTAINER_KEY!,
+  REDIS_HOST: process.env.REDIS_HOST!,
+  REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
 };
