@@ -18,8 +18,6 @@ const addJob = async () => {
 
   const jobsWithStatus = await Promise.all(
     jobs.map(async (job) => ({
-      id: job.id,
-      name: job.name,
       data: job.data,
       status: await job.getState(),
     })),
