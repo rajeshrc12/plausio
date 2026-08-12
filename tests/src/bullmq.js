@@ -1,12 +1,18 @@
 import { bullmq } from "./config/bullmq.js";
 
-const addJob = async () => {
-  const job = await bullmq.add("transcode", {
-    id: Math.floor(Math.random() * 1000),
-    type: "video/mp4",
-  });
+const addJobs = async (count) => {
+  if (!Number.isInteger(count) || count < 1) {
+    throw new Error("Job count must be a positive integer");
+  }
 
-  console.log("Added job:", job.id);
+  for (let i = 0; i < count; i++) {
+    const job = await bullmq.add("transcode", {
+      id: Math.floor(Math.random() * 1000),
+      type: "video/mp4",
+    });
+
+    console.log("Added job:", job.id);
+  }
 
   const jobs = await bullmq.getJobs([
     "waiting",
@@ -18,6 +24,7 @@ const addJob = async () => {
 
   const jobsWithStatus = await Promise.all(
     jobs.map(async (job) => ({
+      id: job.id,
       data: job.data,
       status: await job.getState(),
     })),
@@ -26,4 +33,6 @@ const addJob = async () => {
   console.log(jobsWithStatus);
 };
 
-addJob();
+const count = Number(process.argv[2] ?? 1);
+
+addJobs(count);

@@ -5,7 +5,7 @@ const KEY = env.REDIS_CONTAINER_KEY;
 
 export interface CpuContainer {
   id: string;
-  status: "init" | "idle" | "busy" | "error";
+  status: "init" | "idle" | "busy" | "error" | "starting";
 }
 
 export async function addCpuContainer(container: CpuContainer): Promise<void> {

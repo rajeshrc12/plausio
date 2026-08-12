@@ -33,5 +33,6 @@ export const env = {
     | "DISABLED",
   ECS_CONTAINER_NAME: process.env.ECS_CONTAINER_NAME!,
 
-  MAX_FARGATE_WORKERS: Number(process.env.MAX_FARGATE_WORKERS!),
+  MAX_FARGATE_WORKERS: Number(process.env.MAX_FARGATE_WORKERS!) || 5,
+  TASKS_PER_WORKER: Number(process.env.TASKS_PER_WORKER!) || 2,
 };
