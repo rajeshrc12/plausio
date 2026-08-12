@@ -12,15 +12,16 @@ export const processVideo = async (job: any) => {
   if (url) {
     id = url.split("/").pop()?.split("-")[0];
     console.log("task id", id);
-    console.log("Worker running");
     await updateContainerStatus({
       id,
       status: "busy",
+      idleSince: null,
     });
     await delay(5);
     await updateContainerStatus({
       id,
       status: "idle",
+      idleSince: new Date().toISOString(),
     });
     console.log("Worker finished");
   }

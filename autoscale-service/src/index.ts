@@ -23,14 +23,6 @@ async function poll() {
 
     const delta = desiredWorkers - runningWorkers;
 
-    console.log("autoscaler", {
-      readyJobs,
-      runningWorkers,
-      requiredWorkers,
-      desiredWorkers,
-      delta,
-    });
-
     // Scale up.
     if (delta > 0) {
       const count = Math.min(delta, maxWorkers - runningWorkers);

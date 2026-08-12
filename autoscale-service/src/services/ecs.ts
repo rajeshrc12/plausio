@@ -78,6 +78,7 @@ export async function spinUp(count = 1) {
       await addCpuContainer({
         id,
         status: "starting",
+        idleSince: null,
       });
     }),
   );
@@ -99,7 +100,7 @@ export async function spinDown(count = 0) {
   const idleContainers = containers.filter(
     (container) => container.status === "idle",
   );
-
+  console.log(idleContainers);
   if (idleContainers.length === 0) {
     console.log("no idle workers available to stop");
     return [];

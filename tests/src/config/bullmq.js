@@ -8,4 +8,7 @@ const connection = {
 
 export const bullmq = new Queue(env.BULLMQ_QUEUE, {
   connection,
+  defaultJobOptions: {
+    removeOnComplete: true,
+  },
 });
