@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma.js";
 import { uploadFiles } from "../services/video.js";
 import { env } from "../config/env.js";
 import { completeMultipartUpload } from "../services/s3.js";
-import { addS3UrlToSQS } from "../services/sqs.js";
+import { createJob } from "../services/bullmq.js";
 import { VideoStatus, VideoVisibility } from "../../generated/prisma/enums.js";
 import { Id } from "../types/controller.js";
 import { Channel } from "../../generated/prisma/client.js";
@@ -92,7 +92,7 @@ export const completeUpload = async (
       status: VideoStatus.PROCESSING,
     },
   });
-  addS3UrlToSQS({ id: video.id, key: videoKey, type: video.type });
+  createJob({ id: video.id, key: videoKey, type: video.type });
   res.status(201).json({
     video,
     message: "Upload completed successfully",

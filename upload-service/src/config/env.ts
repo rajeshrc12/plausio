@@ -29,4 +29,5 @@ export const env = {
   REDIS_CONTAINER_KEY: process.env.REDIS_CONTAINER_KEY!,
   REDIS_HOST: process.env.REDIS_HOST!,
   REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
+  BULLMQ_QUEUE: process.env.BULLMQ_QUEUE!,
 };
