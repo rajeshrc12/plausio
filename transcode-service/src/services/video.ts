@@ -13,12 +13,12 @@ export const processVideo = async (job: any) => {
     id = url.split("/").pop()?.split("-")[0];
     console.log("task id", id);
     console.log("Worker running");
-    updateContainerStatus({
+    await updateContainerStatus({
       id,
       status: "busy",
     });
     await delay(5);
-    updateContainerStatus({
+    await updateContainerStatus({
       id,
       status: "idle",
     });
