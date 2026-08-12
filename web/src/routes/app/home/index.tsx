@@ -5,7 +5,7 @@ const AppHome = () => {
   return (
     <div className="flex flex-col gap-8 pb-10">
       {/* Hero */}
-      <div className="h-[55vh] min-h-100 w-full md:h-[65vh] md:min-h-125 lg:h-[80vh] lg:min-h-150">
+      <div className="h-[55vh] min-h-100 w-full md:h-[65vh] lg:h-[85vh]">
         <HomeSlider />
       </div>
 
