@@ -35,4 +35,7 @@ export const env = {
 
   MAX_FARGATE_WORKERS: Number(process.env.MAX_FARGATE_WORKERS!) || 5,
   TASKS_PER_WORKER: Number(process.env.TASKS_PER_WORKER!) || 2,
+
+  TASK_IDLE_TIME_IN_MINUTES:
+    Number(process.env.TASK_IDLE_TIME_IN_MINUTES || 5) * 60 * 1000,
 };

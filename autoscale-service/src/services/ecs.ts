@@ -96,11 +96,17 @@ export async function spinDown(count = 0) {
 
   const containers = await getCpuContainers();
 
-  // NEVER stop busy or starting workers.
-  const idleContainers = containers.filter(
-    (container) => container.status === "idle",
-  );
-  console.log(idleContainers);
+  const now = Date.now();
+  const idleContainers = containers.filter((container) => {
+    if (container.status !== "idle" || !container.idleSince) {
+      return false;
+    }
+
+    const idleSince = new Date(container.idleSince).getTime();
+
+    return now - idleSince > env.TASK_IDLE_TIME_IN_MINUTES;
+  });
+
   if (idleContainers.length === 0) {
     console.log("no idle workers available to stop");
     return [];
