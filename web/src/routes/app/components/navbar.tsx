@@ -13,7 +13,7 @@ const menu = [
 ]
 const AppNavbar = () => {
   return (
-    <div className="flex items-center gap-5 p-3">
+    <div className="sticky top-0 left-0 z-10 flex items-center gap-5 bg-background px-20 py-2">
       <div className="text-2xl font-medium">Plausio</div>
       <div className="flex">
         <Link
