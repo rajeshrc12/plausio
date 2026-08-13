@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import path from "path";
 import { fileURLToPath } from "url";
+import { variants } from "./option.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,81 +35,42 @@ const worker = async () => {
       });
     }
 
-    const args = [
-      "-y",
-      "-i",
-      inputFile,
+    const args = ["-y", "-i", inputFile];
 
-      // --------------------
-      // 720p
-      // --------------------
+    variants.forEach((variant, index) => {
+      args.push(
+        "-map",
+        "0:v:0",
 
-      "-map",
-      "0:v:0",
+        `-c:v:${index}`,
+        "libx264",
 
-      "-c:v:0",
-      "libx264",
+        "-preset",
+        "veryfast",
 
-      "-preset",
-      "veryfast",
+        `-b:v:${index}`,
+        variant.bitrate,
 
-      "-b:v:0",
-      "3500k",
+        `-s:v:${index}`,
+        variant.size,
 
-      "-s:v:0",
-      "1280x720",
+        "-an",
 
-      "-an",
+        "-f",
+        "hls",
 
-      "-f",
-      "hls",
+        "-hls_time",
+        "6",
 
-      "-hls_time",
-      "6",
+        "-hls_playlist_type",
+        "vod",
 
-      "-hls_playlist_type",
-      "vod",
+        "-hls_segment_filename",
+        join(hlsDir, variant.name, "segment_%03d.ts"),
 
-      "-hls_segment_filename",
-      join(hlsDir, "720p", "segment_%03d.ts"),
-
-      join(hlsDir, "720p", "index.m3u8"),
-
-      // --------------------
-      // 480p
-      // --------------------
-
-      "-map",
-      "0:v:0",
-
-      "-c:v:1",
-      "libx264",
-
-      "-preset",
-      "veryfast",
-
-      "-b:v:1",
-      "1400k",
-
-      "-s:v:1",
-      "854x480",
-
-      "-an",
-
-      "-f",
-      "hls",
-
-      "-hls_time",
-      "6",
-
-      "-hls_playlist_type",
-      "vod",
-
-      "-hls_segment_filename",
-      join(hlsDir, "480p", "segment_%03d.ts"),
-
-      join(hlsDir, "480p", "index.m3u8"),
-    ];
+        join(hlsDir, variant.name, "index.m3u8"),
+      );
+    });
 
     // --------------------
     // Audio
