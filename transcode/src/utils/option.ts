@@ -10,3 +10,10 @@ export const variants = [
     size: "854x480",
   },
 ];
+
+export const languages: Record<string, string> = {
+  eng: "English",
+  hin: "Hindi",
+  tam: "Tamil",
+  tel: "Telugu",
+};

@@ -3,7 +3,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import path from "path";
 import { fileURLToPath } from "url";
-import { variants } from "./option.ts";
+import { getAudioStreams } from "./utils/audio.ts";
+import { variants } from "./utils/option.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,8 +20,10 @@ const worker = async () => {
   const hlsDir = join(workDir, "hls");
   const inputFile = join(workDir, `original.${extension}`);
 
+  const audioStreams = await getAudioStreams(inputFile);
+
   // For now, manually set this.
-  const audioCount = 2;
+  const audioCount = audioStreams.length;
 
   try {
     console.log(`[${id}] Starting HLS processing`);
@@ -129,7 +132,7 @@ const worker = async () => {
 
     for (let i = 0; i < audioCount; i++) {
       master.push(
-        `#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="Audio ${i + 1}",DEFAULT=${i === 0 ? "YES" : "NO"},AUTOSELECT=YES,URI="audio_${i}/index.m3u8"`,
+        `#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",NAME="${audioStreams[i].languageName}",DEFAULT=${audioStreams[i].language === "eng" ? "YES" : "NO"},AUTOSELECT=YES,URI="audio_${i}/index.m3u8"`,
       );
     }
 
