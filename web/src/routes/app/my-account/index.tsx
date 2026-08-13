@@ -16,7 +16,7 @@ const MyAccount = () => {
           </Avatar>
           <div>
             <div className="text-xl font-bold">{data.name}</div>
-            <div className="text-sm">not member yet</div>
+            <div className="text-sm">{data.email}</div>
           </div>
         </div>
         <div>

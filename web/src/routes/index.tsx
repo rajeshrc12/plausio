@@ -6,6 +6,7 @@ import Series from "@/routes/app/series"
 import Movie from "@/routes/app/movie"
 import Video from "@/routes/app/video"
 import MyAccount from "@/routes/app/my-account"
+import DashboardHome from "@/routes/dashboard/home"
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,12 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     Component: Dashboard,
+    children: [
+      {
+        path: "",
+        Component: DashboardHome,
+      },
+    ],
   },
   {
     path: "/watch",
