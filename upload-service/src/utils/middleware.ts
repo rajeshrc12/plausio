@@ -16,7 +16,7 @@ export const authenticateToken = (
 
   try {
     const decoded = jwt.verify(token, env.JWT_SECRET);
-    req.channel = decoded;
+    req.user = decoded;
     next();
   } catch {
     throw new AppError("Invalid or expired token", 401, "fail");

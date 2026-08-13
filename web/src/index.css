@@ -127,6 +127,9 @@
   html {
     @apply font-sans;
   }
+  button {
+    cursor: pointer;
+  }
   .swiper-button-next,
   .swiper-button-prev {
     --swiper-navigation-color: hsl(var(--foreground));

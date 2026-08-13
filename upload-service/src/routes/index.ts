@@ -2,14 +2,12 @@ import { Router } from "express";
 
 import authRoutes from "../routes/auth.js";
 import redisRoutes from "../routes/redis.js";
-import channelRoutes from "../routes/channel.js";
-import videoRoutes from "../routes/video.js";
+import userRoute from "./user.js";
 
 const router = Router();
 
 router.use("/redis", redisRoutes);
 router.use("/auth", authRoutes);
-router.use("/channel", channelRoutes);
-router.use("/video", videoRoutes);
+router.use("/user", userRoute);
 
 export default router;

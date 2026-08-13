@@ -1,3 +1,4 @@
+import Menu from "@/routes/app/components/menu"
 import { HomeIcon } from "lucide-react"
 import { Link } from "react-router"
 
@@ -36,6 +37,8 @@ const AppNavbar = () => {
           </Link>
         ))}
       </div>
+
+      <Menu />
     </div>
   )
 }
