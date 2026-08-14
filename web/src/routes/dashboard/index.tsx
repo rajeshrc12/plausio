@@ -6,11 +6,13 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen flex-col">
       <DashboardNavbar />
-      <div className="flex h-full">
+
+      <div className="flex min-h-0 flex-1">
         <DashboardSidebar />
-        <div className="overflow-y-auto">
+
+        <main className="min-h-0 w-full overflow-y-auto">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   )

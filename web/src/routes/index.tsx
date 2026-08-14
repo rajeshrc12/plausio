@@ -7,6 +7,8 @@ import Movie from "@/routes/app/movie"
 import Video from "@/routes/app/video"
 import MyAccount from "@/routes/app/my-account"
 import DashboardHome from "@/routes/dashboard/home"
+import DashboardMovie from "@/routes/dashboard/movie"
+import DashboardProfile from "@/routes/dashboard/profile"
 
 const router = createBrowserRouter([
   {
@@ -18,15 +20,15 @@ const router = createBrowserRouter([
         Component: AppHome,
       },
       {
-        path: "/series",
+        path: "series",
         Component: Series,
       },
       {
-        path: "/movie",
+        path: "movie",
         Component: Movie,
       },
       {
-        path: "/my-account",
+        path: "my-account",
         Component: MyAccount,
       },
     ],
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
       {
         path: "",
         Component: DashboardHome,
+      },
+      {
+        path: "movie",
+        Component: DashboardMovie,
+      },
+      {
+        path: "profile",
+        Component: DashboardProfile,
       },
     ],
   },
