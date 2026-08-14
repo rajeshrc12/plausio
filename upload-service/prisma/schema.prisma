@@ -27,40 +27,21 @@ model Movie {
   id          Int    @id @default(autoincrement())
   title       String
   description String
-  genre       String
-  director    String
-  actor       String
-  language    String
-  year        Int
 
   views    Int @default(0)
   duration Int
 
   fileStatus FileStatus @default(INIT)
   fileType   String
-  filesize   Int
-  filename   String
+  fileSize   Int
+  fileName   String
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   thumbnail Thumbnail?
-  cover     Cover?
 }
 
 model Thumbnail {
-  id   Int    @id @default(autoincrement())
-  name String
-  size Int
-  type String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  movieId Int   @unique
-  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
-}
-
-model Cover {
   id   Int    @id @default(autoincrement())
   name String
   size Int

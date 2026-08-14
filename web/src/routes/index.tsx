@@ -9,6 +9,8 @@ import MyAccount from "@/routes/app/my-account"
 import DashboardHome from "@/routes/dashboard/home"
 import DashboardMovie from "@/routes/dashboard/movie"
 import DashboardProfile from "@/routes/dashboard/profile"
+import MovieList from "@/routes/dashboard/movie/list"
+import CreateMovie from "@/routes/dashboard/movie/create"
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,16 @@ const router = createBrowserRouter([
       {
         path: "movie",
         Component: DashboardMovie,
+        children: [
+          {
+            path: "",
+            Component: MovieList,
+          },
+          {
+            path: "create",
+            Component: CreateMovie,
+          },
+        ],
       },
       {
         path: "profile",
