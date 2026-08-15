@@ -71,3 +71,14 @@ export const formatViews = (count: number) =>
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(count)
+
+export const formatFileSize = (bytes: number) => {
+  const MB = 1024 ** 2
+  const GB = 1024 ** 3
+
+  if (bytes < GB) {
+    return `${Math.round(bytes / MB)} MB`
+  }
+
+  return `${Number((bytes / GB).toFixed(1))} GB`
+}

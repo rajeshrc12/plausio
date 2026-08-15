@@ -15,8 +15,13 @@ import { Button } from "@/components/ui/button"
 import { movieFormSchema } from "@/types/schema"
 import { useAddMovie } from "@/mutation/movie"
 import { getMovieDuration } from "@/utils/movie"
+import { uploadFiles } from "@/services/upload"
+import { useState } from "react"
+import { createMovieJob } from "@/api/movie"
+import { useNavigate } from "react-router"
 
 const CreateMovie = () => {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof movieFormSchema>>({
     resolver: zodResolver(movieFormSchema),
     defaultValues: {
@@ -25,36 +30,46 @@ const CreateMovie = () => {
     },
   })
   const addMovie = useAddMovie()
+  const [loading, setLoading] = useState(false)
   const onSubmit = async (data: z.infer<typeof movieFormSchema>) => {
     try {
-      const { movie, title, description } = data
-      const { name: fileName, type: fileType, size: fileSize } = movie
+      setLoading(true)
+      const { movie, title, description, thumbnail } = data
 
       const duration = await getMovieDuration(movie)
 
-      await addMovie.mutateAsync({
+      const response = await addMovie.mutateAsync({
         title,
         description,
-        fileName,
-        fileType,
-        fileSize,
+        fileName: movie.name,
+        fileType: movie.type,
+        fileSize: movie.size,
         duration,
       })
+      const files = [
+        { url: response.movieUrl, file: movie, name: "movie" },
+        { url: response.thumbnailUrl, file: thumbnail, name: "thumbnail" },
+      ]
+      const upload = await uploadFiles(files)
+      if (upload.movie) {
+        await createMovieJob({ id: response.id, type: movie.type })
+      }
+      navigate("/dashboard/movie")
+      setLoading(false)
     } catch (error) {
       console.error("Failed to add movie:", error)
     }
   }
-
   return (
     <div className="mx-auto w-full max-w-4xl px-10 py-8">
       <div className="mb-6 text-2xl font-bold">Add movie</div>
 
-      <form
-        className="flex flex-col gap-6"
-        id="form"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <fieldset disabled={addMovie.isPending}>
+      <form id="form" onSubmit={form.handleSubmit(onSubmit)}>
+        <fieldset
+          className="flex flex-col gap-6"
+
+          disabled={loading}
+        >
           <div className="grid h-70 grid-cols-1 gap-6 md:grid-cols-2">
             <Controller
               name="thumbnail"

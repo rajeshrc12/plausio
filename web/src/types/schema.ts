@@ -57,6 +57,9 @@ export const MovieSchema = z.object({
   fileType: z.string(),
   fileSize: z.number().int(),
   fileName: z.string(),
+
+  createdAt: z.date(),
+  updatedAt: z.date(),
 })
 
 export type Movie = z.infer<typeof MovieSchema>

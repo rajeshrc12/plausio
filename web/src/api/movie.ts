@@ -8,6 +8,16 @@ const api = axios.create({
 })
 
 export const addMovie = async (movie: AddMovie) => {
-  const response = await api.post<Movie>("/", movie)
+  const response = await api.post("/", movie)
   return response.data
+}
+
+export const createMovieJob = async (job: { id: number; type: string }) => {
+  const response = await api.post("/job", job)
+  return response.data
+}
+
+export const getMovies = async () => {
+  const me = await api.get<Movie[]>("/")
+  return me.data
 }
