@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Play, User } from "lucide-react"
+import { LayoutDashboard, Play } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
 const menu = [
@@ -13,11 +13,6 @@ const menu = [
     path: "/dashboard/movie",
     name: "Movie",
     Icon: Play,
-  },
-  {
-    path: "/dashboard/profile",
-    name: "Profile",
-    Icon: User,
   },
 ]
 

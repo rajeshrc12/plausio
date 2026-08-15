@@ -1,7 +1,7 @@
 import { env } from "@/config/env"
 import { Duration } from "luxon"
 
-export const getVideoDuration = (file: File): Promise<number> => {
+export const getMovieDuration = (file: File): Promise<number> => {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video")
 

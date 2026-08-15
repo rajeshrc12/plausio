@@ -1,5 +1,5 @@
 import { env } from "@/config/env"
-import type { UserSchema } from "@/types/schema"
+import type { User } from "@/types/schema"
 import axios from "axios"
 
 const api = axios.create({
@@ -8,6 +8,6 @@ const api = axios.create({
 })
 
 export const getMe = async () => {
-  const me = await api.get<UserSchema>("/me")
+  const me = await api.get<User>("/me")
   return me.data
 }

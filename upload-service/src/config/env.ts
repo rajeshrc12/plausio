@@ -10,6 +10,7 @@ export const env = {
   GOOGLE_FALLBACK_URL: process.env.GOOGLE_FALLBACK_URL!,
 
   JWT_SECRET: process.env.JWT_SECRET!,
+  JWT_ADMIN_SECRET: process.env.JWT_SECRET!,
   DATABASE_URL: process.env.DATABASE_URL!,
 
   FRONTEND_URL: process.env.FRONTEND_URL!,

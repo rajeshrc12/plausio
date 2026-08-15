@@ -1,5 +1,6 @@
 import { z } from "zod"
 import {
+  FileStatus,
   IMAGE_TYPES,
   MAX_THUMBNAIL_SIZE,
   MAX_VIDEO_SIZE,
@@ -18,7 +19,57 @@ export const UserSchema = z.object({
   updatedAt: z.date(),
 })
 
-export type UserSchema = z.infer<typeof UserSchema>
+export type User = z.infer<typeof UserSchema>
+
+/* ============================
+ * Admin
+ * ============================ */
+
+export const AdminSchema = z.object({
+  id: z.number().int(),
+  userName: z.string(),
+  password: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+})
+
+export type Admin = z.infer<typeof AdminSchema>
+
+export const AddAdminSchema = AdminSchema.pick({
+  userName: true,
+  password: true,
+})
+export type AddAdmin = z.infer<typeof AddAdminSchema>
+
+/* ============================
+ * Movie
+ * ============================ */
+
+export const MovieSchema = z.object({
+  id: z.number().int(),
+  title: z.string(),
+  description: z.string(),
+
+  views: z.number().int(),
+  duration: z.number().int(),
+
+  fileStatus: z.enum(FileStatus).optional(),
+  fileType: z.string(),
+  fileSize: z.number().int(),
+  fileName: z.string(),
+})
+
+export type Movie = z.infer<typeof MovieSchema>
+
+export const AddMovieSchema = MovieSchema.pick({
+  fileName: true,
+  fileType: true,
+  fileSize: true,
+  title: true,
+  description: true,
+  duration: true,
+})
+export type AddMovie = z.infer<typeof AddMovieSchema>
 
 export const movieFormSchema = z.object({
   title: z
@@ -55,4 +106,4 @@ export const movieFormSchema = z.object({
     }),
 })
 
-export type movieFormSchema = z.infer<typeof movieFormSchema>
+export type movieForm = z.infer<typeof movieFormSchema>

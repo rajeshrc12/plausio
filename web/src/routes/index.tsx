@@ -11,6 +11,7 @@ import DashboardMovie from "@/routes/dashboard/movie"
 import DashboardProfile from "@/routes/dashboard/profile"
 import MovieList from "@/routes/dashboard/movie/list"
 import CreateMovie from "@/routes/dashboard/movie/create"
+import AdminLogin from "@/routes/dashboard/admin-login"
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
         Component: DashboardProfile,
       },
     ],
+  },
+  {
+    path: "/admin-login",
+    Component: AdminLogin,
   },
   {
     path: "/watch",
