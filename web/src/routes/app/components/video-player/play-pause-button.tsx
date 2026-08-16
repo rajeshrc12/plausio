@@ -11,7 +11,7 @@ export function PlayPauseButton() {
       type="button"
       onClick={() => player.togglePaused()}
       aria-label={paused ? "Play" : "Pause"}
-      className="flex h-9 w-9 items-center justify-center rounded-md text-background transition hover:bg-background/10"
+      className="flex h-9 w-9 items-center justify-center rounded-md"
     >
       {paused ? (
         <Play className="h-5 w-5 fill-current" />

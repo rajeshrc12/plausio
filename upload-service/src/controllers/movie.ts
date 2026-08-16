@@ -47,3 +47,17 @@ export const getMovies = async (req: Request, res: Response) => {
   const movies = await prisma.movie.findMany({ where: { adminId: admin.id } });
   res.status(200).json(movies);
 };
+
+export const changeStatus = async (req: Request, res: Response) => {
+  const { id, status } = req.body;
+
+  const video = await prisma.movie.update({
+    where: {
+      id,
+    },
+    data: {
+      fileStatus: status,
+    },
+  });
+  res.status(200).json(video);
+};

@@ -31,21 +31,21 @@ export function VolumeSlider({ videoRef }: VolumeSliderProps) {
           <button
             type="button"
             aria-label="Volume"
-            className="flex h-9 w-9 items-center justify-center rounded-md text-background transition hover:bg-background/10"
+            className="flex h-9 w-9 items-center justify-center rounded-md"
           >
             <VolumeIcon className="h-5 w-5" />
           </button>
         }
       />
 
-      <Menu.Content className="flex h-48 w-12 items-center justify-center rounded-lg border border-background/10 bg-primary/95 p-2 shadow-xl">
+      <Menu.Content className="flex h-48 w-12 items-center justify-center rounded-lg bg-background p-2 text-primary shadow-xl">
         <Slider
           value={[volume]}
           onValueChange={handleVolumeChange}
           max={100}
           step={1}
           orientation="vertical"
-          className="h-32 **:data-[slot=slider-range]:bg-background **:data-[slot=slider-track]:bg-muted-foreground"
+          className="h-32 **:data-[slot=slider-range]:bg-primary **:data-[slot=slider-track]:bg-muted-foreground"
           aria-label="Volume"
         />
       </Menu.Content>

@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { createMovieJob, getMovies, initUpload } from "../controllers/movie.js";
+import {
+  changeStatus,
+  createMovieJob,
+  getMovies,
+  initUpload,
+} from "../controllers/movie.js";
+import { authenticateAdminToken } from "../utils/middleware.js";
 const router = Router();
 
-router.post("/", initUpload);
-router.post("/job", createMovieJob);
-router.get("/", getMovies);
-
+router.post("/", authenticateAdminToken, initUpload);
+router.post("/job", authenticateAdminToken, createMovieJob);
+router.get("/", authenticateAdminToken, getMovies);
+router.post("/status", changeStatus);
 export default router;

@@ -13,28 +13,29 @@ import { Link } from "react-router"
 
 const MovieList = () => {
   const { data } = useMovies()
-  if (data?.length)
-    return (
-      <div className="flex flex-col gap-5 p-5">
-        <div className="flex justify-between">
-          <div className="text-2xl font-bold">Movies</div>
-          <Link to={"create"}>
-            <Button>Add movie</Button>
-          </Link>
-        </div>
-        <div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Sr</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Size</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.map((movie, i) => (
+
+  return (
+    <div className="flex flex-col gap-5 p-5">
+      <div className="flex justify-between">
+        <div className="text-2xl font-bold">Movies</div>
+        <Link to={"create"}>
+          <Button>Add movie</Button>
+        </Link>
+      </div>
+      <div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Sr</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Duration</TableHead>
+              <TableHead>Size</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.length ? (
+              data?.map((movie, i) => (
                 <TableRow key={movie.id}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{movie.title}</TableCell>
@@ -42,13 +43,17 @@ const MovieList = () => {
                   <TableCell>{formatVideoDuration(movie.duration)}</TableCell>
                   <TableCell>{formatFileSize(movie.fileSize)}</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell>No movies available</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-    )
-  return "Loading..."
+    </div>
+  )
 }
 
 export default MovieList

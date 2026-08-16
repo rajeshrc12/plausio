@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getCpuContainers, updateCpuContainer } from "../services/container.ts";
+import { getCpuContainers, updateCpuContainer } from "../services/container.js";
 
 export const updateStatus = async (req: Request, res: Response) => {
   const { id, status, idleSince } = req.body;

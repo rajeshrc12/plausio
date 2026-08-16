@@ -5,16 +5,46 @@ import { QualityMenu } from "@/routes/app/components/video-player/quality-menu"
 import { TimeBar } from "@/routes/app/components/video-player/time-bar"
 import { TimeDisplay } from "@/routes/app/components/video-player/time-display"
 import { HlsJsVideo } from "@videojs/react/media/hlsjs-video"
-import { useRef } from "react"
 import { Player } from "@/routes/app/components/video-player/player"
 import { VolumeSlider } from "@/routes/app/components/video-player/volume-slider"
 
+import { useEffect, useRef, useState } from "react"
+
 export default function VideoPlayer({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const hideControlsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const [controlsVisible, setControlsVisible] = useState(true)
+
+  const showControls = () => {
+    setControlsVisible(true)
+
+    if (hideControlsTimer.current) {
+      clearTimeout(hideControlsTimer.current)
+    }
+
+    hideControlsTimer.current = setTimeout(() => {
+      setControlsVisible(false)
+    }, 2500)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (hideControlsTimer.current) {
+        clearTimeout(hideControlsTimer.current)
+      }
+    }
+  }, [])
 
   return (
     <Player.Provider>
-      <Player.Container className="group relative h-full w-full overflow-hidden bg-primary">
+      <Player.Container
+        onMouseMove={showControls}
+        onMouseEnter={showControls}
+        className={`relative h-full w-full overflow-hidden ${
+          !controlsVisible ? "cursor-none" : ""
+        }`}
+      >
         <HlsJsVideo
           ref={videoRef}
           src={src}
@@ -23,7 +53,13 @@ export default function VideoPlayer({ src }: { src: string }) {
           className="h-full w-full object-contain"
         />
 
-        <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-primary/95 via-primary/60 to-transparent px-3 pt-10 pb-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <div
+          className={`absolute bottom-0 w-full px-3 pt-10 pb-2 transition-opacity duration-200 ${
+            controlsVisible
+              ? "pointer-events-auto opacity-100"
+              : "pointer-events-none opacity-0"
+          }`}
+        >
           <TimeBar videoRef={videoRef} />
 
           <div className="mt-1 flex h-10 items-center justify-between">

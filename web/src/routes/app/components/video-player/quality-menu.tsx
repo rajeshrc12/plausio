@@ -15,14 +15,14 @@ export function QualityMenu() {
           <button
             type="button"
             aria-label="Video quality"
-            className="flex h-9 w-9 items-center justify-center rounded-md text-background transition hover:bg-background/10"
+            className="flex h-9 w-9 items-center justify-center rounded-md"
           >
             <SquarePlay className="h-5 w-5" />
           </button>
         }
       />
 
-      <Menu.Content className="min-w-40 rounded-lg border border-background/10 bg-primary/95 p-1 text-background shadow-xl">
+      <Menu.Content className="min-w-40 rounded-lg border bg-background p-1 text-primary shadow-xl">
         <Menu.RadioGroup
           value={quality.value}
           onValueChange={quality.setValue}

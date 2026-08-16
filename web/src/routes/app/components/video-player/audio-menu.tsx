@@ -15,14 +15,14 @@ export function AudioMenu() {
           <button
             type="button"
             aria-label="Audio tracks"
-            className="flex h-9 w-9 items-center justify-center rounded-md text-background transition hover:bg-background/10"
+            className="flex h-9 w-9 items-center justify-center rounded-md"
           >
             <Headphones className="h-5 w-5" />
           </button>
         }
       />
 
-      <Menu.Content className="min-w-40 rounded-lg border border-background/10 bg-primary/95 p-1 text-background shadow-xl">
+      <Menu.Content className="min-w-40 rounded-lg border bg-background p-1 text-primary shadow-xl">
         <Menu.RadioGroup
           value={audio.value}
           onValueChange={audio.setValue}
@@ -33,7 +33,7 @@ export function AudioMenu() {
               key={option.value}
               value={option.value}
               disabled={option.disabled}
-              className="flex cursor-pointer items-center justify-between gap-4 rounded-md px-3 py-2 text-sm hover:bg-background/10"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-md px-3 py-2 text-sm"
             >
               <span>{option.label}</span>
 

@@ -69,7 +69,7 @@ const router = createBrowserRouter([
     Component: AdminLogin,
   },
   {
-    path: "/watch",
+    path: "/play/:id",
     Component: Video,
   },
 ])

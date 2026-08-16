@@ -23,9 +23,9 @@ export function TimeDisplay() {
   const duration = Player.usePlayer((state) => state.duration ?? 0)
 
   return (
-    <span className="text-xs font-medium whitespace-nowrap text-background tabular-nums">
+    <span className="text-xs font-medium whitespace-nowrap tabular-nums">
       {formatTime(currentTime)}
-      <span className="mx-1 text-background/50">/</span>
+      <span className="mx-1">/</span>
       {formatTime(duration)}
     </span>
   )

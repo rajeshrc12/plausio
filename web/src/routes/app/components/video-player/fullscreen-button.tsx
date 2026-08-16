@@ -10,7 +10,7 @@ export function FullscreenButton() {
       type="button"
       onClick={() => player.requestFullscreen()}
       aria-label="Fullscreen"
-      className="flex h-9 w-9 items-center justify-center rounded-md text-background transition hover:bg-background/10"
+      className="flex h-9 w-9 items-center justify-center rounded-md"
     >
       <Expand className="h-5 w-5" />
     </button>
