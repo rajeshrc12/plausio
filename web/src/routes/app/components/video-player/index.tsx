@@ -50,7 +50,7 @@ export default function VideoPlayer({ src }: { src: string }) {
           src={src}
           crossOrigin="anonymous"
           playsInline
-          className="h-full w-full object-contain"
+          className="object-fit h-full w-full"
         />
 
         <div

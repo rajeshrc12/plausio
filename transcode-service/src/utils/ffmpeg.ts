@@ -45,3 +45,39 @@ export const getAudioStreams = async (
     };
   });
 };
+
+export interface VideoInfo {
+  fps: number;
+  bitrate: number;
+}
+
+export async function getVideoInfo(inputPath: string) {
+  const { stdout } = await execFileAsync("ffprobe", [
+    "-v",
+    "error",
+    "-select_streams",
+    "v:0",
+    "-show_entries",
+    "stream=r_frame_rate",
+    "-of",
+    "json",
+    inputPath,
+  ]);
+
+  const data = JSON.parse(stdout);
+  const frameRate = data.streams?.[0]?.r_frame_rate;
+
+  if (!frameRate) {
+    throw new Error("Could not determine video FPS");
+  }
+
+  const [numerator, denominator] = frameRate.split("/").map(Number);
+
+  if (!numerator || !denominator) {
+    throw new Error(`Invalid frame rate: ${frameRate}`);
+  }
+
+  return {
+    fps: numerator / denominator,
+  };
+}

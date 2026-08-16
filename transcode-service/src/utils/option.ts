@@ -1,13 +1,19 @@
 export const variants = [
   {
     name: "720p",
-    bitrate: "3500k",
-    size: "1280x720",
+    height: 720,
+    width: 1280,
+    bitrate: "3000k",
+    maxrate: "3000k",
+    bufsize: "6000k",
   },
   {
     name: "480p",
-    bitrate: "1400k",
-    size: "854x480",
+    height: 480,
+    width: 854,
+    bitrate: "1500k",
+    maxrate: "1500k",
+    bufsize: "3000k",
   },
 ];
 
