@@ -41,7 +41,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: npx prisma migrate deploy
+    command: sh -c "npx prisma migrate deploy && node dist/src/seed/index.js"
     restart: "no"
 
   upload-service:
