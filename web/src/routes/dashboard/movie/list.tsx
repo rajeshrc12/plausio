@@ -22,31 +22,40 @@ const MovieList = () => {
           <Button>Add movie</Button>
         </Link>
       </div>
-      <div>
-        <Table>
+      <div className="w-full overflow-hidden">
+        <Table className="table-fixed">
           <TableHeader>
             <TableRow>
-              <TableHead>Sr</TableHead>
-              <TableHead>Title</TableHead>
+              <TableHead className="w-12">Sr</TableHead>
+              <TableHead className="w-48">Title</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead>Duration</TableHead>
-              <TableHead>Size</TableHead>
+              <TableHead className="w-28">Duration</TableHead>
+              <TableHead className="w-24">Size</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {data?.length ? (
-              data?.map((movie, i) => (
+              data.map((movie, i) => (
                 <TableRow key={movie.id}>
                   <TableCell>{i + 1}</TableCell>
-                  <TableCell>{movie.title}</TableCell>
-                  <TableCell>{movie.description}</TableCell>
+
+                  <TableCell className="truncate">{movie.title}</TableCell>
+
+                  <TableCell className="min-w-0">
+                    <div className="truncate">{movie.description}</div>
+                  </TableCell>
+
                   <TableCell>{formatVideoDuration(movie.duration)}</TableCell>
+
                   <TableCell>{formatFileSize(movie.fileSize)}</TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell>No movies available</TableCell>
+                <TableCell colSpan={5} className="text-center">
+                  No movies available
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
