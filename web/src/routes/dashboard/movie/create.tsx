@@ -19,6 +19,7 @@ import { uploadFiles } from "@/services/upload"
 import { useState } from "react"
 import { createMovieJob } from "@/api/movie"
 import { useNavigate } from "react-router"
+import { Progress } from "@/components/ui/progress"
 
 const CreateMovie = () => {
   const navigate = useNavigate()
@@ -31,9 +32,12 @@ const CreateMovie = () => {
   })
   const addMovie = useAddMovie()
   const [loading, setLoading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const onSubmit = async (data: z.infer<typeof movieFormSchema>) => {
     try {
       setLoading(true)
+      setProgress(1)
+
       const { movie, title, description, thumbnail } = data
 
       const duration = await getMovieDuration(movie)
@@ -50,12 +54,13 @@ const CreateMovie = () => {
         { url: response.movieUrl, file: movie, name: "movie" },
         { url: response.thumbnailUrl, file: thumbnail, name: "thumbnail" },
       ]
-      const upload = await uploadFiles(files)
+      const upload = await uploadFiles({ files, setProgress: setProgress })
       if (upload.movie) {
         await createMovieJob({ id: response.id, type: movie.type })
       }
       navigate("/dashboard/movie")
       setLoading(false)
+      setProgress(0)
     } catch (error) {
       console.error("Failed to add movie:", error)
     }
@@ -153,8 +158,28 @@ const CreateMovie = () => {
             />
           </div>
 
-          <div className="flex justify-end">
-            <Button type="submit">Submit</Button>
+          <div className="flex flex-col gap-3">
+            {progress > 0 && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    Uploading files
+                  </span>
+
+                  <span className="text-sm font-medium tabular-nums">
+                    {Math.round(progress)}%
+                  </span>
+                </div>
+
+                <Progress value={progress} className="h-2" />
+              </div>
+            )}
+
+            <div className="flex justify-end">
+              <Button type="submit">
+                {progress > 0 ? "Uploading..." : "Submit"}
+              </Button>
+            </div>
           </div>
         </fieldset>
       </form>
