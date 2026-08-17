@@ -11,7 +11,11 @@ import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 
 import { env } from "../config/env.js";
 import { s3 } from "../config/s3.js";
-import { getAudioStreams, getVideoInfo } from "../utils/ffmpeg.js";
+import {
+  createHlsVariants,
+  getAudioStreams,
+  getVideoInfo,
+} from "../utils/ffmpeg.js";
 import { getExtensionFromMimeType } from "../utils/mime.js";
 import { variants } from "../utils/option.js";
 
@@ -97,10 +101,10 @@ export const createMovieSegments = async ({
   }
 
   console.log("HLS folders created");
-  const { fps } = await getVideoInfo(inputFile);
+  const { fps, bitRate } = await getVideoInfo(inputFile);
 
   const segmentDuration = 6;
-  const gop = Math.round(fps * segmentDuration);
+  const { gop, variants } = createHlsVariants(fps, bitRate, segmentDuration);
 
   const args: string[] = ["-y", "-i", inputFile];
 

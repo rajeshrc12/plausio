@@ -10,6 +10,7 @@ export const env = {
   AWS_S3_BUCKET_VIDEO_PATH: process.env.AWS_S3_BUCKET_VIDEO_PATH!,
 
   UPLOAD_SERVICE_API_URL: process.env.UPLOAD_SERVICE_API_URL!,
+  NODE_ENV: process.env.NODE_ENV!,
 
   BULLMQ_QUEUE: process.env.BULLMQ_QUEUE!,
   REDIS_HOST: process.env.REDIS_HOST!,

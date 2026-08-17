@@ -58,14 +58,16 @@ export async function getVideoInfo(inputPath: string) {
     "-select_streams",
     "v:0",
     "-show_entries",
-    "stream=r_frame_rate",
+    "stream=r_frame_rate,bit_rate:format=bit_rate",
     "-of",
     "json",
     inputPath,
   ]);
 
   const data = JSON.parse(stdout);
-  const frameRate = data.streams?.[0]?.r_frame_rate;
+  const stream = data.streams?.[0];
+
+  const frameRate = stream?.r_frame_rate;
 
   if (!frameRate) {
     throw new Error("Could not determine video FPS");
@@ -77,7 +79,79 @@ export async function getVideoInfo(inputPath: string) {
     throw new Error(`Invalid frame rate: ${frameRate}`);
   }
 
+  const fps = numerator / denominator;
+
+  const bitRate = Number(stream?.bit_rate ?? data.format?.bit_rate);
+
+  if (!Number.isFinite(bitRate)) {
+    throw new Error("Could not determine video bitrate");
+  }
+
   return {
-    fps: numerator / denominator,
+    fps,
+    bitRate, // bits per second
+    bitRateKbps: bitRate / 1000,
   };
 }
+
+type HlsVariant = {
+  name: string;
+  height: number;
+  width: number;
+  bitrate: string;
+  maxrate: string;
+  bufsize: string;
+};
+
+const clamp = (value: number, min: number, max: number): number => {
+  return Math.min(Math.max(value, min), max);
+};
+
+const formatBitrate = (bitrate: number): string => {
+  return `${Math.round(bitrate / 1000)}k`;
+};
+
+export const createHlsVariants = (
+  fps: number,
+  bitRate: number,
+  segmentDuration: number,
+) => {
+  const gop = Math.round(fps * segmentDuration);
+
+  // Keep the generated bitrate within sensible limits.
+  const bitrate720 = clamp(
+    bitRate,
+    400_000, // minimum 400 kbps
+    3_000_000, // maximum 3 Mbps
+  );
+
+  const bitrate480 = clamp(
+    bitRate * 0.65,
+    250_000, // minimum 250 kbps
+    1_500_000, // maximum 1.5 Mbps
+  );
+
+  const variants: HlsVariant[] = [
+    {
+      name: "720p",
+      height: 720,
+      width: 1280,
+      bitrate: formatBitrate(bitrate720),
+      maxrate: formatBitrate(bitrate720 * 1.1),
+      bufsize: formatBitrate(bitrate720 * 2),
+    },
+    {
+      name: "480p",
+      height: 480,
+      width: 854,
+      bitrate: formatBitrate(bitrate480),
+      maxrate: formatBitrate(bitrate480 * 1.1),
+      bufsize: formatBitrate(bitrate480 * 2),
+    },
+  ];
+
+  return {
+    gop,
+    variants,
+  };
+};
