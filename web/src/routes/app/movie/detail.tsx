@@ -56,42 +56,43 @@ const Detail = () => {
             <div className="font-none w-100 text-sm">
               <div>
                 <span className="font-semibold">Genre</span>
-                <span> Comedy, Action, Bollywood</span>
+                <span> Action, Adventure, Sci-Fi, Superhero</span>
               </div>
 
               <div>
                 <span className="font-semibold">Content Descriptor</span>
                 <span>
                   {" "}
-                  alcohol use, violence, tobacco depictions, foul language,
-                  suggestive scenes
+                  violence, fantasy violence, action sequences, mild language
                 </span>
               </div>
 
               <div>
                 <span className="font-semibold">Director</span>
-                <span> Vikram Bhatt</span>
+                <span> Joss Whedon</span>
               </div>
 
               <div>
                 <span className="font-semibold">Starring</span>
                 <span>
                   {" "}
-                  Akshay Kumar, Suniel Shetty, Aftab Shivdasani, Amrita Arora,
-                  Aarti Chabria, Paresh Rawal, Johnny Lever, Rahul Dev, Om Puri
+                  Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth,
+                  Scarlett Johansson, Jeremy Renner, Tom Hiddleston, Samuel L.
+                  Jackson
                 </span>
               </div>
 
               <div>
                 <span className="font-semibold">Publisher</span>
-                <span> Shemaroo Entertainment Ltd</span>
+                <span> Marvel Studios</span>
               </div>
 
               <div className="mt-4">
-                A henpecked husband and his father-in-law are intrigued by their
-                new neighbour Gulab Khatri, a recluse and mysterious man. They
-                unwittingly get embroiled in a mafia rivalry when they find out
-                that he's a wanted criminal.
+                Earth's mightiest heroes must come together when the powerful
+                Asgardian Loki steals the Tesseract and threatens to bring an
+                alien army to Earth. Iron Man, Captain America, Thor, Hulk,
+                Black Widow and Hawkeye must put aside their differences and
+                unite to save the world from destruction.
               </div>
             </div>
             <div className="flex gap-2">

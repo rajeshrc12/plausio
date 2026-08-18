@@ -7,29 +7,29 @@ const data = [
     id: 1,
     title: "The Avengers",
     description:
-      "Earth's mightiest heroes come together to stop an alien invasion and save the world from destruction.",
+      "Earth's mightiest heroes come together when Loki and his alien army threaten to conquer Earth. Iron Man, Captain America, Thor, Hulk, Black Widow, and Hawkeye must put aside their differences and fight as one team to save humanity.",
     image: "https://wallpapercave.com/wp/wp2613062.jpg",
   },
   {
     id: 2,
-    title: "Obsession",
+    title: "Spider-Man",
     description:
-      "A gripping tale of love and revenge. Billionaire Ateş Karahan forces Mercan Yıldırım into a 187-day marriage to settle her family’s debts.",
-    image: "https://picsum.photos/1600/900?random=2",
+      "After being bitten by a genetically altered spider, Peter Parker develops incredible superhuman abilities. As he learns to control his powers, he takes on the responsibility of protecting his city while facing dangerous enemies and dealing with his personal life.",
+    image: "https://wallpapercave.com/wp/bQcC3Cz.jpg",
   },
   {
     id: 3,
-    title: "Captain america",
+    title: "Batman VS Superman",
     description:
-      "A gripping tale of love and revenge. Billionaire Ateş Karahan forces Mercan Yıldırım into a 187-day marriage to settle her family’s debts.",
-    image: "https://picsum.photos/1600/900?random=3",
+      "Batman becomes convinced that Superman is too powerful and dangerous to be left unchecked. As the two heroes prepare to face each other, a powerful new threat emerges, forcing them to confront their differences and protect the world from destruction.",
+    image: "https://wallpapercave.com/wp/wp2869152.jpg",
   },
   {
     id: 4,
-    title: "Final destination",
+    title: "Iron Man",
     description:
-      "A gripping tale of love and revenge. Billionaire Ateş Karahan forces Mercan Yıldırım into a 187-day marriage to settle her family’s debts.",
-    image: "https://picsum.photos/1600/900?random=4",
+      "After being captured by terrorists, billionaire inventor Tony Stark builds a powerful armored suit to escape captivity. Returning home, he upgrades his technology and becomes Iron Man, using his intelligence and advanced armor to fight dangerous threats.",
+    image: "https://wallpapercave.com/wp/wp16155054.jpg",
   },
 ]
 
@@ -48,7 +48,7 @@ const HomeSlider = () => {
 
   return (
     <div
-      className="flex h-screen w-full flex-col justify-end gap-4 bg-cover bg-center px-14 pb-40"
+      className="flex h-screen w-full flex-col justify-end gap-4 bg-cover bg-center px-14 pb-30"
       style={{
         backgroundImage: `url("${current.image}")`,
         maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
