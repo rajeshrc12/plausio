@@ -10,7 +10,7 @@ const AppNavbar = () => {
         <Link to={"/"}>
           <HomeIcon className="size-5" />
         </Link>
-        <Link className="text-sm font-bold" to={"/movie"}>
+        <Link className="text-sm font-bold" to={"/movies"}>
           Movies
         </Link>
       </div>

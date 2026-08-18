@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 import "swiper/css"
 import "swiper/css/navigation"
+import MovieCard from "@/routes/app/components/movie-card"
 
 const MenuSlider = () => {
   return (
@@ -17,11 +18,7 @@ const MenuSlider = () => {
     >
       {Array.from({ length: 12 }).map((_, index) => (
         <SwiperSlide key={index}>
-          <img
-            src={`https://picsum.photos/320/180?random=${index}`}
-            alt={`Slide ${index + 1}`}
-            className="h-full w-full rounded-md object-cover"
-          />
+          <MovieCard />
         </SwiperSlide>
       ))}
     </Swiper>
