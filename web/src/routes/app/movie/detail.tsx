@@ -9,17 +9,19 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Play } from "lucide-react"
 import MovieCard from "@/routes/app/components/movie-card"
+import { useMovies } from "@/queries/public"
+import { getThumbnailUrl } from "@/utils/movie"
 
 const Detail = () => {
+  const { data } = useMovies()
   const { id } = useParams()
-  console.log(id)
   return (
     <div className="relative">
       <div className="absolute inset-0 h-screen w-full">
         <div
           className="h-full w-full bg-cover bg-center"
           style={{
-            backgroundImage: `url("https://wallpapercave.com/wp/wp2613062.jpg")`,
+            backgroundImage: `url("${getThumbnailUrl(Number(id))}")`,
           }}
         />
 
@@ -92,22 +94,20 @@ const Detail = () => {
               </p>
             </div>
             <div className="flex gap-2">
-              <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
-                <Play className="size-5 fill-current" />
-                Play
-              </button>
-
-              <button className="rounded-md bg-primary/15 px-6 py-3 font-semibold text-primary backdrop-blur-sm transition hover:bg-primary/25">
-                Add to list
-              </button>
+              <Link to={`/play/${id}`}>
+                <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
+                  <Play className="size-5 fill-current" />
+                  Play
+                </button>
+              </Link>
             </div>
           </div>
         </div>
 
         <div className="text-2xl">Recommended</div>
         <div className="grid grid-cols-4 gap-5">
-          {new Array(10).fill(0).map((_, i) => (
-            <MovieCard key={i} />
+          {data?.map((movie, i) => (
+            <MovieCard key={i} movie={movie} />
           ))}
         </div>
       </div>

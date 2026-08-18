@@ -11,6 +11,7 @@ import { Link } from "react-router"
 import { useState } from "react"
 import { X } from "lucide-react"
 import MovieCard from "@/routes/app/components/movie-card"
+import { useMovies } from "@/queries/public"
 
 const category = [
   { name: "Crime" },
@@ -20,6 +21,9 @@ const category = [
   { name: "Mystery" },
 ]
 const Browse = () => {
+  const { data } = useMovies()
+  if (!data) return "Loading..."
+
   const [filter] = useState([{ name: "Crime" }, { name: "Comedy" }])
   return (
     <div className="flex flex-col gap-2 px-14">
@@ -58,8 +62,8 @@ const Browse = () => {
         movies and more on Plausio
       </div>
       <div className="grid grid-cols-4 gap-5">
-        {new Array(10).fill(0).map((_, i) => (
-          <MovieCard key={i} />
+        {data.map((movie, i) => (
+          <MovieCard key={i} movie={movie} />
         ))}
       </div>
     </div>

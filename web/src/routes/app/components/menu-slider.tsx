@@ -4,8 +4,10 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import "swiper/css/navigation"
 import MovieCard from "@/routes/app/components/movie-card"
+import { useMovies } from "@/queries/public"
 
 const MenuSlider = () => {
+  const { data } = useMovies()
   return (
     <Swiper
       className="h-full w-full bg-background"
@@ -16,9 +18,9 @@ const MenuSlider = () => {
       slidesOffsetBefore={60}
       slidesOffsetAfter={60}
     >
-      {Array.from({ length: 12 }).map((_, index) => (
+      {data?.map((movie, index) => (
         <SwiperSlide key={index}>
-          <MovieCard />
+          <MovieCard movie={movie} />
         </SwiperSlide>
       ))}
     </Swiper>

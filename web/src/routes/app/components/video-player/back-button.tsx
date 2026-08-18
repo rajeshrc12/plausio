@@ -18,11 +18,10 @@ const BackButton = ({ controlsVisible }: { controlsVisible: boolean }) => {
   if (!isFullscreen)
     return (
       <button
+        onClick={() => window.history.back()}
         type="button"
         className={`absolute top-5 left-40 transition-opacity ${
-          controlsVisible
-            ? "pointer-events-none opacity-100"
-            : "pointer-events-auto opacity-0"
+          controlsVisible ? "opacity-100" : "opacity-0"
         }`}
       >
         <ArrowLeft className="size-10" />
