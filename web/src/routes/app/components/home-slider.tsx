@@ -31,6 +31,13 @@ const data = [
       "After being captured by terrorists, billionaire inventor Tony Stark builds a powerful armored suit to escape captivity. Returning home, he upgrades his technology and becomes Iron Man, using his intelligence and advanced armor to fight dangerous threats.",
     image: "https://wallpapercave.com/wp/wp16155054.jpg",
   },
+  {
+    id: 5,
+    title: "Inception",
+    description:
+      "A skilled thief who steals secrets through people's dreams is given a chance to erase his past by planting an idea in the mind of a powerful businessman. As the team descends through layers of dreams, reality begins to blur and the mission becomes increasingly dangerous.",
+    image: "https://wallpapercave.com/wp/9vqnPS9.jpg",
+  },
 ]
 
 const HomeSlider = () => {
