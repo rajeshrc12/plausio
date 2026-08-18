@@ -77,7 +77,7 @@ const Detail = () => {
               </div>
 
               <p className="pt-4 leading-relaxed text-muted-foreground">
-                {movie.publisher}
+                {movie.description}
               </p>
             </div>
             <div className="flex gap-2">
