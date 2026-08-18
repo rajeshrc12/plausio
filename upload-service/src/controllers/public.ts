@@ -11,3 +11,14 @@ export const getMovies = async (req: Request, res: Response) => {
   });
   res.status(200).json(movies);
 };
+
+export const getMovie = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const movie = await prisma.movie.findFirst({
+    where: { id },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  res.status(200).json(movie);
+};

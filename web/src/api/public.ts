@@ -11,3 +11,8 @@ export const getMovies = async () => {
   const movies = await api.get<Movie[]>("/movie")
   return movies.data
 }
+
+export const getMovie = async (id: number) => {
+  const movie = await api.get<Movie>(`/movie/${id}`)
+  return movie.data
+}

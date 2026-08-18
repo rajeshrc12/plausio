@@ -9,19 +9,21 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Play } from "lucide-react"
 import MovieCard from "@/routes/app/components/movie-card"
-import { useMovies } from "@/queries/public"
+import { useMovie, useMovies } from "@/queries/public"
 import { getThumbnailUrl } from "@/utils/movie"
 
 const Detail = () => {
-  const { data } = useMovies()
+  const { data: movies } = useMovies()
   const { id } = useParams()
+  const { data: movie } = useMovie(Number(id))
+  if (!movie) return "Loading..."
   return (
     <div className="relative">
       <div className="absolute inset-0 h-screen w-full">
         <div
           className="h-full w-full bg-cover bg-center"
           style={{
-            backgroundImage: `url("${getThumbnailUrl(Number(id))}")`,
+            backgroundImage: `url("${getThumbnailUrl(movie.id)}")`,
           }}
         />
 
@@ -44,53 +46,38 @@ const Detail = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>The Avengers</BreadcrumbPage>
+                <BreadcrumbPage>{movie.title}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
           <div className="mt-20 flex flex-col gap-5">
-            <div className="text-4xl font-bold">The Avengers</div>
+            <div className="text-4xl font-bold">{movie.title}</div>
 
             <div className="w-full max-w-2xl space-y-1 text-sm">
               <div className="grid grid-cols-[140px_1fr]">
                 <span className="font-semibold">Genre</span>
                 <span className="text-muted-foreground">
-                  Action, Adventure, Sci-Fi, Superhero
-                </span>
-              </div>
-
-              <div className="grid grid-cols-[140px_1fr]">
-                <span className="font-semibold">Content Descriptor</span>
-                <span className="text-muted-foreground">
-                  Violence, fantasy violence, action sequences, mild language
+                  {movie.genre.join(",")}
                 </span>
               </div>
 
               <div className="grid grid-cols-[140px_1fr]">
                 <span className="font-semibold">Director</span>
-                <span className="text-muted-foreground">Joss Whedon</span>
+                <span className="text-muted-foreground">{movie.director}</span>
               </div>
 
               <div className="grid grid-cols-[140px_1fr]">
                 <span className="font-semibold">Starring</span>
-                <span className="text-muted-foreground">
-                  Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth,
-                  Scarlett Johansson, Jeremy Renner, Tom Hiddleston, Samuel L.
-                  Jackson
-                </span>
+                <span className="text-muted-foreground">{movie.starring}</span>
               </div>
 
               <div className="grid grid-cols-[140px_1fr]">
                 <span className="font-semibold">Publisher</span>
-                <span className="text-muted-foreground">Marvel Studios</span>
+                <span className="text-muted-foreground">{movie.publisher}</span>
               </div>
 
               <p className="pt-4 leading-relaxed text-muted-foreground">
-                Earth's mightiest heroes must come together when the powerful
-                Asgardian Loki steals the Tesseract and threatens to bring an
-                alien army to Earth. Iron Man, Captain America, Thor, Hulk,
-                Black Widow and Hawkeye must put aside their differences and
-                unite to save the world from destruction.
+                {movie.publisher}
               </p>
             </div>
             <div className="flex gap-2">
@@ -106,7 +93,7 @@ const Detail = () => {
 
         <div className="text-2xl">Recommended</div>
         <div className="grid grid-cols-4 gap-5">
-          {data?.map((movie, i) => (
+          {movies?.map((movie, i) => (
             <MovieCard key={i} movie={movie} />
           ))}
         </div>

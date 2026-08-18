@@ -9,8 +9,12 @@ import { HlsJsVideo } from "@videojs/react/media/hlsjs-video"
 import { Player } from "@/routes/app/components/video-player/player"
 import { VolumeSlider } from "@/routes/app/components/video-player/volume-slider"
 import BackButton from "@/routes/app/components/video-player/back-button"
+import { useMovie } from "@/queries/public"
+import { useParams } from "react-router"
 
 export default function VideoPlayer({ src }: { src: string }) {
+  const { id } = useParams()
+  const { data: movie } = useMovie(Number(id))
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const hideControlsTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -64,7 +68,7 @@ export default function VideoPlayer({ src }: { src: string }) {
           }`}
         >
           <div className="flex items-end justify-between font-medium">
-            <div className="text-2xl">The Avengers</div>
+            <div className="text-2xl">{movie?.title}</div>
             <TimeDisplay />
           </div>
           <TimeBar videoRef={videoRef} />
