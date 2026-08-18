@@ -7,7 +7,7 @@ const data = [
     id: 1,
     title: "The Avengers",
     description:
-      "Earth's mightiest heroes come together when Loki and his alien army threaten to conquer Earth. Iron Man, Captain America, Thor, Hulk, Black Widow, and Hawkeye must put aside their differences and fight as one team to save humanity.",
+      "Earth's mightiest heroes come together when Loki and his alien army threaten to conquer Earth. Iron Man, Captain America, Thor, Hulk, background Widow, and Hawkeye must put aside their differences and fight as one team to save humanity.",
     image: "https://wallpapercave.com/wp/wp2613062.jpg",
   },
   {
@@ -47,51 +47,67 @@ const HomeSlider = () => {
   }
 
   return (
-    <div
-      className="flex h-screen w-full flex-col justify-end gap-4 bg-cover bg-center px-14 pb-30"
-      style={{
-        backgroundImage: `url("${current.image}")`,
-        maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-      }}
-    >
-      <div className="text-4xl font-bold">{current.title}</div>
+    <div className="relative flex h-screen w-full flex-col justify-end overflow-hidden px-14 pb-28">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `url("${current.image}")`,
+        }}
+      />
 
-      <div className="w-100 font-medium">{current.description}</div>
+      <div className="absolute inset-0 bg-linear-to-r from-background/80 via-background/35 to-transparent" />
 
-      <div className="flex justify-between">
-        {/* Buttons */}
-        <div className="flex gap-2">
-          <button className="flex items-center gap-2 rounded bg-blue-400 px-4 py-3 font-bold">
-            <Play />
+      <div className="absolute inset-x-0 bottom-0 h-56 bg-linear-to-t from-background via-background/80 to-transparent" />
+
+      <div className="relative z-10 max-w-2xl">
+        <div className="mb-3 text-5xl font-extrabold tracking-tight text-primary">
+          {current.title}
+        </div>
+
+        <div className="mb-6 max-w-xl text-base leading-7 text-primary/75">
+          {current.description}
+        </div>
+
+        <div className="flex gap-3">
+          <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
+            <Play className="size-5 fill-current" />
             Play
           </button>
 
-          <button className="flex items-center gap-2 rounded bg-primary/10 px-4 py-3 font-bold">
-            More info
+          <button className="rounded-md bg-primary/15 px-6 py-3 font-semibold text-primary backdrop-blur-sm transition hover:bg-primary/25">
+            More Info
           </button>
         </div>
+      </div>
 
-        {/* Dots */}
+      <div className="relative z-10 mt-8 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {data.map((item, i) => (
             <button
               key={item.id}
               onClick={() => setIndex(i)}
-              className={`h-2 w-2 rounded-full ${
-                i === index ? "w-4 bg-current" : "bg-muted-foreground"
+              className={`h-1.5 rounded-full transition-all ${
+                i === index
+                  ? "w-7 bg-primary"
+                  : "w-2 bg-primary/40 hover:bg-primary/70"
               }`}
             />
           ))}
         </div>
 
-        {/* Navigation */}
-        <div className="flex gap-4 pr-20">
-          <button onClick={prevSlide} className="rounded bg-primary/30 px-2">
-            <ChevronLeft className="size-9" />
+        <div className="flex gap-2 pr-6">
+          <button
+            onClick={prevSlide}
+            className="flex size-10 items-center justify-center rounded-full border border-primary/20 bg-background/30 text-primary backdrop-blur-md hover:bg-primary/15"
+          >
+            <ChevronLeft className="size-5" />
           </button>
 
-          <button onClick={nextSlide} className="rounded bg-primary/30 px-2">
-            <ChevronRight className="size-9" />
+          <button
+            onClick={nextSlide}
+            className="flex size-10 items-center justify-center rounded-full border border-primary/20 bg-background/30 text-primary backdrop-blur-md hover:bg-primary/15"
+          >
+            <ChevronRight className="size-5" />
           </button>
         </div>
       </div>
