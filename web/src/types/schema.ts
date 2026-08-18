@@ -58,6 +58,12 @@ export const MovieSchema = z.object({
   fileSize: z.number().int(),
   fileName: z.string(),
 
+  genre: z.array(z.string()),
+  director: z.string(),
+  starring: z.string(),
+  publisher: z.string(),
+  year: z.number(),
+
   createdAt: z.date(),
   updatedAt: z.date(),
 })
@@ -71,6 +77,11 @@ export const AddMovieSchema = MovieSchema.pick({
   title: true,
   description: true,
   duration: true,
+  genre: true,
+  director: true,
+  starring: true,
+  publisher: true,
+  year: true,
 })
 export type AddMovie = z.infer<typeof AddMovieSchema>
 
@@ -83,7 +94,23 @@ export const movieFormSchema = z.object({
     .string()
     .min(1, "Description is required")
     .max(2000, "Description cannot exceed 2000 characters"),
-
+  starring: z
+    .string()
+    .min(1, "Description is required")
+    .max(2000, "Description cannot exceed 2000 characters"),
+  director: z
+    .string()
+    .min(1, "Director is required")
+    .max(100, "Director cannot exceed 100 characters"),
+  publisher: z
+    .string()
+    .min(1, "Publisher is required")
+    .max(100, "Publisher cannot exceed 100 characters"),
+  year: z
+    .number()
+    .min(1900, "Year should be greater than 1900")
+    .max(2026, "Year cannot exceed 100 characters"),
+  genre: z.array(z.string()).min(1, "Add at least one genre"),
   thumbnail: z
     .instanceof(File, { message: "Thumbnail is required" })
     .refine((file) => IMAGE_TYPES.includes(file.type), {

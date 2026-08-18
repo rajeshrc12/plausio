@@ -46,6 +46,12 @@ model Movie {
   fileSize   Int
   fileName   String
 
+  genre     String[]
+  director  String
+  starring  String
+  publisher String
+  year      Int
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   admin     Admin    @relation(fields: [adminId], references: [id])

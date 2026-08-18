@@ -7,7 +7,7 @@ const MyAccount = () => {
   const { data } = useMe()
   if (data?.id)
     return (
-      <div className="flex flex-col gap-5 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 md:px-10 lg:gap-5 lg:px-20">
+      <div className="mt-10 flex flex-col gap-5 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 md:px-10 lg:gap-5 lg:px-14">
         <div className="text-2xl font-bold">My Account</div>
         <div className="flex gap-5 rounded-md bg-accent p-10">
           <Avatar className="h-20 w-20">

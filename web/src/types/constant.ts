@@ -10,3 +10,17 @@ export const FileStatus = {
   COMPLETED: "COMPLETED",
   FAILED: "FAILED",
 } as const
+
+export const genre = [
+  "Action",
+  "Adventure",
+  "Animation",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Fantasy",
+  "Horror",
+  "Romance",
+  "Sci-Fi",
+] as const

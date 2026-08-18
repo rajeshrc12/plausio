@@ -20,14 +20,33 @@ import { useState } from "react"
 import { createMovieJob } from "@/api/movie"
 import { useNavigate } from "react-router"
 import { Progress } from "@/components/ui/progress"
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from "@/components/ui/combobox"
+import { genre } from "@/types/constant"
 
 const CreateMovie = () => {
   const navigate = useNavigate()
+  const anchor = useComboboxAnchor()
   const form = useForm<z.infer<typeof movieFormSchema>>({
     resolver: zodResolver(movieFormSchema),
     defaultValues: {
       title: "",
       description: "",
+      director: "",
+      publisher: "",
+      year: 1900,
+      starring: "",
+      genre: [],
     },
   })
   const addMovie = useAddMovie()
@@ -38,7 +57,17 @@ const CreateMovie = () => {
       setLoading(true)
       setProgress(1)
 
-      const { movie, title, description, thumbnail } = data
+      const {
+        movie,
+        title,
+        description,
+        thumbnail,
+        genre,
+        director,
+        starring,
+        year,
+        publisher,
+      } = data
 
       const duration = await getMovieDuration(movie)
 
@@ -49,6 +78,11 @@ const CreateMovie = () => {
         fileType: movie.type,
         fileSize: movie.size,
         duration,
+        genre,
+        director,
+        starring,
+        year,
+        publisher,
       })
       const files = [
         { url: response.movieUrl, file: movie, name: "movie" },
@@ -150,6 +184,142 @@ const CreateMovie = () => {
                     className="min-h-24 resize-none"
                     aria-invalid={fieldState.invalid}
                   />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="director"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-director">Director</FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-director"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Movie director"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="publisher"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-publisher">Publisher</FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-publisher"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Movie publisher"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="year"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-year">Year</FieldLabel>
+
+                  <Input
+                    type="number"
+                    id="form-year"
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Movie year"
+                    autoComplete="off"
+                  />
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="starring"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-starring">Cast</FieldLabel>
+                  <Textarea
+                    {...field}
+                    id="form-starring"
+                    placeholder="Movie cast"
+                    rows={6}
+                    className="min-h-24 resize-none"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="genre"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-genre">Genre</FieldLabel>
+
+                  <Combobox
+                    multiple
+                    autoHighlight
+                    items={genre}
+                    value={field.value ?? []}
+                    onValueChange={field.onChange}
+                  >
+                    <ComboboxChips
+                      ref={anchor}
+                      id="form-genre"
+                      className="w-full"
+                      aria-invalid={fieldState.invalid}
+                    >
+                      <ComboboxValue>
+                        {(values) => (
+                          <>
+                            {values.map((value: string) => (
+                              <ComboboxChip key={value}>{value}</ComboboxChip>
+                            ))}
+                            <ComboboxChipsInput />
+                          </>
+                        )}
+                      </ComboboxValue>
+                    </ComboboxChips>
+
+                    <ComboboxContent anchor={anchor}>
+                      <ComboboxEmpty>No genre found.</ComboboxEmpty>
+
+                      <ComboboxList>
+                        {(item) => (
+                          <ComboboxItem key={item} value={item}>
+                            {item}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

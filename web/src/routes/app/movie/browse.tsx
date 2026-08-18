@@ -22,14 +22,19 @@ const category = [
 ]
 const Browse = () => {
   const { data } = useMovies()
+  const [filter] = useState([{ name: "Crime" }, { name: "Comedy" }])
+
   if (!data) return "Loading..."
 
-  const [filter] = useState([{ name: "Crime" }, { name: "Comedy" }])
   return (
     <div className="flex flex-col gap-2 px-14">
       <div className="mt-16 flex gap-2">
         {category.map((c) => (
-          <Button variant={"secondary"} className={"rounded-full p-4"}>
+          <Button
+            key={c.name}
+            variant={"secondary"}
+            className={"rounded-full p-4"}
+          >
             {c.name}
           </Button>
         ))}
@@ -48,7 +53,11 @@ const Browse = () => {
         </Breadcrumb>
         <div className="text-sm">
           {filter.map((c) => (
-            <Button variant={"ghost"} className={"rounded-full p-4"}>
+            <Button
+              key={c.name}
+              variant={"ghost"}
+              className={"rounded-full p-4"}
+            >
               {c.name}
               <X />
             </Button>

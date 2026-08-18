@@ -8,8 +8,19 @@ import { addToQueue } from "../services/bullmq.js";
 export const initUpload = async (req: Request, res: Response) => {
   const admin = req.admin as Admin;
 
-  const { title, description, fileName, fileType, fileSize, duration } =
-    req.body;
+  const {
+    title,
+    description,
+    fileName,
+    fileType,
+    fileSize,
+    duration,
+    genre,
+    director,
+    starring,
+    year,
+    publisher,
+  } = req.body;
   const movie = await prisma.movie.create({
     data: {
       title,
@@ -19,6 +30,11 @@ export const initUpload = async (req: Request, res: Response) => {
       fileSize,
       duration,
       adminId: admin.id,
+      genre,
+      director,
+      starring,
+      year,
+      publisher,
     },
   });
   const movieUrl = await createS3Url({
