@@ -31,7 +31,7 @@ export function TimeBar({
       max={duration || 0}
       step={0.01}
       aria-label="Seek video"
-      className="h-1 w-full cursor-pointer **:data-[slot=slider-range]:bg-primary **:data-[slot=slider-track]:bg-muted-foreground"
+      className="h-1 w-full cursor-pointer **:data-[slot=slider-range]:bg-primary **:data-[slot=slider-track]:bg-secondary"
     />
   )
 }
