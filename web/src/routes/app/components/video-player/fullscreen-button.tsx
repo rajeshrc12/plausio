@@ -12,7 +12,7 @@ export function FullscreenButton() {
       aria-label="Fullscreen"
       className="flex h-9 w-9 items-center justify-center rounded-md"
     >
-      <Expand className="h-5 w-5" />
+      <Expand className="size-6" />
     </button>
   )
 }

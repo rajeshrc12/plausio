@@ -13,11 +13,7 @@ export function PlayPauseButton() {
       aria-label={paused ? "Play" : "Pause"}
       className="flex h-9 w-9 items-center justify-center rounded-md"
     >
-      {paused ? (
-        <Play className="h-5 w-5 fill-current" />
-      ) : (
-        <Pause className="h-5 w-5 fill-current" />
-      )}
+      {paused ? <Play className="size-6" /> : <Pause className="size-6" />}
     </button>
   )
 }

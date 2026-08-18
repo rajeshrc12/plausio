@@ -17,7 +17,7 @@ export function QualityMenu() {
             aria-label="Video quality"
             className="flex h-9 w-9 items-center justify-center rounded-md"
           >
-            <SquarePlay className="h-5 w-5" />
+            <SquarePlay className="size-6" />
           </button>
         }
       />
