@@ -33,9 +33,9 @@ const Menu = () => {
       </Popover>
     )
   return (
-    <Button onClick={signIn} variant={"ghost"}>
+    <button onClick={signIn} className="text-sm font-bold">
       Login
-    </Button>
+    </button>
   )
 }
 

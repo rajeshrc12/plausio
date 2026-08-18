@@ -23,11 +23,11 @@ const router = createBrowserRouter([
         Component: AppHome,
       },
       {
-        path: "series",
+        path: "movie",
         Component: Series,
       },
       {
-        path: "movie",
+        path: "movie/:id",
         Component: Movie,
       },
       {

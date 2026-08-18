@@ -3,33 +3,21 @@ import MenuSlider from "@/routes/app/components/menu-slider"
 
 const AppHome = () => {
   return (
-    <div className="flex flex-col gap-8 pb-10">
+    <div className="flex flex-col gap-10 pb-20">
       {/* Hero */}
-      <div className="h-[55vh] min-h-100 w-full md:h-[65vh] lg:h-[85vh]">
-        <HomeSlider />
+      <HomeSlider />
+      <div className="flex flex-col gap-3">
+        <div className="pl-16 text-2xl font-bold">Movies</div>
+        <div className="h-50">
+          <MenuSlider />
+        </div>
       </div>
-
-      {/* Movies */}
-      <section>
-        <h2 className="mb-3 px-4 text-xl font-bold sm:px-6 md:px-8 lg:px-20">
-          Movies
-        </h2>
-
-        <div className="h-52 w-full sm:h-56 md:h-60 lg:h-64">
+      <div className="flex flex-col gap-3">
+        <div className="pl-16 text-2xl font-bold">Movies</div>
+        <div className="h-50">
           <MenuSlider />
         </div>
-      </section>
-
-      {/* Series */}
-      <section>
-        <h2 className="mb-3 px-4 text-xl font-bold sm:px-6 md:px-8 lg:px-20">
-          Series
-        </h2>
-
-        <div className="h-52 w-full sm:h-56 md:h-60 lg:h-64">
-          <MenuSlider />
-        </div>
-      </section>
+      </div>
     </div>
   )
 }
