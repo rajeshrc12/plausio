@@ -52,7 +52,10 @@ export default function VideoPlayer({ src }: { src: string }) {
           playsInline
           className="object-fit h-full w-full"
         />
-        {controlsVisible && <BackButton />}
+        <BackButton controlsVisible={controlsVisible} />
+        {controlsVisible && (
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-linear-to-t from-background via-background/80 to-transparent" />
+        )}
         <div
           className={`absolute bottom-0 flex w-full flex-col gap-3 px-10 pb-5 transition-opacity duration-200 md:px-20 lg:px-40 ${
             controlsVisible
