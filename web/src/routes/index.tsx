@@ -4,7 +4,6 @@ import App from "@/routes/app"
 import Dashboard from "@/routes/dashboard"
 import Browse from "@/routes/app/movie/browse"
 import Play from "@/routes/app/play"
-import MyAccount from "@/routes/app/my-account"
 import DashboardHome from "@/routes/dashboard/home"
 import DashboardMovie from "@/routes/dashboard/movie"
 import DashboardProfile from "@/routes/dashboard/profile"
@@ -12,6 +11,7 @@ import MovieList from "@/routes/dashboard/movie/list"
 import CreateMovie from "@/routes/dashboard/movie/create"
 import AdminLogin from "@/routes/dashboard/admin-login"
 import Detail from "@/routes/app/movie/detail"
+import NotFound from "@/routes/not-found"
 
 const router = createBrowserRouter([
   {
@@ -29,10 +29,6 @@ const router = createBrowserRouter([
       {
         path: "movie/:id",
         Component: Detail,
-      },
-      {
-        path: "my-account",
-        Component: MyAccount,
       },
     ],
   },
@@ -71,6 +67,10 @@ const router = createBrowserRouter([
   {
     path: "/play/:id",
     Component: Play,
+  },
+  {
+    path: "*",
+    Component: NotFound,
   },
 ])
 
