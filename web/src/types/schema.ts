@@ -132,7 +132,7 @@ export const movieFormSchema = z.object({
       }
     )
     .refine((file) => file.size <= MAX_VIDEO_SIZE, {
-      message: "Movie must be less than 50 MB",
+      message: "Movie must be less than 5 GB",
     }),
 })
 
