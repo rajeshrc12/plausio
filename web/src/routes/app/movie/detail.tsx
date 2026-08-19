@@ -20,7 +20,7 @@ const Detail = () => {
   const { id } = useParams()
   const { data: movie } = useMovie(Number(id))
   const { setDialog } = useLogin()
-  if (!movie) return "Loading..."
+  if (!movie) return null
   return (
     <div className="relative">
       <div className="absolute inset-0 h-screen w-full">
