@@ -7,8 +7,15 @@ const api = axios.create({
   withCredentials: true, // important to send cookies
 })
 
-export const getMovies = async () => {
-  const movies = await api.get<Movie[]>("/movie")
+export const getMovies = async (filters: string[]) => {
+  const movies = await api.get<Movie[]>("/movie", {
+    params: {
+      genre: filters,
+    },
+    paramsSerializer: {
+      indexes: null,
+    },
+  })
   return movies.data
 }
 

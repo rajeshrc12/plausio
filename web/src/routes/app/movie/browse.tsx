@@ -9,33 +9,32 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Link } from "react-router"
 import { useState } from "react"
-import { X } from "lucide-react"
 import MovieCard from "@/routes/app/components/movie-card"
 import { useMovies } from "@/queries/public"
+import { genre } from "@/types/constant"
 
-const category = [
-  { name: "Crime" },
-  { name: "Comedy" },
-  { name: "Romance" },
-  { name: "Drama" },
-  { name: "Mystery" },
-]
 const Browse = () => {
-  const { data } = useMovies()
-  const [filter] = useState([{ name: "Crime" }, { name: "Comedy" }])
+  const [filters, setFilters] = useState<string[]>([])
+  const { data } = useMovies(filters)
 
-  if (!data) return "Loading..."
+  const handleFilters = (g: string) => {
+    setFilters((prev) =>
+      prev.includes(g) ? prev.filter((f) => f !== g) : [...prev, g]
+    )
+  }
 
   return (
-    <div className="flex flex-col gap-2 px-14">
-      <div className="mt-16 flex gap-2">
-        {category.map((c) => (
+    <div className="flex flex-col gap-4 px-14">
+      <div className="mt-16 flex flex-wrap gap-2">
+        {genre.map((g) => (
           <Button
-            key={c.name}
-            variant={"secondary"}
+            onClick={() => handleFilters(g)}
+
+            key={g}
+            variant={filters.includes(g) ? "default" : "secondary"}
             className={"rounded-full p-4"}
           >
-            {c.name}
+            {g}
           </Button>
         ))}
       </div>
@@ -51,18 +50,6 @@ const Browse = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="text-sm">
-          {filter.map((c) => (
-            <Button
-              key={c.name}
-              variant={"ghost"}
-              className={"rounded-full p-4"}
-            >
-              {c.name}
-              <X />
-            </Button>
-          ))}
-        </div>
       </div>
       <div className="text-xl">Browse All Movies</div>
       <div className="w-[60%] text-xs">
@@ -71,7 +58,7 @@ const Browse = () => {
         movies and more on Plausio
       </div>
       <div className="grid grid-cols-4 gap-5">
-        {data.map((movie, i) => (
+        {data?.map((movie, i) => (
           <MovieCard key={i} movie={movie} />
         ))}
       </div>

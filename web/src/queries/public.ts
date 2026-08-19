@@ -2,10 +2,12 @@ import { getMovie, getMovies } from "@/api/public"
 import { publicKeys } from "@/queryKeys/public"
 import { useQuery } from "@tanstack/react-query"
 
-export function useMovies() {
+export function useMovies(filters: string[] = []) {
   return useQuery({
-    queryKey: publicKeys.movies(),
-    queryFn: getMovies,
+    queryKey: publicKeys.movies(filters),
+    queryFn: () => getMovies(filters),
+    staleTime: Infinity,
+    gcTime: Infinity,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: false,
