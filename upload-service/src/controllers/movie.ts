@@ -51,12 +51,12 @@ export const initUpload = async (req: Request, res: Response) => {
 };
 export const createMovieJob = async (req: Request, res: Response) => {
   const { id, type } = req.body;
-  const movies = await prisma.movie.update({
+  const movie = await prisma.movie.update({
     where: { id },
     data: { fileStatus: FileStatus.PROCESSING },
   });
-  addToQueue({ id, type });
-  res.status(200).json(movies);
+  addToQueue({ id, type, title: movie.title });
+  res.status(200).json(movie);
 };
 export const getMovies = async (req: Request, res: Response) => {
   const admin = req.admin as Admin;

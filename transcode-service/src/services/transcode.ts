@@ -13,16 +13,17 @@ type Video = {
   id: number;
   type: string;
   key: string;
+  title: string;
 };
 
 export const worker = async (video: Video) => {
-  const { id, type } = video;
+  const { id, type, title } = video;
   const { bucket, baseKey, fileName, workDir, hlsDir, inputFile } =
     await createMovieData({ id, type });
   try {
     await downloadMovie({ bucket, baseKey, fileName, inputFile, hlsDir });
 
-    await createMovieSegments({ inputFile, hlsDir });
+    await createMovieSegments({ inputFile, hlsDir, title });
 
     await uploadHlsDir({ bucket, baseKey: `${baseKey}/hls`, hlsDir });
 

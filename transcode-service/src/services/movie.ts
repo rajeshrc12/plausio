@@ -82,9 +82,11 @@ export const createMovieData = async ({
 export const createMovieSegments = async ({
   inputFile,
   hlsDir,
+  title,
 }: {
   inputFile: string;
   hlsDir: string;
+  title: string;
 }) => {
   console.log("2. Creating HLS folders...");
 
@@ -195,7 +197,12 @@ export const createMovieSegments = async ({
   }
   console.log("HLS segments created successfully");
 
-  const master: string[] = ["#EXTM3U", "#EXT-X-VERSION:3", ""];
+  const master: string[] = [
+    "#EXTM3U",
+    "#EXT-X-VERSION:3",
+    `# VIDEO-TITLE: ${title}`,
+    "",
+  ];
 
   for (let i = 0; i < audioStreams.length; i++) {
     const audio = audioStreams[i];
