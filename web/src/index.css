@@ -116,9 +116,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-button {
-  cursor: pointer;
-}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -128,5 +126,26 @@ button {
   }
   html {
     @apply font-sans;
+  }
+  button {
+    cursor: pointer;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    --swiper-navigation-color: hsl(var(--foreground));
+    top: 45% !important;
+    height: 30px !important;
+    width: 30px !important;
+  }
+
+  /* Swiper pagination */
+  .swiper-pagination-bullet {
+    background: var(--muted-foreground) !important;
+    opacity: 0.6 !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: var(--foreground) !important;
+    opacity: 1 !important;
   }
 }

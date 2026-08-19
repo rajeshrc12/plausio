@@ -36,18 +36,15 @@ export const loginWithGoogle = async (code: string) => {
     avatar: payload.picture,
   };
 
-  let dbUser = await prisma.channel.findUnique({
+  let dbUser = await prisma.user.findUnique({
     where: { email: payload.email },
   });
 
   if (!dbUser) {
-    dbUser = await prisma.channel.create({
+    dbUser = await prisma.user.create({
       data: {
-        handle: payload.email.split("@")[0],
         email: payload.email,
         name: payload.name || "",
-        description: "This is description",
-        country: "India",
       },
     });
     if (dbUser.email && payload.picture) {

@@ -1,18 +1,28 @@
-import { usePublicVideos } from "@/queries/video"
-import HomeSkeleton from "@/routes/app/components/skeleton/home"
-import VideoCard from "@/routes/app/components/video-card"
-const Home = () => {
-  const { data: publicVideos } = usePublicVideos()
-  if (publicVideos?.length === 0) return "No videos found"
-  if (Array.isArray(publicVideos) && publicVideos.length > 0)
+import { useMovies } from "@/queries/public"
+import HomeSlider from "@/routes/app/components/home-slider"
+import MenuSlider from "@/routes/app/components/menu-slider"
+import { LoaderCircle } from "lucide-react"
+
+const AppHome = () => {
+  const { data: movies, isLoading } = useMovies()
+  if (!movies || isLoading)
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {publicVideos?.map((video) => (
-          <VideoCard key={video.id} video={video} channel={video.channel} />
-        ))}
+      <div className="fixed top-0 left-0 flex h-screen w-full items-center justify-center">
+        <LoaderCircle className="size-10 animate-spin" />
       </div>
     )
-  return <HomeSkeleton />
+  return (
+    <div className="flex flex-col gap-5 pb-20">
+      {/* Hero */}
+      <HomeSlider movies={movies} />
+      <div className="flex flex-col gap-3">
+        <div className="pl-16 text-2xl font-bold">Trending movies</div>
+        <div className="h-50">
+          <MenuSlider movies={movies} />
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default Home
+export default AppHome

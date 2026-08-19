@@ -1,0 +1,29 @@
+import { useMe } from "@/queries/user"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getProfileUrl } from "@/utils/movie"
+import { Button } from "@/components/ui/button"
+import { signOut } from "@/api/auth"
+const MyAccount = () => {
+  const { data } = useMe()
+  if (data?.id)
+    return (
+      <div className="mt-10 flex flex-col gap-5 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 md:px-10 lg:gap-5 lg:px-14">
+        <div className="text-2xl font-bold">My Account</div>
+        <div className="flex gap-5 rounded-md bg-accent p-10">
+          <Avatar className="h-20 w-20">
+            <AvatarImage src={getProfileUrl(data.id)} />
+            <AvatarFallback>{data?.name}</AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="text-xl font-bold">{data.name}</div>
+            <div className="text-sm">{data.email}</div>
+          </div>
+        </div>
+        <div>
+          <Button onClick={signOut}>Log out</Button>
+        </div>
+      </div>
+    )
+}
+
+export default MyAccount

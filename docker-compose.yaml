@@ -17,6 +17,21 @@ services:
       retries: 10
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
   migrate:
     build:
       context: upload-service
@@ -26,7 +41,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: npx prisma migrate deploy
+    command: sh -c "npx prisma migrate deploy && node dist/src/seed/index.js"
     restart: "no"
 
   upload-service:
@@ -41,21 +56,22 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     restart: unless-stopped
 
-  transcode-service:
+  autoscale-service:
     build:
-      context: transcode-service
+      context: autoscale-service
       dockerfile: Dockerfile
-    container_name: transcode-service
-    ports:
-      - "3001:3001"
+    container_name: autoscale-service
     env_file:
-      - transcode-service/.env
+      - autoscale-service/.env
     depends_on:
-      migrate:
-        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
   postgres_data:
+  redis_data:

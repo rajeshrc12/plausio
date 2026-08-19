@@ -1,10 +1,6 @@
-import {
-  VideoReactionSchema,
-  VideoStatusSchema,
-  VideoVisibilitySchema,
-} from "@/types/enum"
 import { z } from "zod"
 import {
+  FileStatus,
   IMAGE_TYPES,
   MAX_THUMBNAIL_SIZE,
   MAX_VIDEO_SIZE,
@@ -12,119 +8,84 @@ import {
 } from "@/types/constant"
 
 /* ============================
- * Channel
+ * User
  * ============================ */
 
-export const ChannelSchema = z.object({
+export const UserSchema = z.object({
   id: z.number().int(),
-  handle: z.string(),
   email: z.email(),
   name: z.string(),
-  description: z.string(),
-  country: z.string(),
-
   createdAt: z.date(),
   updatedAt: z.date(),
 })
 
-export type Channel = z.infer<typeof ChannelSchema>
+export type User = z.infer<typeof UserSchema>
 
 /* ============================
- * Subscription
+ * Admin
  * ============================ */
 
-export const SubscriptionSchema = z.object({
-  subscriberId: z.number().int(),
-  channelId: z.number().int(),
-
+export const AdminSchema = z.object({
+  id: z.number().int(),
+  userName: z.string(),
+  password: z.string(),
   createdAt: z.date(),
+  updatedAt: z.date(),
 })
 
-export type Subscription = z.infer<typeof SubscriptionSchema>
+export type Admin = z.infer<typeof AdminSchema>
+
+export const AddAdminSchema = AdminSchema.pick({
+  userName: true,
+  password: true,
+})
+export type AddAdmin = z.infer<typeof AddAdminSchema>
 
 /* ============================
- * Video
+ * Movie
  * ============================ */
 
-export const VideoSchema = z.object({
+export const MovieSchema = z.object({
   id: z.number().int(),
-
   title: z.string(),
   description: z.string(),
-  type: z.string(),
-
-  visibility: VideoVisibilitySchema,
-  status: VideoStatusSchema,
 
   views: z.number().int(),
-
   duration: z.number().int(),
-  size: z.number().int(),
-  name: z.string(),
+
+  fileStatus: z.enum(FileStatus).optional(),
+  fileType: z.string(),
+  fileSize: z.number().int(),
+  fileName: z.string(),
+
+  genre: z.array(z.string()),
+  director: z.string(),
+  starring: z.string(),
+  publisher: z.string(),
+  year: z.number(),
 
   createdAt: z.date(),
   updatedAt: z.date(),
-
-  channelId: z.number().int(),
 })
 
-export type Video = z.infer<typeof VideoSchema>
+export type Movie = z.infer<typeof MovieSchema>
 
-/* ============================
- * Reaction
- * ============================ */
-
-export const ReactionSchema = z.object({
-  id: z.number().int(),
-
-  videoId: z.number().int(),
-  channelId: z.number().int(),
-
-  type: VideoReactionSchema,
-
-  createdAt: z.date(),
+export const AddMovieSchema = MovieSchema.pick({
+  fileName: true,
+  fileType: true,
+  fileSize: true,
+  title: true,
+  description: true,
+  duration: true,
+  genre: true,
+  director: true,
+  starring: true,
+  publisher: true,
+  year: true,
 })
+export type AddMovie = z.infer<typeof AddMovieSchema>
 
-export type Reaction = z.infer<typeof ReactionSchema>
-
-/* ============================
- * Comment
- * ============================ */
-
-export const CommentSchema = z.object({
-  id: z.number().int(),
-
-  content: z.string(),
-
-  createdAt: z.date(),
-  updatedAt: z.date(),
-
-  videoId: z.number().int(),
-  channelId: z.number().int(),
-})
-
-export type Comment = z.infer<typeof CommentSchema>
-
-/* ============================
- * Thumbnail
- * ============================ */
-
-export const ThumbnailSchema = z.object({
-  id: z.number().int(),
-
-  name: z.string(),
-  size: z.number().int(),
-  type: z.string(),
-
-  createdAt: z.date(),
-  updatedAt: z.date(),
-
-  videoId: z.number().int(),
-})
-
-export type Thumbnail = z.infer<typeof ThumbnailSchema>
-
-export const uploadSchema = z.object({
+export const movieFormSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")
@@ -133,9 +94,23 @@ export const uploadSchema = z.object({
     .string()
     .min(1, "Description is required")
     .max(2000, "Description cannot exceed 2000 characters"),
-
-  visibility: z.enum(["PUBLIC", "PRIVATE"]),
-
+  starring: z
+    .string()
+    .min(1, "Description is required")
+    .max(2000, "Description cannot exceed 2000 characters"),
+  director: z
+    .string()
+    .min(1, "Director is required")
+    .max(100, "Director cannot exceed 100 characters"),
+  publisher: z
+    .string()
+    .min(1, "Publisher is required")
+    .max(100, "Publisher cannot exceed 100 characters"),
+  year: z
+    .number()
+    .min(1900, "Year should be greater than 1900")
+    .max(2026, "Year cannot exceed 100 characters"),
+  genre: z.array(z.string()).min(1, "Add at least one genre"),
   thumbnail: z
     .instanceof(File, { message: "Thumbnail is required" })
     .refine((file) => IMAGE_TYPES.includes(file.type), {
@@ -145,20 +120,20 @@ export const uploadSchema = z.object({
       message: "Thumbnail must be less than 1 MB",
     }),
 
-  video: z
-    .instanceof(File, { message: "Video is required" })
+  movie: z
+    .instanceof(File, { message: "Movie is required" })
     .refine(
       (file) => {
         const ext = file.name.split(".").pop()?.toLowerCase()
         return VIDEO_TYPES.includes(ext ?? "")
       },
       {
-        message: "Video must be an MP4 or MKV file",
+        message: "Movie must be an MP4 or MKV file",
       }
     )
     .refine((file) => file.size <= MAX_VIDEO_SIZE, {
-      message: "Video must be less than 50 MB",
+      message: "Movie must be less than 50 MB",
     }),
 })
 
-export type UploadValues = z.infer<typeof uploadSchema>
+export type movieForm = z.infer<typeof movieFormSchema>

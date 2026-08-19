@@ -6,3 +6,8 @@ export const generateAccessToken = (payload: object) => {
     expiresIn: "1d",
   });
 };
+export const generateAdminAccessToken = (payload: object) => {
+  return jwt.sign(payload, env.JWT_ADMIN_SECRET, {
+    expiresIn: "1d",
+  });
+};

@@ -10,6 +10,7 @@ export const env = {
   GOOGLE_FALLBACK_URL: process.env.GOOGLE_FALLBACK_URL!,
 
   JWT_SECRET: process.env.JWT_SECRET!,
+  JWT_ADMIN_SECRET: process.env.JWT_SECRET!,
   DATABASE_URL: process.env.DATABASE_URL!,
 
   FRONTEND_URL: process.env.FRONTEND_URL!,
@@ -25,4 +26,9 @@ export const env = {
   AWS_S3_BUCKET_PROFILE_PATH: process.env.AWS_S3_BUCKET_PROFILE_PATH!,
 
   AWS_SQS_URL: process.env.AWS_SQS_URL!,
+
+  REDIS_CONTAINER_KEY: process.env.REDIS_CONTAINER_KEY!,
+  REDIS_HOST: process.env.REDIS_HOST!,
+  REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
+  BULLMQ_QUEUE: process.env.BULLMQ_QUEUE!,
 };
