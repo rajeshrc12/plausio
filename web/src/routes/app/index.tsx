@@ -4,11 +4,11 @@ import { Outlet } from "react-router"
 
 const App = () => {
   return (
-    <div>
+    <>
       <AppNavbar />
       <Outlet />
       <Analytics />
-    </div>
+    </>
   )
 }
 
