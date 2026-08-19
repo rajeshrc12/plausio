@@ -54,31 +54,40 @@ export default function VideoPlayer({ src }: { src: string }) {
           src={src}
           crossOrigin="anonymous"
           playsInline
-          className="object-fit h-full w-full"
+          className="h-full w-full object-contain"
         />
+
         <BackButton controlsVisible={controlsVisible} />
+
         {controlsVisible && (
-          <div className="absolute inset-x-0 bottom-0 h-56 bg-linear-to-t from-background via-background/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-linear-to-t from-background via-background/80 to-transparent sm:h-52 md:h-56" />
         )}
+
         <div
-          className={`absolute bottom-0 flex w-full flex-col gap-3 px-10 pb-5 transition-opacity duration-200 md:px-20 lg:px-40 ${
+          className={`absolute inset-x-0 bottom-0 flex flex-col gap-2 px-3 pb-3 transition-opacity duration-200 sm:gap-3 sm:px-6 sm:pb-4 md:px-12 lg:px-20 xl:px-40 ${
             controlsVisible
               ? "pointer-events-auto opacity-100"
               : "pointer-events-none opacity-0"
           }`}
         >
-          <div className="flex items-end justify-between font-medium">
-            <div className="text-2xl">{movie?.title}</div>
-            <TimeDisplay />
+          <div className="flex items-end justify-between gap-3 font-medium">
+            <div className="min-w-0 truncate text-base sm:text-xl md:text-2xl">
+              {movie?.title}
+            </div>
+
+            <div className="shrink-0 text-xs sm:text-sm md:text-base">
+              <TimeDisplay />
+            </div>
           </div>
+
           <TimeBar videoRef={videoRef} />
 
-          <div className="mt-1 flex h-10 items-center justify-between">
+          <div className="mt-1 flex min-h-10 items-center justify-between gap-2">
             <div className="flex items-center gap-1">
               <PlayPauseButton />
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-1">
               <VolumeSlider videoRef={videoRef} />
               <QualityMenu />
               <AudioMenu />

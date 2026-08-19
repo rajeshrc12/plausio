@@ -20,14 +20,18 @@ const AppNavbar = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 z-10 flex w-full justify-between px-14 py-4 transition-transform duration-300 ${
+      className={`fixed top-0 left-0 z-10 flex w-full items-center justify-between px-5 py-3 sm:px-8 sm:py-4 lg:px-14 ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
-      }`}
+      } transition-transform duration-300`}
     >
-      <div className="flex gap-8">
-        <div className="relative bottom-1 text-xl">Plausio</div>
+      <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
+        <div className="text-lg font-semibold sm:text-xl">Plausio</div>
 
-        <Link to="/">
+        <Link
+          to="/"
+          className="flex size-9 items-center justify-center rounded-md sm:size-auto"
+          aria-label="Home"
+        >
           <HomeIcon className="size-5" />
         </Link>
 

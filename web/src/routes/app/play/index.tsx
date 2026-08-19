@@ -24,10 +24,8 @@ const Video = () => {
   }
   if (id)
     return (
-      <div className="flex flex-col">
-        <div className="h-screen w-full">
-          <VideoPlayer src={getVideoUrl(Number(id))} />
-        </div>
+      <div className="h-dvh w-full overflow-hidden">
+        <VideoPlayer src={getVideoUrl(Number(id))} />
       </div>
     )
 }

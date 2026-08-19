@@ -15,12 +15,9 @@ const Login = () => {
 
   return (
     <Dialog open={dialog} onOpenChange={setDialog}>
-      <DialogContent
-        showCloseButton={false}
-        className="border-primary/10 text-primary sm:max-w-sm"
-      >
+      <DialogContent showCloseButton={false}>
         <DialogHeader className="space-y-3 text-center">
-          <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+          <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full">
             <LockKeyhole className="h-5 w-5 text-muted-foreground" />
           </div>
 
@@ -33,10 +30,7 @@ const Login = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <Button
-          onClick={signIn}
-          className="hover:bg-muted-text-muted-foreground mt-2 h-11 w-full bg-primary font-medium text-black"
-        >
+        <Button onClick={signIn} className="mt-2 h-11 w-full font-medium">
           Continue with Google
         </Button>
       </DialogContent>

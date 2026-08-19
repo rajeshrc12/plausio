@@ -7,20 +7,32 @@ const MyAccount = () => {
   const { data } = useMe()
   if (data?.id)
     return (
-      <div className="mt-10 flex flex-col gap-5 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 md:px-10 lg:gap-5 lg:px-14">
-        <div className="text-2xl font-bold">My Account</div>
-        <div className="flex gap-5 rounded-md bg-accent p-10">
-          <Avatar className="h-20 w-20">
+      <div className="mt-10 flex flex-col gap-5 px-4 py-3 sm:px-6 sm:py-4 md:px-10 lg:px-14">
+        <div className="text-xl font-bold sm:text-2xl">My Account</div>
+
+        <div className="flex flex-col items-start gap-4 rounded-md bg-accent p-5 sm:flex-row sm:items-center sm:gap-5 sm:p-6 md:p-8 lg:p-10">
+          <Avatar className="size-16 shrink-0 sm:size-20">
             <AvatarImage src={getProfileUrl(data.id)} />
-            <AvatarFallback>{data?.name}</AvatarFallback>
+            <AvatarFallback>
+              {data?.name?.charAt(0)?.toUpperCase()}
+            </AvatarFallback>
           </Avatar>
-          <div>
-            <div className="text-xl font-bold">{data.name}</div>
-            <div className="text-sm">{data.email}</div>
+
+          <div className="min-w-0">
+            <div className="truncate text-lg font-bold sm:text-xl">
+              {data.name}
+            </div>
+
+            <div className="text-sm break-all text-muted-foreground sm:break-normal">
+              {data.email}
+            </div>
           </div>
         </div>
+
         <div>
-          <Button onClick={signOut}>Log out</Button>
+          <Button onClick={signOut} className="w-full sm:w-auto">
+            Log out
+          </Button>
         </div>
       </div>
     )

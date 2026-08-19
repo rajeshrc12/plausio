@@ -20,7 +20,7 @@ const BackButton = ({ controlsVisible }: { controlsVisible: boolean }) => {
       <button
         onClick={() => window.history.back()}
         type="button"
-        className={`absolute top-5 left-40 transition-opacity ${
+        className={`absolute top-5 left-4 transition-opacity md:left-10 lg:left-36 ${
           controlsVisible ? "opacity-100" : "opacity-0"
         }`}
       >
