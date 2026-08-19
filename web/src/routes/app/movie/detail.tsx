@@ -35,7 +35,7 @@ const Detail = () => {
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-background" />
       </div>
 
-      <div className="absolute top-16 flex w-full flex-col px-4 sm:px-6 md:px-10 lg:px-14">
+      <div className="absolute top-16 flex w-full flex-col px-4 pb-20 sm:px-6 md:px-10 lg:px-14">
         <div className="flex h-auto flex-col gap-6 md:h-screen">
           <Breadcrumb className="truncate pt-6">
             <BreadcrumbList className="flex-nowrap whitespace-nowrap">

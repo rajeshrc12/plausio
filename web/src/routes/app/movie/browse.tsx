@@ -27,7 +27,7 @@ const Browse = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 px-4 pb-8 sm:px-6 md:px-10 lg:px-14">
+    <div className="flex flex-col gap-4 px-4 pb-20 sm:px-6 md:px-10 lg:px-14">
       <div className="mt-20 flex flex-wrap gap-2 sm:mt-16">
         {genre.map((g) => (
           <Button
