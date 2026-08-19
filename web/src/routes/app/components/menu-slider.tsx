@@ -6,7 +6,15 @@ import "swiper/css/navigation"
 import MovieCard from "@/routes/app/components/movie-card"
 import type { Movie } from "@/types/schema"
 
-const MenuSlider = ({ movies }: { movies: Movie[] }) => {
+const MenuSlider = ({
+  movies,
+  isUserLogged = false,
+  setDialog,
+}: {
+  movies: Movie[]
+  isUserLogged: boolean
+  setDialog: (value: boolean) => void
+}) => {
   return (
     <Swiper
       className="h-full w-full bg-background"
@@ -19,7 +27,11 @@ const MenuSlider = ({ movies }: { movies: Movie[] }) => {
     >
       {movies?.map((movie, index) => (
         <SwiperSlide key={index}>
-          <MovieCard movie={movie} />
+          <MovieCard
+            setDialog={setDialog}
+            isUserLogged={isUserLogged}
+            movie={movie}
+          />
         </SwiperSlide>
       ))}
     </Swiper>

@@ -1,9 +1,27 @@
+import { useMe } from "@/queries/user"
 import VideoPlayer from "@/routes/app/components/video-player"
 import { getVideoUrl } from "@/utils/movie"
-import { useParams } from "react-router"
+import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router"
 
 const Video = () => {
+  const { isLoading, isError } = useMe()
+  const navigate = useNavigate()
   const { id } = useParams()
+
+  useEffect(() => {
+    if (isError || !id) {
+      navigate("/", { replace: true })
+    }
+  }, [isError, id, navigate])
+
+  if (isLoading) {
+    return null // or <Loading />
+  }
+
+  if (isError || !id) {
+    return null
+  }
   if (id)
     return (
       <div className="flex flex-col">

@@ -3,8 +3,12 @@ import { useState } from "react"
 import { getThumbnailUrl } from "@/utils/movie"
 import { Link } from "react-router"
 import type { Movie } from "@/types/schema"
+import { useMe } from "@/queries/user"
+import useLogin from "@/hooks/use-login"
 
 const HomeSlider = ({ movies }: { movies: Movie[] }) => {
+  const { isError } = useMe()
+  const { setDialog } = useLogin()
   const [index, setIndex] = useState(0)
 
   const current = movies[index]
@@ -40,12 +44,23 @@ const HomeSlider = ({ movies }: { movies: Movie[] }) => {
         </div>
 
         <div className="flex gap-3">
-          <Link to={`/play/${current.id}`}>
-            <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
+          {isError ? (
+            <button
+              onClick={() => setDialog(true)}
+              className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85"
+            >
               <Play className="size-5 fill-current" />
               Play
             </button>
-          </Link>
+          ) : (
+            <Link to={`/play/${current.id}`}>
+              <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
+                <Play className="size-5 fill-current" />
+                Play
+              </button>
+            </Link>
+          )}
+
           <Link to={`/movie/${current.id}`}>
             <button className="rounded-md bg-primary/15 px-6 py-3 font-semibold text-primary backdrop-blur-sm transition hover:bg-primary/25">
               More Info

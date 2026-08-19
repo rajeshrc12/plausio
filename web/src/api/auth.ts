@@ -6,7 +6,7 @@ const api = axios.create({
   withCredentials: true, // important to send cookies
 })
 
-export const signIn = async () => {
+export const signIn = () => {
   window.location.href = `${env.UPLOAD_API_URL}/auth/google`
 }
 

@@ -12,6 +12,7 @@ import CreateMovie from "@/routes/dashboard/movie/create"
 import AdminLogin from "@/routes/dashboard/admin-login"
 import Detail from "@/routes/app/movie/detail"
 import NotFound from "@/routes/not-found"
+import MyAccount from "@/routes/app/my-account"
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "movie/:id",
         Component: Detail,
+      },
+      {
+        path: "my-account",
+        Component: MyAccount,
       },
     ],
   },

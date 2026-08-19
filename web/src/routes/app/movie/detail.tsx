@@ -11,11 +11,15 @@ import { Play } from "lucide-react"
 import MovieCard from "@/routes/app/components/movie-card"
 import { useMovie, useMovies } from "@/queries/public"
 import { getThumbnailUrl } from "@/utils/movie"
+import { useMe } from "@/queries/user"
+import useLogin from "@/hooks/use-login"
 
 const Detail = () => {
+  const { isError } = useMe()
   const { data: movies } = useMovies()
   const { id } = useParams()
   const { data: movie } = useMovie(Number(id))
+  const { setDialog } = useLogin()
   if (!movie) return "Loading..."
   return (
     <div className="relative">
@@ -81,12 +85,22 @@ const Detail = () => {
               </p>
             </div>
             <div className="flex gap-2">
-              <Link to={`/play/${id}`}>
-                <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
+              {isError ? (
+                <button
+                  onClick={() => setDialog(true)}
+                  className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85"
+                >
                   <Play className="size-5 fill-current" />
                   Play
                 </button>
-              </Link>
+              ) : (
+                <Link to={`/play/${id}`}>
+                  <button className="flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-background transition hover:bg-primary/85">
+                    <Play className="size-5 fill-current" />
+                    Play
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -94,7 +108,12 @@ const Detail = () => {
         <div className="text-2xl">Recommended</div>
         <div className="grid grid-cols-4 gap-5">
           {movies?.map((movie, i) => (
-            <MovieCard key={i} movie={movie} />
+            <MovieCard
+              isUserLogged={!isError}
+              key={i}
+              movie={movie}
+              setDialog={setDialog}
+            />
           ))}
         </div>
       </div>

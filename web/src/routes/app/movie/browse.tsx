@@ -12,11 +12,14 @@ import { useState } from "react"
 import MovieCard from "@/routes/app/components/movie-card"
 import { useMovies } from "@/queries/public"
 import { genre } from "@/types/constant"
+import useLogin from "@/hooks/use-login"
+import { useMe } from "@/queries/user"
 
 const Browse = () => {
   const [filters, setFilters] = useState<string[]>([])
   const { data } = useMovies(filters)
-
+  const { setDialog } = useLogin()
+  const { isError } = useMe()
   const handleFilters = (g: string) => {
     setFilters((prev) =>
       prev.includes(g) ? prev.filter((f) => f !== g) : [...prev, g]
@@ -59,7 +62,12 @@ const Browse = () => {
       </div>
       <div className="grid grid-cols-4 gap-5">
         {data?.map((movie, i) => (
-          <MovieCard key={i} movie={movie} />
+          <MovieCard
+            isUserLogged={!isError}
+            setDialog={setDialog}
+            key={i}
+            movie={movie}
+          />
         ))}
       </div>
     </div>
