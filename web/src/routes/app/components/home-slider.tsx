@@ -1,24 +1,20 @@
 import { ChevronLeft, ChevronRight, Play } from "lucide-react"
 import { useState } from "react"
-
-import { useMovies } from "@/queries/public"
 import { getThumbnailUrl } from "@/utils/movie"
 import { Link } from "react-router"
+import type { Movie } from "@/types/schema"
 
-const HomeSlider = () => {
-  const { data } = useMovies()
+const HomeSlider = ({ movies }: { movies: Movie[] }) => {
   const [index, setIndex] = useState(0)
 
-  if (!data) return "Loading..."
-
-  const current = data[index]
+  const current = movies[index]
 
   const nextSlide = () => {
-    setIndex((prev) => (prev + 1) % data.length)
+    setIndex((prev) => (prev + 1) % movies.length)
   }
 
   const prevSlide = () => {
-    setIndex((prev) => (prev - 1 + data.length) % data.length)
+    setIndex((prev) => (prev - 1 + movies.length) % movies.length)
   }
 
   return (
@@ -26,7 +22,7 @@ const HomeSlider = () => {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url("${getThumbnailUrl(data[index].id)}")`,
+          backgroundImage: `url("${getThumbnailUrl(movies[index].id)}")`,
         }}
       />
 
@@ -60,7 +56,7 @@ const HomeSlider = () => {
 
       <div className="relative z-10 mt-8 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {data.map((item, i) => (
+          {movies.map((item, i) => (
             <button
               key={item.id}
               onClick={() => setIndex(i)}
