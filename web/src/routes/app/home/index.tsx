@@ -21,13 +21,11 @@ const AppHome = () => {
       <HomeSlider movies={movies} />
       <div className="flex flex-col gap-3">
         <div className="pl-16 text-2xl font-bold">Trending movies</div>
-        <div className="h-50">
-          <MenuSlider
-            setDialog={setDialog}
-            isUserLogged={!isError}
-            movies={movies}
-          />
-        </div>
+        <MenuSlider
+          setDialog={setDialog}
+          isUserLogged={!isError}
+          movies={movies}
+        />
       </div>
     </div>
   )

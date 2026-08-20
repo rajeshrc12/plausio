@@ -59,7 +59,7 @@ const Browse = () => {
         movies online. Get free streaming of English movies, Hindi movies, HD
         movies and more on Plausio
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
         {data?.map((movie) => (
           <MovieCard
             isUserLogged={!isError}

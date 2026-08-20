@@ -13,7 +13,7 @@ const MovieCard = ({
   setDialog: (value: boolean) => void
 }) => {
   return (
-    <div className="group relative h-36 w-full overflow-hidden rounded-lg border border-border/50 bg-card shadow-sm sm:h-40 md:h-44 lg:h-48">
+    <div className="group relative h-36 w-full overflow-hidden rounded-md lg:h-36">
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-out group-hover:scale-110"
         style={{
