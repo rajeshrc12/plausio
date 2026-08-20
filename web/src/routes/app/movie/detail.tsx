@@ -10,7 +10,7 @@ import {
 import { Play } from "lucide-react"
 import MovieCard from "@/routes/app/components/movie-card"
 import { useMovie, useMovies } from "@/queries/public"
-import { getThumbnailUrl } from "@/utils/movie"
+import { getImageUrl } from "@/utils/movie"
 import { useMe } from "@/queries/user"
 import useLogin from "@/hooks/use-login"
 
@@ -27,7 +27,7 @@ const Detail = () => {
         <div
           className="h-full w-full bg-cover bg-center"
           style={{
-            backgroundImage: `url("${getThumbnailUrl(movie.id)}")`,
+            backgroundImage: `url("${getImageUrl(movie.id)}")`,
           }}
         />
 
@@ -113,8 +113,7 @@ const Detail = () => {
           <div className="mb-4 text-xl font-semibold sm:text-2xl">
             Recommended
           </div>
-
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-2 gap-y-8 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-7">
             {movies?.map((movie) => (
               <MovieCard
                 isUserLogged={!isError}

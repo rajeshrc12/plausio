@@ -27,3 +27,14 @@ export const getMe = async (req: Request, res: Response) => {
 
   res.status(200).json(me);
 };
+
+export const getDashboard = async (req: Request, res: Response) => {
+  const movieCount = await prisma.movie.count();
+  const userCount = await prisma.user.count();
+  const users = await prisma.user.findMany({
+    take: 10,
+    orderBy: { createdAt: "desc" },
+  });
+
+  res.status(200).json({ movieCount, userCount, users });
+};

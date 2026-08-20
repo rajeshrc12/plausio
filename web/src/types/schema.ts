@@ -22,6 +22,18 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>
 
 /* ============================
+ * Dashboard
+ * ============================ */
+
+export const DashboardSchema = z.object({
+  movieCount: z.number().int(),
+  userCount: z.number().int(),
+  users: z.array(UserSchema),
+})
+
+export type Dashboard = z.infer<typeof DashboardSchema>
+
+/* ============================
  * Admin
  * ============================ */
 
@@ -82,6 +94,10 @@ export const AddMovieSchema = MovieSchema.pick({
   starring: true,
   publisher: true,
   year: true,
+}).extend({
+  titleType: z.string(),
+  posterType: z.string(),
+  thumbnailType: z.string(),
 })
 export type AddMovie = z.infer<typeof AddMovieSchema>
 
@@ -119,7 +135,22 @@ export const movieFormSchema = z.object({
     .refine((file) => file.size <= MAX_THUMBNAIL_SIZE, {
       message: "Thumbnail must be less than 1 MB",
     }),
-
+  poster: z
+    .instanceof(File, { message: "Poster is required" })
+    .refine((file) => IMAGE_TYPES.includes(file.type), {
+      message: "Poster must be a JPG, JPEG, or PNG image",
+    })
+    .refine((file) => file.size <= MAX_THUMBNAIL_SIZE, {
+      message: "Poster must be less than 1 MB",
+    }),
+  titleImage: z
+    .instanceof(File, { message: "Title image is required" })
+    .refine((file) => IMAGE_TYPES.includes(file.type), {
+      message: "Title image must be a JPG, JPEG, or PNG image",
+    })
+    .refine((file) => file.size <= MAX_THUMBNAIL_SIZE, {
+      message: "Title image must be less than 1 MB",
+    }),
   movie: z
     .instanceof(File, { message: "Movie is required" })
     .refine(

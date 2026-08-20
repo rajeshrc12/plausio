@@ -50,13 +50,15 @@ export const formatVideoDuration = (duration: number) => {
   return `${minutes}:${String(seconds).padStart(2, "0")}`
 }
 
-export const getThumbnailUrl = (videoId: number | undefined) => {
-  if (!videoId)
-    return "https://placehold.co/300x200?text=No+Thumbnail+Available"
-  return `${env.AWS_CDN_URL}/thumbnail/${videoId}/original`
+export const getImageUrl = (
+  id: number | undefined,
+  name: string = "thumbnail"
+) => {
+  if (!id) return "https://placehold.co/300x200?text=No+Thumbnail+Available"
+  return `${env.AWS_CDN_URL}/image/${id}/${name}`
 }
-export const getVideoUrl = (videoId: number) => {
-  return `${env.AWS_CDN_URL}/video/${videoId}/hls/master.m3u8`
+export const getVideoUrl = (id: number) => {
+  return `${env.AWS_CDN_URL}/video/${id}/hls/master.m3u8`
 }
 export const getProfileUrl = (channelId: number) => {
   return `${env.AWS_CDN_URL}/profile/${channelId}/original`

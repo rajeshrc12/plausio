@@ -3,12 +3,14 @@ import { Trash2 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
-const Movie = ({
+const Poster = ({
+  title = "Poster",
   value,
   onChange,
   accept,
   label,
 }: {
+  title?: string
   value?: File
   onChange: (file?: File) => void
   accept: Record<string, string[]>
@@ -38,7 +40,7 @@ const Movie = ({
   return (
     <div className="flex h-50 flex-col gap-2">
       <div className="flex items-center gap-2">
-        <div>Movie</div>
+        <div>{title}</div>
         {previewUrl && (
           <Button
             type="button"
@@ -55,11 +57,11 @@ const Movie = ({
         )}
       </div>
       {previewUrl ? (
-        <video
+        <img
           onClick={(e) => e.stopPropagation()}
           src={previewUrl}
-          controls
-          className="h-50 rounded object-cover"
+          alt={value?.name}
+          className="h-50 rounded object-contain"
         />
       ) : (
         <div
@@ -75,4 +77,4 @@ const Movie = ({
   )
 }
 
-export default Movie
+export default Poster

@@ -1,5 +1,5 @@
 import { env } from "@/config/env"
-import type { AddAdmin, Admin } from "@/types/schema"
+import type { AddAdmin, Admin, Dashboard } from "@/types/schema"
 import axios from "axios"
 
 const api = axios.create({
@@ -25,7 +25,10 @@ export const getMe = async () => {
   const me = await api.get<Admin>("/me")
   return me.data
 }
-
+export const getDashboard = async () => {
+  const dashboard = await api.get<Dashboard>("/dashboard")
+  return dashboard.data
+}
 export const login = async ({ userName, password }: AddAdmin) => {
   try {
     const me = await api.post("/login", { userName, password })

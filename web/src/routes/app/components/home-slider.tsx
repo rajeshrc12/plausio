@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, Play } from "lucide-react"
 import { useState } from "react"
-import { getThumbnailUrl } from "@/utils/movie"
+import { getImageUrl } from "@/utils/movie"
 import { Link } from "react-router"
 import type { Movie } from "@/types/schema"
 import { useMe } from "@/queries/user"
@@ -26,7 +26,7 @@ const HomeSlider = ({ movies }: { movies: Movie[] }) => {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url("${getThumbnailUrl(movies[index].id)}")`,
+          backgroundImage: `url("${getImageUrl(movies[index].id)}")`,
         }}
       />
 
@@ -35,8 +35,8 @@ const HomeSlider = ({ movies }: { movies: Movie[] }) => {
       <div className="absolute inset-x-0 bottom-0 h-64 bg-linear-to-t from-background via-background/80 to-transparent sm:h-56" />
 
       <div className="relative z-10 max-w-2xl">
-        <div className="mb-2 text-3xl font-extrabold tracking-tight text-primary sm:mb-3 sm:text-4xl md:text-5xl">
-          {current.title}
+        <div className="h-30">
+          <img src={getImageUrl(current.id, "title")} alt="" />
         </div>
 
         <div className="mb-4 max-w-xl text-sm leading-6 text-primary/75 sm:mb-6 sm:text-base sm:leading-7">

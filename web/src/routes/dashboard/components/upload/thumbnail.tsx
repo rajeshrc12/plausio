@@ -4,11 +4,13 @@ import { useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
 const Thumbnail = ({
+  title = "Thumbnail",
   value,
   onChange,
   accept,
   label,
 }: {
+  title?: string
   value?: File
   onChange: (file?: File) => void
   accept: Record<string, string[]>
@@ -36,9 +38,9 @@ const Thumbnail = ({
     return () => URL.revokeObjectURL(url)
   }, [value])
   return (
-    <div className="flex h-full flex-col gap-2">
+    <div className="flex h-50 flex-col gap-2">
       <div className="flex items-center gap-2">
-        <div>Thumbnail</div>
+        <div>{title}</div>
         {previewUrl && (
           <Button
             type="button"
@@ -59,11 +61,11 @@ const Thumbnail = ({
           onClick={(e) => e.stopPropagation()}
           src={previewUrl}
           alt={value?.name}
-          className="h-full rounded object-cover"
+          className="h-50 rounded object-cover"
         />
       ) : (
         <div
-          className="flex h-full cursor-pointer items-center justify-center rounded border border-dashed"
+          className="flex h-50 cursor-pointer items-center justify-center rounded border border-dashed"
           {...getRootProps()}
           onClick={open}
         >

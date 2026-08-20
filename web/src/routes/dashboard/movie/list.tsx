@@ -29,6 +29,7 @@ const MovieList = () => {
               <TableHead className="w-12">Sr</TableHead>
               <TableHead className="w-48">Title</TableHead>
               <TableHead>Description</TableHead>
+              <TableHead className="w-28">Status</TableHead>
               <TableHead className="w-28">Duration</TableHead>
               <TableHead className="w-24">Size</TableHead>
             </TableRow>
@@ -46,6 +47,7 @@ const MovieList = () => {
                     <div className="truncate">{movie.description}</div>
                   </TableCell>
 
+                  <TableCell>{movie.fileStatus}</TableCell>
                   <TableCell>{formatVideoDuration(movie.duration)}</TableCell>
 
                   <TableCell>{formatFileSize(movie.fileSize)}</TableCell>

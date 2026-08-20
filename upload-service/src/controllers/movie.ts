@@ -20,6 +20,9 @@ export const initUpload = async (req: Request, res: Response) => {
     starring,
     year,
     publisher,
+    titleType,
+    posterType,
+    thumbnailType,
   } = req.body;
   const movie = await prisma.movie.create({
     data: {
@@ -40,14 +43,26 @@ export const initUpload = async (req: Request, res: Response) => {
   const movieUrl = await createS3Url({
     key: getVideoKey({ id: movie.id }),
     contentType: fileType,
-    expireTimeInMinutes: 1,
+    expireTimeInMinutes: 60,
   });
   const thumbnailUrl = await createS3Url({
-    key: getThumbnailKey({ id: movie.id }),
-    contentType: fileType,
-    expireTimeInMinutes: 1,
+    key: `image/${movie.id}/thumbnail`,
+    contentType: thumbnailType,
+    expireTimeInMinutes: 3,
   });
-  res.status(200).json({ ...movie, movieUrl, thumbnailUrl });
+  const titleUrl = await createS3Url({
+    key: `image/${movie.id}/title`,
+    contentType: titleType,
+    expireTimeInMinutes: 3,
+  });
+  const posterUrl = await createS3Url({
+    key: `image/${movie.id}/poster`,
+    contentType: posterType,
+    expireTimeInMinutes: 3,
+  });
+  res
+    .status(200)
+    .json({ ...movie, movieUrl, thumbnailUrl, titleUrl, posterUrl });
 };
 export const createMovieJob = async (req: Request, res: Response) => {
   const { id, type } = req.body;

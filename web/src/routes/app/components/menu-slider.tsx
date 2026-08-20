@@ -21,33 +21,49 @@ const MenuSlider = ({
       modules={[Navigation, A11y]}
       spaceBetween={8}
       navigation
-      slidesOffsetBefore={20}
-      slidesOffsetAfter={20}
+      grabCursor
       breakpoints={{
+        0: {
+          slidesPerView: 2.3,
+          slidesOffsetBefore: 12,
+          slidesOffsetAfter: 12,
+          spaceBetween: 8,
+        },
         480: {
-          slidesPerView: 1,
-          slidesOffsetBefore: 24,
-          slidesOffsetAfter: 24,
+          slidesPerView: 2.8,
+          slidesOffsetBefore: 16,
+          slidesOffsetAfter: 16,
+          spaceBetween: 10,
         },
         640: {
-          slidesPerView: 2,
-          slidesOffsetBefore: 32,
-          slidesOffsetAfter: 32,
+          slidesPerView: 3.5,
+          slidesOffsetBefore: 24,
+          slidesOffsetAfter: 24,
+          spaceBetween: 12,
         },
         768: {
-          slidesPerView: 3,
-          slidesOffsetBefore: 40,
-          slidesOffsetAfter: 40,
+          slidesPerView: 4.5,
+          slidesOffsetBefore: 32,
+          slidesOffsetAfter: 32,
+          spaceBetween: 12,
         },
         1024: {
-          slidesPerView: 5,
-          slidesOffsetBefore: 48,
-          slidesOffsetAfter: 48,
+          slidesPerView: 5.5,
+          slidesOffsetBefore: 40,
+          slidesOffsetAfter: 40,
+          spaceBetween: 14,
         },
         1280: {
-          slidesPerView: 5,
+          slidesPerView: 7,
+          slidesOffsetBefore: 48,
+          slidesOffsetAfter: 48,
+          spaceBetween: 16,
+        },
+        1536: {
+          slidesPerView: 8,
           slidesOffsetBefore: 60,
           slidesOffsetAfter: 60,
+          spaceBetween: 16,
         },
       }}
     >
