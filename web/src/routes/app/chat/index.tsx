@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 const Chat = () => {
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center">
       <div className="w-full max-w-2xl rounded-2xl border bg-background p-3 shadow-sm transition-shadow focus-within:shadow-md">
         <input
           type="text"
