@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from user_service.routes import user_router, auth_router, connector_router
+from user_service.routes import (
+    user_router,
+    auth_router,
+    connector_router,
+    celery_router,
+)
 
 app = FastAPI(
     title="Task API",
@@ -21,6 +26,7 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(auth_router)
 app.include_router(connector_router)
+app.include_router(celery_router)
 
 
 @app.get("/")

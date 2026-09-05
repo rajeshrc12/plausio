@@ -10,6 +10,7 @@ import { useAddConnector } from "@/mutation/connector"
 import { useNavigate } from "react-router"
 import { uploadFiles } from "@/services/upload"
 import { useState } from "react"
+import { createJob } from "@/api/celery"
 
 const Create = () => {
   const navigate = useNavigate()
@@ -36,7 +37,9 @@ const Create = () => {
       file,
       setProgress: setProgress,
     })
-    if (upload) {
+    const job = await createJob({ id: connector.id, type: connector.type })
+
+    if (upload && job.id) {
       navigate("/app/connector")
     }
   }

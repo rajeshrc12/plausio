@@ -15,6 +15,17 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>
 
 /* ============================
+ * Celery
+ * ============================ */
+
+export const CelerySchema = z.object({
+  id: z.number().int(),
+  type: z.string(),
+})
+
+export type Celery = z.infer<typeof CelerySchema>
+
+/* ============================
  * Connector
  * ============================ */
 
