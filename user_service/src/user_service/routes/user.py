@@ -6,8 +6,8 @@ from user_service.schemas import UserCreate, UserResponse
 from user_service.services.user import get_user, create_user
 
 router = APIRouter(
-    prefix="/users",
-    tags=["Users"],
+    prefix="/user",
+    tags=["user"],
 )
 
 
