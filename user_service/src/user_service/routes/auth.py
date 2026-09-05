@@ -1,14 +1,15 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Response
 from sqlalchemy.orm import Session
 from user_service.config.database import get_db
 from user_service.schemas import UserCreate
 from user_service.models import User
 from user_service.services.user import create_user
+from user_service.utils.jwt import create_access_token
+from user_service.config.settings import settings
 
 from pydantic import BaseModel
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from user_service.config.settings import settings
 
 router = APIRouter(
     prefix="/auth",
@@ -23,6 +24,7 @@ class GoogleLogin(BaseModel):
 @router.post("/google")
 def google_login(
     data: GoogleLogin,
+    response: Response,
     db: Session = Depends(get_db),
 ):
     try:
@@ -58,4 +60,14 @@ def google_login(
 
         user = create_user(db, user_data)
 
-    return user
+    token = create_access_token(user.id)
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=settings.jwt_expire_minutes * 60,
+    )
+
+    return {"message": "Login successful"}

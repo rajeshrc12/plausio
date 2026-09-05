@@ -16,6 +16,7 @@ export default function Login() {
         callback: async (response: any) => {
           const res = await fetch("http://localhost:8000/auth/google", {
             method: "POST",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
