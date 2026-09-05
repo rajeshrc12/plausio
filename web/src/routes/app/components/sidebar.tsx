@@ -19,8 +19,8 @@ const menu = [
 const Sidebar = () => {
   const { pathname } = useLocation()
   return (
-    <div className="w-50 border-r">
-      <div>Plausio</div>
+    <div className="w-60 border-r">
+      <div className="py-2">Plausio</div>
       <div className="flex flex-col justify-start px-2">
         {menu?.map(({ path, name, Icon }) => {
           const isActive = path === pathname

@@ -1,5 +1,5 @@
 const Connector = () => {
-  return <div>Connector</div>
+  return <div className="w-full">Connector</div>
 }
 
 export default Connector
