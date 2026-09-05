@@ -7,8 +7,13 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { useAddConnector } from "@/mutation/connector"
+import { useNavigate } from "react-router"
+import { uploadFiles } from "@/services/upload"
+import { useState } from "react"
 
 const Create = () => {
+  const navigate = useNavigate()
+  const [progress, setProgress] = useState(0)
   const form = useForm<z.infer<typeof connectorFormSchema>>({
     resolver: zodResolver(connectorFormSchema),
     defaultValues: {
@@ -18,6 +23,7 @@ const Create = () => {
   })
   const addConnector = useAddConnector()
   const onSubmit = async (data: z.infer<typeof connectorFormSchema>) => {
+    setProgress(1)
     const { title, description, file } = data
     const connector = await addConnector.mutateAsync({
       name: file.name,
@@ -25,14 +31,21 @@ const Create = () => {
       title,
       description,
     })
-    console.log(connector)
+    const upload = await uploadFiles({
+      url: connector.url,
+      file,
+      setProgress: setProgress,
+    })
+    if (upload) {
+      navigate("/app/connector")
+    }
   }
   return (
     <div className="mx-auto w-full max-w-4xl px-10 py-8">
       <div className="mb-6 text-2xl font-bold">Add connector</div>
 
       <form id="form" onSubmit={form.handleSubmit(onSubmit)}>
-        <fieldset className="flex flex-col gap-10">
+        <fieldset className="flex flex-col gap-10" disabled={progress !== 0}>
           <Controller
             name="title"
             control={form.control}
@@ -100,7 +113,9 @@ const Create = () => {
           />
 
           <div className="flex justify-end">
-            <Button>Submit</Button>
+            <Button type="submit">
+              {progress > 0 ? "Uploading..." : "Submit"}
+            </Button>
           </div>
         </fieldset>
       </form>

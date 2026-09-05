@@ -25,6 +25,7 @@ const Connector = () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-12">Sr</TableHead>
+              <TableHead className="w-48">Name</TableHead>
               <TableHead className="w-48">Title</TableHead>
               <TableHead>Description</TableHead>
               <TableHead className="w-28">Status</TableHead>
@@ -38,6 +39,7 @@ const Connector = () => {
                 <TableRow key={connector.id}>
                   <TableCell>{i + 1}</TableCell>
 
+                  <TableCell className="truncate">{connector.name}</TableCell>
                   <TableCell className="truncate">{connector.title}</TableCell>
 
                   <TableCell className="min-w-0">

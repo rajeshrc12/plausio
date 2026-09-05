@@ -9,6 +9,11 @@ class Settings(BaseSettings):
     jwt_algorithm: str
     jwt_expire_minutes: int
 
+    aws_access_key_id: str
+    aws_secret_access_key: str
+    aws_region: str
+    aws_s3_bucket: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

@@ -8,7 +8,10 @@ const api = axios.create({
 })
 
 export const addConnector = async (data: AddConnector) => {
-  const connector = await api.post<Connector>("/", data)
+  const connector = await api.post<Connector & { url: string; key: string }>(
+    "/",
+    data
+  )
   return connector.data
 }
 export const getConnectors = async () => {
