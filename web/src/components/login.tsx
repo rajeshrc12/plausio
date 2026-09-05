@@ -1,7 +1,8 @@
 import { env } from "@/config/env"
+import axios from "axios"
 import { useEffect, useRef } from "react"
 
-export default function Login() {
+export default function LoginButton() {
   const buttonRef = useRef(null)
 
   useEffect(() => {
@@ -14,25 +15,24 @@ export default function Login() {
         client_id: env.GOOGLE_CLIENT_ID,
 
         callback: async (response: any) => {
-          const res = await fetch("http://localhost:8000/auth/google", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              credential: response.credential,
-            }),
-          })
-
-          const data = await res.json()
-
-          if (!res.ok) {
-            console.error(data)
-            return
+          try {
+            const { data } = await axios.post(
+              `${env.USER_API_URL}/auth/google`,
+              {
+                credential: response.credential,
+              },
+              {
+                withCredentials: true,
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            window.location.href = "/app"
+            console.log("Logged in:", data)
+          } catch (error: any) {
+            console.error(error.response?.data || error)
           }
-
-          console.log("Logged in:", data)
         },
       })
 
