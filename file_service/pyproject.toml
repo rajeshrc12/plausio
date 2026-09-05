@@ -1,0 +1,20 @@
+[project]
+name = "file-service"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "rajeshrc12", email = "rajesh.charhajari@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "celery>=5.6.3",
+    "redis>=8.1.0",
+]
+
+[project.scripts]
+file-service = "file_service:main"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
