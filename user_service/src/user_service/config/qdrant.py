@@ -22,11 +22,10 @@ def init_qdrant():
             ),
         )
 
+
+def get_vector_store() -> QdrantVectorStore:
     return QdrantVectorStore(
         client=client,
         collection_name=collection_name,
         embedding=embeddings,
     )
-
-
-vector_store = init_qdrant()
