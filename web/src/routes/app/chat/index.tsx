@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Plus } from "lucide-react"
+import { ArrowRight, Check, Plus, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCreateChat } from "@/mutation/chat"
 import { useState } from "react"
@@ -89,9 +89,12 @@ const Chat = () => {
                   </div>
                 </PopoverContent>
               </Popover>
-              <div className="rounded-xl border px-2 py-1 text-sm">
-                {connector?.name}
-              </div>
+              {connector && (
+                <div className="flex items-center justify-between gap-2 rounded-xl border px-2 py-1 text-sm">
+                  {connector?.name}
+                  <X onClick={() => setConnector(undefined)} size={20} />
+                </div>
+              )}
             </div>
 
             <Button
