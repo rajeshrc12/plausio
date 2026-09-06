@@ -7,7 +7,11 @@ from user_service.schemas import MessageCreate
 
 
 def list_messages(db: Session, chat_id: int):
-    statement = select(Message).where(Message.chat_id == chat_id)
+    statement = (
+        select(Message)
+        .where(Message.chat_id == chat_id)
+        .order_by(Message.created_at.asc())
+    )
 
     return db.scalars(statement).all()
 
