@@ -1,5 +1,6 @@
 import App from "@/routes/app"
 import Chat from "@/routes/app/chat"
+import ChatId from "@/routes/app/chat/id"
 import Connector from "@/routes/app/connector"
 import Create from "@/routes/app/connector/create"
 import Home from "@/routes/home"
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
           {
             index: true,
             Component: Chat,
+          },
+          {
+            path: "chat/:id",
+            Component: ChatId,
           },
           {
             path: "connector",

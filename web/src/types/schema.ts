@@ -48,6 +48,42 @@ export const AddConnectorSchema = ConnectorSchema.pick({
 })
 export type AddConnector = z.infer<typeof AddConnectorSchema>
 
+/* ============================
+ * Chat
+ * ============================ */
+
+export const ChatSchema = z.object({
+  id: z.number().int(),
+  title: z.string(),
+})
+
+export type Chat = z.infer<typeof ChatSchema>
+
+export const AddChatSchema = z.object({
+  message: z.string(),
+})
+export type AddChat = z.infer<typeof AddChatSchema>
+
+/* ============================
+ * Message
+ * ============================ */
+
+export const MessageSchema = z.object({
+  id: z.number().int(),
+  content: z.string(),
+  type: z.string(),
+  role: z.string(),
+})
+
+export type Message = z.infer<typeof MessageSchema>
+
+export const AddMessageSchema = MessageSchema.pick({
+  content: true,
+  type: true,
+  role: true,
+}).extend({ chat_id: z.number().int() })
+export type AddMessage = z.infer<typeof AddMessageSchema>
+
 export const connectorFormSchema = z.object({
   title: z
     .string()

@@ -1,23 +1,29 @@
 from typing import TYPE_CHECKING
 from datetime import datetime
 
-from sqlalchemy import DateTime, Text, func
+from sqlalchemy import DateTime, ForeignKey, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from user_service.config.database import Base
 
 if TYPE_CHECKING:
-    from user_service.models.connector import Connector
     from user_service.models.chat import Chat
 
 
-class User(Base):
-    __tablename__ = "users"
+class Message(Base):
+    __tablename__ = "messages"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(Text)
-    email: Mapped[str] = mapped_column(Text)
-    profile_url: Mapped[str] = mapped_column(Text)
+
+    chat_id: Mapped[int] = mapped_column(
+        ForeignKey("chats.id"),
+        nullable=False,
+        index=True,
+    )
+
+    content: Mapped[str] = mapped_column(Text)
+    type: Mapped[str] = mapped_column(Text)
+    role: Mapped[str] = mapped_column(Text)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -32,11 +38,7 @@ class User(Base):
         nullable=False,
     )
 
-    connectors: Mapped[list["Connector"]] = relationship(
-        "Connector",
-        back_populates="user",
-    )
-    chats: Mapped[list["Chat"]] = relationship(
+    chat: Mapped["Chat"] = relationship(
         "Chat",
-        back_populates="user",
+        back_populates="messages",
     )

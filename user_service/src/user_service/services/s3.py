@@ -1,6 +1,5 @@
 import boto3
 from botocore.config import Config
-from pydantic import BaseModel
 from user_service.config.settings import settings
 
 s3_client = boto3.client(

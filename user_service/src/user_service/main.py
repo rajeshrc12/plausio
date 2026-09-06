@@ -6,6 +6,8 @@ from user_service.routes import (
     auth_router,
     connector_router,
     celery_router,
+    chat_router,
+    message_router,
 )
 
 app = FastAPI(
@@ -27,6 +29,8 @@ app.include_router(user_router)
 app.include_router(auth_router)
 app.include_router(connector_router)
 app.include_router(celery_router)
+app.include_router(chat_router)
+app.include_router(message_router)
 
 
 @app.get("/")
