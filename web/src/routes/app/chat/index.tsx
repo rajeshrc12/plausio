@@ -16,8 +16,15 @@ const Chat = () => {
     <div className="flex h-full w-full items-center justify-center">
       <div className="w-full max-w-2xl rounded-2xl border bg-background p-3 shadow-sm transition-shadow focus-within:shadow-md">
         <input
+          disabled={createChat.isPending}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault()
+              handleChat()
+            }
+          }}
           type="text"
           placeholder="Tell me what you want to search..."
           className="w-full bg-transparent px-2 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground"
@@ -29,6 +36,7 @@ const Chat = () => {
           </Button>
 
           <Button
+            disabled={createChat.isPending}
             onClick={handleChat}
             type="button"
             size="icon"
