@@ -19,36 +19,48 @@ def process_file(id: int, type: str):
     if type != "application/pdf":
         raise ValueError(f"Unsupported file type: {type}")
 
-    s3_key = f"file/{id}"
+    update_status(id, "PROCESSING")
 
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        pdf_path = Path(tmp_dir) / f"{id}.pdf"
+    try:
+        s3_key = f"file/{id}"
 
-        s3_client.download_file(
-            settings.aws_s3_bucket,
-            s3_key,
-            str(pdf_path),
-        )
-        update_status(id, "PROCESSING")
-        loader = PyPDFLoader(str(pdf_path))
-        docs = loader.load()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            pdf_path = Path(tmp_dir) / f"{id}.pdf"
 
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=150,
-        )
+            s3_client.download_file(
+                settings.aws_s3_bucket,
+                s3_key,
+                str(pdf_path),
+            )
 
-        chunks = splitter.split_documents(docs)
+            loader = PyPDFLoader(str(pdf_path))
+            docs = loader.load()
 
-        for chunk in chunks:
-            chunk.metadata["file_id"] = id
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=1000,
+                chunk_overlap=150,
+            )
 
-        vector_store = get_vector_store()
-        vector_store.add_documents(chunks)
+            chunks = splitter.split_documents(docs)
+
+            for chunk in chunks:
+                chunk.metadata["file_id"] = id
+
+            vector_store = get_vector_store()
+            vector_store.add_documents(chunks)
+
         update_status(id, "COMPLETED")
 
-    return {
-        "id": id,
-        "type": type,
-        "chunks": len(chunks),
-    }
+        return {
+            "id": id,
+            "type": type,
+            "chunks": len(chunks),
+        }
+
+    except Exception:
+        try:
+            update_status(id, "FAILED")
+        except Exception as status_error:
+            print(f"Failed to update status for file {id}: {status_error}")
+
+        raise
