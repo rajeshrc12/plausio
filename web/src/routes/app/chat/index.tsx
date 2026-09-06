@@ -89,7 +89,9 @@ const Chat = () => {
                   </div>
                 </PopoverContent>
               </Popover>
-              <div className="text-sm">{connector?.name}</div>
+              <div className="rounded-xl border px-2 py-1 text-sm">
+                {connector?.name}
+              </div>
             </div>
 
             <Button
