@@ -8,9 +8,11 @@ from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from file_service.services.user import update_status
+
 
 @app.task(name="process_file")
-def process_file(id: str, type: str):
+def process_file(id: int, type: str):
     print(f"Processing file: {id}")
     print(f"Type: {type}")
 
@@ -27,7 +29,7 @@ def process_file(id: str, type: str):
             s3_key,
             str(pdf_path),
         )
-
+        update_status(id, "PROCESSING")
         loader = PyPDFLoader(str(pdf_path))
         docs = loader.load()
 
@@ -42,7 +44,8 @@ def process_file(id: str, type: str):
             chunk.metadata["file_id"] = id
 
         vector_store = get_vector_store()
-        data = vector_store.add_documents(chunks)
+        vector_store.add_documents(chunks)
+        update_status(id, "COMPLETED")
 
     return {
         "id": id,

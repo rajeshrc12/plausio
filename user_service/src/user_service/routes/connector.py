@@ -6,8 +6,13 @@ from user_service.schemas import (
     ConnectorResponse,
     ConnectorCreate,
     ConnectorUploadResponse,
+    ConnectorUpdate,
 )
-from user_service.services.connector import list_connectors, create_connector
+from user_service.services.connector import (
+    list_connectors,
+    create_connector,
+    update_connector,
+)
 from user_service.utils.jwt import get_current_user_id
 from user_service.services.s3 import create_presigned_upload_url
 
@@ -51,3 +56,15 @@ def create_connector_route(
     }
 
     return data
+
+
+@router.patch("/", response_model=ConnectorResponse)
+def update_connector_route(
+    connector_data: ConnectorUpdate,
+    db: Session = Depends(get_db),
+):
+    return update_connector(
+        db,
+        connector_data.id,
+        connector_data,
+    )

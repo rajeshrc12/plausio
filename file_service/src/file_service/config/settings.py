@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     qdrant_url: str
     qdrant_collection_name: str
 
+    user_service_url: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

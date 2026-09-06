@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from user_service.models import Connector
-from user_service.schemas import ConnectorCreate
+from user_service.schemas import ConnectorCreate, ConnectorUpdate
 
 
 def list_connectors(db: Session, user_id: int):
@@ -44,6 +44,27 @@ def create_connector(
     )
 
     db.add(connector)
+    db.commit()
+    db.refresh(connector)
+
+    return connector
+
+
+def update_connector(
+    db: Session,
+    connector_id: int,
+    connector_data: ConnectorUpdate,
+):
+    connector = get_connector(db, connector_id)
+
+    update_data = connector_data.model_dump(
+        exclude_unset=True,
+        exclude={"id"},
+    )
+
+    for field, value in update_data.items():
+        setattr(connector, field, value)
+
     db.commit()
     db.refresh(connector)
 

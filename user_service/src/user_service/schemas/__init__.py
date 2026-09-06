@@ -6,6 +6,7 @@ from user_service.schemas.connector import (
     ConnectorCreate,
     ConnectorResponse,
     ConnectorUploadResponse,
+    ConnectorUpdate,
 )
 
 __all__ = [
@@ -21,4 +22,5 @@ __all__ = [
     "ChatRequest",
     "MessageCreate",
     "MessageResponse",
+    "ConnectorUpdate",
 ]

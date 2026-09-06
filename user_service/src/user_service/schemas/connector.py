@@ -30,3 +30,12 @@ class ConnectorUploadResponse(BaseModel):
     status: str
     url: str
     key: str
+
+
+class ConnectorUpdate(BaseModel):
+    id: int
+    name: str | None = None
+    title: str | None = None
+    description: str | None = None
+    type: str | None = None
+    status: str | None = None
