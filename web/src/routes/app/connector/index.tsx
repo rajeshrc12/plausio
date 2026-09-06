@@ -7,11 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useConnector } from "@/queries/connector"
+import { useConnectors } from "@/queries/connector"
 import { Link } from "react-router"
 
 const Connector = () => {
-  const { data } = useConnector()
+  const { data } = useConnectors()
   return (
     <div className="flex flex-col gap-5 p-5">
       <div className="flex justify-between">

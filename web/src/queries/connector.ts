@@ -2,7 +2,7 @@ import { getConnectors } from "@/api/connector"
 import { connectorKeys } from "@/queryKeys/connector"
 import { useQuery } from "@tanstack/react-query"
 
-export function useConnector() {
+export function useConnectors() {
   return useQuery({
     queryKey: connectorKeys.all,
     queryFn: getConnectors,

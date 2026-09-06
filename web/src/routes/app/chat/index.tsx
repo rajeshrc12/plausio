@@ -1,15 +1,27 @@
-import { ArrowRight, Plus } from "lucide-react"
+import { ArrowRight, Check, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCreateChat } from "@/mutation/chat"
 import { useState } from "react"
 import { useNavigate } from "react-router"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { useConnectors } from "@/queries/connector"
+import type { Connector } from "@/types/schema"
 
 const Chat = () => {
   const navigate = useNavigate()
   const createChat = useCreateChat()
   const [message, setMessage] = useState("")
+  const { data } = useConnectors()
+  const [connector, setConnector] = useState<Connector>()
+  const [open, setOpen] = useState(false)
   const handleChat = async () => {
-    const chat = await createChat.mutateAsync({ message })
+    const chat = await createChat.mutateAsync({
+      message,
+    })
     navigate(`chat/${chat.id}`)
   }
   return (
@@ -44,16 +56,41 @@ const Chat = () => {
           />
 
           <div className="mt-2 flex items-center justify-between px-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label="Add"
-              disabled={createChat.isPending}
-              className="size-9 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <Plus className="size-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Add"
+                    disabled={createChat.isPending}
+                    className="size-9 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground"
+                  >
+                    <Plus className="size-5" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start">
+                  <div className="flex flex-col">
+                    {data?.map((con) => (
+                      <Button
+                        onClick={() => {
+                          setConnector(con)
+                          setOpen(false)
+                        }}
+                        variant={"ghost"}
+                        key={con.id}
+                        className="flex justify-between"
+                      >
+                        {con.name}
+                        {connector?.id === con.id && <Check />}
+                      </Button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+              <div className="text-sm">{connector?.name}</div>
+            </div>
 
             <Button
               disabled={!message.trim() || createChat.isPending}

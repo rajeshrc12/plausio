@@ -2,21 +2,18 @@ from user_service.config.database import engine, Base
 from user_service.config.qdrant import client
 from user_service.config.settings import settings
 from user_service.config.aws import s3_client
-
+from sqlalchemy import text
 import user_service.models
 
 
 def clean_postgres():
     print("Cleaning PostgreSQL...")
 
-    for table in Base.metadata.sorted_tables:
-        print(f"  - {table.name}")
+    with engine.begin() as connection:
+        connection.execute(text("DROP SCHEMA public CASCADE"))
+        connection.execute(text("CREATE SCHEMA public"))
 
-    Base.metadata.drop_all(bind=engine)
-    print("PostgreSQL tables dropped.")
-
-    Base.metadata.create_all(bind=engine)
-    print("PostgreSQL tables created.")
+    print("PostgreSQL database cleaned.")
 
 
 def clean_qdrant():
