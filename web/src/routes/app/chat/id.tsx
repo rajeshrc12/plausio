@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { useCreateMessage } from "@/mutation/message"
 import { useMessages } from "@/queries/message"
 import { cn } from "cn"
-import { ArrowRight, Plus } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { useParams } from "react-router"
 import { useEffect, useRef, useState } from "react"
 
@@ -111,17 +111,9 @@ const ChatId = () => {
             />
 
             <div className="flex items-center justify-between px-1 pb-1">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label="Add"
-                disabled={createMessage.isPending}
-                className="rounded-xl text-muted-foreground hover:text-foreground"
-              >
-                <Plus className="size-5" />
-              </Button>
-
+              <div className="rounded-xl border px-2 py-1 text-sm">
+                connector
+              </div>
               <Button
                 type="button"
                 size="icon"
