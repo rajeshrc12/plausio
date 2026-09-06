@@ -1,5 +1,5 @@
 import boto3
-
+from botocore.config import Config
 from langchain_aws import BedrockEmbeddings, ChatBedrockConverse
 
 from user_service.config.settings import settings
@@ -11,6 +11,13 @@ bedrock_client = boto3.client(
     aws_secret_access_key=settings.aws_secret_access_key,
 )
 
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=settings.aws_access_key_id,
+    aws_secret_access_key=settings.aws_secret_access_key,
+    region_name=settings.aws_region,
+    config=Config(signature_version="s3v4"),
+)
 
 llm = ChatBedrockConverse(
     client=bedrock_client,
