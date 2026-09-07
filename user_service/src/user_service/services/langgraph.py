@@ -1,42 +1,72 @@
 from typing import Annotated, TypedDict
 
 from langchain_core.messages import BaseMessage
+from langchain_core.tools import tool
 from langchain_community.tools import DuckDuckGoSearchResults
-from langchain_core.tools import create_retriever_tool
+from qdrant_client.models import Filter, FieldCondition, MatchAny
 
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
-from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.prebuilt import ToolNode, tools_condition, InjectedState
 
 from user_service.config.aws import llm
 from user_service.config.qdrant import get_vector_store
 
 vector_store = get_vector_store()
 
-retriever = vector_store.as_retriever(search_kwargs={"k": 4})
 
-rag_tool = create_retriever_tool(
-    retriever,
-    name="knowledge_base_search",
-    description=(
-        "Search the internal knowledge base for relevant information. "
-        "Use this tool when the user asks about information contained "
-        "in the application's documents or knowledge base."
-    ),
-)
+class ChatState(TypedDict):
+    messages: Annotated[list[BaseMessage], add_messages]
+    file_ids: list[int]
+
+
+@tool
+def knowledge_base_search(
+    query: str,
+    state: Annotated[ChatState, InjectedState],
+) -> str:
+    """
+    Search the internal knowledge base for relevant information
+    from the specified files.
+    """
+
+    file_ids = state["file_ids"]
+
+    if not file_ids:
+        return "No files were provided for the search."
+
+    qdrant_filter = Filter(
+        must=[
+            FieldCondition(
+                key="metadata.file_id",
+                match=MatchAny(any=file_ids),
+            )
+        ]
+    )
+
+    retriever = vector_store.as_retriever(
+        search_kwargs={
+            "k": 4,
+            "filter": qdrant_filter,
+        }
+    )
+
+    docs = retriever.invoke(query)
+
+    if not docs:
+        return "No relevant information found in the specified files."
+
+    return "\n\n".join(doc.page_content for doc in docs)
+
 
 search_tool = DuckDuckGoSearchResults()
 
 tools = [
-    rag_tool,
+    knowledge_base_search,
     search_tool,
 ]
 
 llm_with_tools = llm.bind_tools(tools)
-
-
-class ChatState(TypedDict):
-    messages: Annotated[list[BaseMessage], add_messages]
 
 
 def chat(state: ChatState):

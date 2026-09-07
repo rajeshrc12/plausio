@@ -6,7 +6,9 @@ from user_service.schemas import MessageResponse, MessageCreate, MessageCreate
 from user_service.services.message import create_message, list_messages
 from user_service.utils.jwt import get_current_user_id
 from user_service.services.langgraph import graph
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
+from user_service.services.chat_connector import list_chat_connectors
+from user_service.utils.prompt import get_rag_prompt
 
 router = APIRouter(
     prefix="/message",
@@ -37,12 +39,34 @@ def create_message_route(
         db,
         message_data,
     )
-    result = graph.invoke({"messages": [HumanMessage(content=message_data.content)]})
-    content = result["messages"][-1].content
-
-    ai_response = "".join(
-        block["text"] for block in content if block.get("type") == "text"
+    chat_connectors = list_chat_connectors(db, message_data.chat_id)
+    file_ids = [
+        connector.connector_id
+        for connector in chat_connectors
+        if connector.connector_id
+    ]
+    connectors = [
+        connector.connector for connector in chat_connectors if connector.connector
+    ]
+    rag_prompt = get_rag_prompt(connectors)
+    result = graph.invoke(
+        {
+            "messages": [
+                SystemMessage(content=rag_prompt),
+                HumanMessage(content=message_data.content),
+            ],
+            "file_ids": file_ids,
+        }
     )
+
+    content = result["messages"][-1].content
+    ai_response = "No response"
+    try:
+        ai_response = "".join(
+            block["text"] for block in content if block.get("type") == "text"
+        )
+    except:
+        ai_response = content
 
     message_create = MessageCreate(
         content=ai_response.strip(),

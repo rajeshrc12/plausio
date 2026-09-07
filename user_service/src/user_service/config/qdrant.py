@@ -23,6 +23,9 @@ def init_qdrant():
         )
 
 
+init_qdrant()
+
+
 def get_vector_store() -> QdrantVectorStore:
     return QdrantVectorStore(
         client=client,
