@@ -8,6 +8,7 @@ from user_service.config.database import Base
 
 if TYPE_CHECKING:
     from user_service.models.user import User
+    from user_service.models.chat_connector import ChatConnector
 
 
 class Connector(Base):
@@ -43,4 +44,10 @@ class Connector(Base):
     user: Mapped["User"] = relationship(
         "User",
         back_populates="connectors",
+    )
+
+    chat_connectors: Mapped[list["ChatConnector"]] = relationship(
+        "ChatConnector",
+        back_populates="connector",
+        cascade="all, delete-orphan",
     )

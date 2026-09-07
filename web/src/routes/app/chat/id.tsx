@@ -5,12 +5,13 @@ import { cn } from "cn"
 import { ArrowRight } from "lucide-react"
 import { useParams } from "react-router"
 import { useEffect, useRef, useState } from "react"
+import { useChatConnectors } from "@/queries/chat-connector"
 
 const ChatId = () => {
   const { id } = useParams()
   const { data } = useMessages(Number(id))
   const createMessage = useCreateMessage(Number(id))
-
+  const { data: chatConnectors } = useChatConnectors(Number(id))
   const [message, setMessage] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -111,9 +112,17 @@ const ChatId = () => {
             />
 
             <div className="flex items-center justify-between px-1 pb-1">
-              <div className="rounded-xl border px-2 py-1 text-sm">
-                connector
+              <div className="flex gap-2">
+                {chatConnectors?.map((cc) => (
+                  <div
+                    key={cc.connector_id}
+                    className="rounded-xl border px-2 py-1 text-sm"
+                  >
+                    {cc.connector.name}
+                  </div>
+                ))}
               </div>
+
               <Button
                 type="button"
                 size="icon"

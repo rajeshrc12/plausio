@@ -7,6 +7,7 @@ class ChatCreate(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+    connector_ids: list[int]
 
 
 class ChatResponse(BaseModel):

@@ -61,8 +61,21 @@ export type Chat = z.infer<typeof ChatSchema>
 
 export const AddChatSchema = z.object({
   message: z.string(),
+  connector_ids: z.array(z.number()),
 })
 export type AddChat = z.infer<typeof AddChatSchema>
+
+/* ============================
+ * ChatConnector
+ * ============================ */
+
+export const ChatConnectorSchema = z.object({
+  chat_id: z.number().int(),
+  connector_id: z.number().int(),
+  connector: ConnectorSchema,
+})
+
+export type ChatConnector = z.infer<typeof ChatConnectorSchema>
 
 /* ============================
  * Message

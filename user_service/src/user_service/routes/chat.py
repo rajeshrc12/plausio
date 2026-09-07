@@ -2,9 +2,16 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from user_service.config.database import get_db
-from user_service.schemas import ChatResponse, ChatRequest, MessageCreate, ChatCreate
+from user_service.schemas import (
+    ChatResponse,
+    ChatRequest,
+    MessageCreate,
+    ChatCreate,
+    ChatConnectorCreate,
+)
 from user_service.services.chat import list_chats, create_chat
 from user_service.services.message import create_message
+from user_service.services.chat_connector import create_chat_connectors
 from user_service.utils.jwt import get_current_user_id
 from user_service.config.aws import llm
 
@@ -34,6 +41,10 @@ def create_chat_route(
 ):
     chat_create = ChatCreate(title="test")
     chat = create_chat(db, chat_create, user_id)
+    chat_connector_create = ChatConnectorCreate(
+        chat_id=chat.id, connector_ids=chat_data.connector_ids
+    )
+    create_chat_connectors(db, chat_connector_create)
     message_create = MessageCreate(
         content=chat_data.message, type="text", role="human", chat_id=chat.id
     )
