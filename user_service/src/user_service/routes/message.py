@@ -6,6 +6,7 @@ from user_service.schemas import MessageResponse, MessageCreate, MessageCreate
 from user_service.services.message import create_message, list_messages
 from user_service.utils.jwt import get_current_user_id
 from user_service.config.aws import llm
+from user_service.services.llm import call_llm
 
 router = APIRouter(
     prefix="/message",
@@ -36,11 +37,7 @@ def create_message_route(
         db,
         message_data,
     )
-    response = llm.invoke(message_data.content)
-
-    content = (
-        response.content if isinstance(response.content, str) else str(response.content)
-    )
+    content = call_llm(message_data.content)
 
     message_create = MessageCreate(
         content=content, type="text", role="ai", chat_id=message_data.chat_id

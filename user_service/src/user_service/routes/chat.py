@@ -13,7 +13,7 @@ from user_service.services.chat import list_chats, create_chat
 from user_service.services.message import create_message
 from user_service.services.chat_connector import create_chat_connectors
 from user_service.utils.jwt import get_current_user_id
-from user_service.config.aws import llm
+from user_service.services.llm import call_llm
 
 router = APIRouter(
     prefix="/chat",
@@ -52,11 +52,8 @@ def create_chat_route(
         db,
         message_create,
     )
-    response = llm.invoke(chat_data.message)
 
-    content = (
-        response.content if isinstance(response.content, str) else str(response.content)
-    )
+    content = call_llm(chat_data.message)
 
     message_create = MessageCreate(
         content=content, type="text", role="ai", chat_id=chat.id
