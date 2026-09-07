@@ -5,8 +5,8 @@ from user_service.config.database import get_db
 from user_service.schemas import MessageResponse, MessageCreate, MessageCreate
 from user_service.services.message import create_message, list_messages
 from user_service.utils.jwt import get_current_user_id
-from user_service.config.aws import llm
-from user_service.services.llm import call_llm
+from user_service.services.langgraph import graph
+from langchain_core.messages import HumanMessage
 
 router = APIRouter(
     prefix="/message",
@@ -37,10 +37,18 @@ def create_message_route(
         db,
         message_data,
     )
-    content = call_llm(message_data.content)
+    result = graph.invoke({"messages": [HumanMessage(content=message_data.content)]})
+    content = result["messages"][-1].content
+
+    ai_response = "".join(
+        block["text"] for block in content if block.get("type") == "text"
+    )
 
     message_create = MessageCreate(
-        content=content, type="text", role="ai", chat_id=message_data.chat_id
+        content=ai_response.strip(),
+        type="text",
+        role="ai",
+        chat_id=message_data.chat_id,
     )
     message = create_message(
         db,

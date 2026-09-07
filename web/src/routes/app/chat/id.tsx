@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react"
 import { useParams } from "react-router"
 import { useEffect, useRef, useState } from "react"
 import { useChatConnectors } from "@/queries/chat-connector"
+import Message from "@/routes/app/components/message"
 
 const ChatId = () => {
   const { id } = useParams()
@@ -14,7 +15,6 @@ const ChatId = () => {
   const { data: chatConnectors } = useChatConnectors(Number(id))
   const [message, setMessage] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
-
   const handleMessage = async () => {
     const content = message.trim()
 
@@ -61,13 +61,13 @@ const ChatId = () => {
             >
               <div
                 className={cn(
-                  "max-w-[85%] text-sm leading-6 whitespace-pre-wrap sm:max-w-[75%]",
+                  "max-w-[85%] text-sm leading-6 sm:max-w-[75%]",
                   message.role === "ai"
                     ? "rounded-2xl rounded-bl-md bg-muted px-4 py-3 text-foreground"
                     : "rounded-2xl rounded-br-md bg-primary px-4 py-3 text-primary-foreground"
                 )}
               >
-                {message.content}
+                <Message>{message.content}</Message>
               </div>
             </div>
           ))}
