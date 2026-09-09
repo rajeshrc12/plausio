@@ -14,9 +14,6 @@ class Settings(BaseSettings):
     aws_region: str
     aws_s3_bucket: str
 
-    qdrant_url: str
-    qdrant_collection_name: str
-
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

@@ -3,13 +3,11 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from user_service.config.qdrant import init_qdrant
 
 from user_service.routes import (
     user_router,
     auth_router,
     connector_router,
-    celery_router,
     chat_router,
     message_router,
     chat_connector_router,
@@ -18,7 +16,6 @@ from user_service.routes import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_qdrant()
     yield
 
 
@@ -41,7 +38,6 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(auth_router)
 app.include_router(connector_router)
-app.include_router(celery_router)
 app.include_router(chat_router)
 app.include_router(message_router)
 app.include_router(chat_connector_router)

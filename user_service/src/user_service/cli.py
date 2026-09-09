@@ -1,5 +1,4 @@
 from user_service.config.database import engine, Base
-from user_service.config.qdrant import client
 from user_service.config.settings import settings
 from user_service.config.aws import s3_client
 from sqlalchemy import text
