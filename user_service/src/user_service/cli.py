@@ -16,18 +16,6 @@ def clean_postgres():
     print("PostgreSQL database cleaned.")
 
 
-def clean_qdrant():
-    collection_name = settings.qdrant_collection_name
-
-    print(f"Cleaning Qdrant collection: {collection_name}")
-
-    if client.collection_exists(collection_name):
-        result = client.delete_collection(collection_name)
-        print("Qdrant:", result)
-    else:
-        print("Qdrant collection does not exist.")
-
-
 def clean_s3():
     bucket = settings.aws_s3_bucket
     prefix = "file/"
@@ -59,7 +47,6 @@ def clean_s3():
 
 def main():
     clean_postgres()
-    clean_qdrant()
     clean_s3()
 
     print("\nDone!")
