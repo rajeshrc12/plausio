@@ -25,7 +25,7 @@ const MainPanel = () => {
   return (
     <div className="col-span-5 flex min-h-0 flex-col border-r">
       {/* Header */}
-      <div className="shrink-0 border-b p-4">title</div>
+      <div className="shrink-0 border-b py-4">title</div>
 
       {/* Messages */}
       <main className="min-h-0 flex-1 overflow-y-auto">

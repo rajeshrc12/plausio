@@ -22,7 +22,7 @@ const Sidebar = () => {
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col border-r bg-background">
       {/* Brand */}
-      <div className="flex h-14 shrink-0 items-center border-b px-5">
+      <div className="flex h-14 shrink-0 items-center border-b py-4 pl-6">
         <Link
           to="/"
           className="text-base font-semibold tracking-tight text-foreground"

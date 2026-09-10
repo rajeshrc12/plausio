@@ -7,7 +7,7 @@ const Chat = () => {
   const navigate = useNavigate()
   const [message, setMessage] = useState("")
   const handleChat = async () => {
-    navigate(`chat`)
+    navigate(`chat/1`)
   }
   return (
     <div className="flex h-full w-full items-center justify-center px-4">
